@@ -1,11 +1,16 @@
 package com.example.parkin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,88 +18,52 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView bgapp, clover, parkingAppIcon;
-    Animation bganim, cloveranim, homeTextShow;
-    LinearLayout textTopLayout, textParkIn, menus, garageLayout, nearbyLayout;
-    TextView textTop;
-    boolean loggedIn;
+    EditText username;
+    EditText password;
+
+    String usernameFromLocal;
+    String passwordFromLocal;
+    SharedPreferences loginDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_window);
 
-        loggedIn = false;
-        bgapp = (ImageView) findViewById(R.id.bgapp);
-        clover = (ImageView) findViewById(R.id.clover);
-        textParkIn = (LinearLayout) findViewById(R.id.textParkIn);
-        textTopLayout = (LinearLayout) findViewById(R.id.textHome);
+        username = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.password);
 
-        garageLayout = (LinearLayout) findViewById(R.id.garageLayout);
-        nearbyLayout = (LinearLayout) findViewById(R.id.nearbyLayout);
+//        loginDetails = this.getSharedPreferences("com.example.parkin", Context.MODE_PRIVATE);
+//
+//        usernameFromLocal= loginDetails.getString("username", "");
+//        passwordFromLocal = loginDetails.getString("password", "");
 
-        menus = (LinearLayout) findViewById(R.id.menus);
-        textTop = (TextView) findViewById(R.id.textTop);
-        parkingAppIcon = (ImageView) findViewById(R.id.parkingAppIcon);
+//        System.out.println("username from local: " +usernameFromLocal+ "hu");
+//        if(!usernameFromLocal.equals("")){
+//            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//            startActivity(homeIntent);
+//        }
 
-//        bganim = AnimationUtils.loadAnimation(this, R.anim.backgroundanim);
-//        bganim = AnimationUtils.loadAnimation(this, R.anim.cloveranim);
-        homeTextShow= AnimationUtils.loadAnimation(this, R.anim.hometextshow);
+    }
 
-        if(!loggedIn){
-            //textTop.setAlpha(0);
-            //textTop.setText("Verification");
-            //setContentView(R.layout.login_window);
-            showLoginWindow();
-        } else if(loggedIn){
-            showHomePage();
+
+    public void onLoginButton(View view){
+
+        System.out.println(username.getText());
+        System.out.println(password.getText());
+
+        if(username.getText().toString().equals("123") && password.getText().toString().equals("admin")){
+            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(homeIntent);
         }
-
-
+        else {
+            Toast.makeText(getApplicationContext(), "Incorrect Username & Password", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(!loggedIn){
-            this.finish();
-        }
-    }
-
-
-    void showHomePage(){
-        bgapp.animate().translationY(-2100).alpha((float) 0.8).setDuration(800).setStartDelay(1000);
-        clover.animate().translationX(-400).alpha(0).setDuration(800).setStartDelay(1300);
-        parkingAppIcon.animate().translationY(-300).alpha(0).setDuration(800).setStartDelay(1000);
-        textParkIn.animate().alpha(0).setDuration(800).setStartDelay(1300);
-        //textTop.setAlpha(0);
-        menus.setAlpha(0);
-
-        textTop.setText("Home");
-            menus.setAlpha(1);
-            menus.startAnimation(homeTextShow);
-            nearbyLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(),"Nearby Button Under Implementation", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            garageLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(),"Garage Button Under Implementation", Toast.LENGTH_LONG).show();
-                }
-            });
-        textTop.startAnimation(homeTextShow);
-        //menus.startAnimation(homeTextShow);
-
-        //textHome.animate().alpha(1).setDuration(800).setStartDelay(1300);
-
-    }
-
-
-    void showLoginWindow(){
-        Intent showLoginScreen = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(showLoginScreen);
+    protected void onRestart() {
+        super.onRestart();
+        this.finish();
     }
 }

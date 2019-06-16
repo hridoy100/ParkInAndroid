@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.parkin.LoginActivity">
+    tools:context="com.example.parkin.MainActivity">
 
     <ImageView
         android:id="@+id/bgapp1"
@@ -25,13 +25,21 @@
         android:padding="20dp"
         >
 
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/parkingappicon"
+            android:layout_gravity="center"
+            />
+
+
         <TextView
             android:id="@+id/signIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/roboto_bold"
             android:gravity="center_horizontal"
@@ -52,7 +60,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 app:cardCornerRadius="30dp">
 
                 <RelativeLayout
@@ -88,7 +96,7 @@
                         android:drawableLeft="@drawable/ic_lock"
                         android:drawablePadding="30dp"
                         android:hint="Password"
-                        android:inputType="text"
+                        android:inputType="textPassword"
                         android:padding="10dp" />
 
                 </RelativeLayout>
@@ -99,15 +107,44 @@
             <ImageButton
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_ui"
-                android:layout_marginLeft="-20dp"
-                android:src="@drawable/ic_arrow"
                 android:layout_gravity="right|center"
+                android:layout_marginLeft="-35dp"
+                android:background="@drawable/btn_ui_blue_oval"
                 android:elevation="3dp"
-                />
+                android:onClick="onLoginButton"
+                android:src="@drawable/ic_arrow" />
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/btn_ui_blue_rectangle"
+            android:elevation="3dp"
+            android:onClick="onLoginButton"
+            android:textAllCaps="false"
+            android:text="Forgot Password"
+            android:textSize="17sp"
+            android:textColor="@android:color/background_light"
+
+             />
+
+        <Button
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_ui_blue_rectangle"
+            android:elevation="3dp"
+            android:onClick="onLoginButton"
+            android:textAllCaps="false"
+            android:text="Create Account"
+            android:textSize="17sp"
+            android:textColor="@android:color/background_light"
+
+            />
 
     </LinearLayout>
 
