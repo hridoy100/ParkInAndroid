@@ -1,5 +1,6 @@
 package com.example.parkin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,6 +17,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+//import com.example.parkin.DB.CommunicateWithPhp;
+import com.example.parkin.DB.CommunicateWithPhp;
+import com.example.parkin.DB.Constants;
+import com.example.parkin.DB.RequestHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     String passwordFromLocal;
     SharedPreferences loginDetails;
 
+    public ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
+
+        progressDialog = new ProgressDialog(this);
 
 //        loginDetails = this.getSharedPreferences("com.example.parkin", Context.MODE_PRIVATE);
 //
@@ -51,14 +74,28 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(username.getText());
         System.out.println(password.getText());
+        CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+        communicateWithPhp.setMain(this);
+        //if(username.getText().toString().equals("123") && password.getText().toString().equals("admin")){
+        String mobileNo = username.getText().toString();
+        if(mobileNo.startsWith("0"))
+            mobileNo = mobileNo.substring(mobileNo.indexOf("0")+1);
 
-        if(username.getText().toString().equals("123") && password.getText().toString().equals("admin")){
-            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(homeIntent);
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Incorrect Username & Password", Toast.LENGTH_LONG).show();
-        }
+        System.out.println("mobileNo: "+mobileNo);
+        System.out.println("password: "+password.getText().toString());
+        communicateWithPhp.verifyUser(mobileNo, password.getText().toString());
+        //if(communicateWithPhp.verifyUser(mobileNo, password.getText().toString())){
+//            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//            startActivity(homeIntent);
+        //}
+//        else {
+//            Toast.makeText(getApplicationContext(), "Incorrect Username & Password", Toast.LENGTH_LONG).show();
+//        }
+    }
+
+    public void onCreateAccountButton(View view){
+        Intent createAccountIntent = new Intent(getApplicationContext(), CreateAccountActivity.class);
+        startActivity(createAccountIntent);
     }
 
     @Override

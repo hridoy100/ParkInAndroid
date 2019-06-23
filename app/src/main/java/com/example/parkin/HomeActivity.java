@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 //    void showLoginWindow(){
-//        Intent showLoginScreen = new Intent(getApplicationContext(), LoginActivity.class);
+//        Intent showLoginScreen = new Intent(getApplicationContext(), CreateAccountActivity.class);
 //        startActivity(showLoginScreen);
 //        //System.out.println(showLoginScreen.getExtras());
 //    }
