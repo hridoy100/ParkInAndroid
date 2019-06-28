@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".Garage" />
+        <activity android:name=".Vehicle" />
 
 
         <meta-data

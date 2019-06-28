@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         loggedIn = false;
         bgapp = (ImageView) findViewById(R.id.bgapp);
@@ -46,6 +46,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+    }
+
     void showHomePage(){
         bgapp.animate().translationY(-2100).alpha((float) 0.8).setDuration(800).setStartDelay(700);
         clover.animate().translationX(-400).alpha(0).setDuration(800).setStartDelay(900);
@@ -67,17 +73,28 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        garageLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Garage Button Under Implementation", Toast.LENGTH_LONG).show();
-            }
-        });
+//        garageLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(),"Garage Button Under Implementation", Toast.LENGTH_LONG).show();
+//            }
+//        });
         textTop.startAnimation(homeTextShow);
         //menus.startAnimation(homeTextShow);
 
         //textHome.animate().alpha(1).setDuration(800).setStartDelay(1300);
 
+    }
+
+
+    public void garageActivity(View view){
+        Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
+        startActivity(garageIntent);
+    }
+
+    public void vehicleActivity(View view){
+        Intent vehicleIntent = new Intent(getApplicationContext(), Vehicle.class);
+        startActivity(vehicleIntent);
     }
 
 
