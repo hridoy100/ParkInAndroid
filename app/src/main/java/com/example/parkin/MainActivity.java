@@ -98,9 +98,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(createAccountIntent);
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        this.finish();
-    }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        this.finish();
+//    }
+
 }
