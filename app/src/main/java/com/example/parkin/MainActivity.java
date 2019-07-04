@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
+        username.setText("123");
+        password.setText("admin");
+
         progressDialog = new ProgressDialog(this);
 
 //        loginDetails = this.getSharedPreferences("com.example.parkin", Context.MODE_PRIVATE);
@@ -82,8 +85,19 @@ public class MainActivity extends AppCompatActivity {
             mobileNo = mobileNo.substring(mobileNo.indexOf("0")+1);
 
         System.out.println("mobileNo: "+mobileNo);
-        System.out.println("password: "+password.getText().toString());
-        communicateWithPhp.verifyUser(mobileNo, password.getText().toString());
+        System.out.println("password: "+password.getText().toString()+"end");
+
+        if(mobileNo.length()!=0 && password.getText().length()!=0) {
+            //Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+            //startActivity(mapIntent);
+            communicateWithPhp.verifyUser(mobileNo, password.getText().toString());
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please enter correct details", Toast.LENGTH_SHORT).show();
+        }
+//        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+//        startActivity(homeIntent);
+
         //if(communicateWithPhp.verifyUser(mobileNo, password.getText().toString())){
 //            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
 //            startActivity(homeIntent);
