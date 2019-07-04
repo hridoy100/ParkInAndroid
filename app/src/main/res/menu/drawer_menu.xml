@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/dashboard" android:title="dashboard" android:icon="@drawable/ic_dashboard_black_24dp" />
+<item android:id="@+id/bookSpace" android:title="Book a parking space" android:icon="@drawable/ic_location"/>
+<item android:id="@+id/myBookings" android:title="My Bookings" android:icon="@drawable/ic_home_black_24dp"/>
+<item android:id="@+id/messages" android:title="Messages" android:icon="@drawable/ic_message_black_24dp"/>
+<item android:id="@+id/rentSpace" android:title="Rent out your space" android:icon="@drawable/garage"/>
+<item android:id="@+id/promoCode" android:title="Promo codes" android:icon="@drawable/ic_receipt_black_24dp"/>
+<item android:id="@+id/inviteFriend" android:title="Invite Friends" android:icon="@drawable/ic_insert_invitation_black_24dp"/>
+<item android:id="@+id/help" android:title="Help" android:icon="@drawable/ic_help_outline_black_24dp"/>
+</menu>
