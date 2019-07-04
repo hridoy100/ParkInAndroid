@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/menu_drawer"
     tools:context=".HomeActivity">
 
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:id="@+id/clover"
         android:layout_width="250dp"
@@ -157,7 +161,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="30dp">
+                android:padding="30dp"
+                android:onClick="mapActivity">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -171,7 +176,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:text="Parking Location"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -231,4 +236,17 @@
         app:layout_constraintVertical_bias="0.769"
         app:srcCompat="@drawable/parkingappicon" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+        <android.support.design.widget.NavigationView
+            app:headerLayout="@layout/menu_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            app:itemTextColor="@color/white"
+            app:itemIconTint="@color/white"
+            app:menu="@menu/drawer_menu"
+            android:layout_gravity="start"
+            >
+        </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>

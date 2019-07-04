@@ -1,3 +1,99 @@
 <resources>
     <string name="app_name">ParkIn</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <string-array name="manufaturerList">
+        <item>Select Manufaturer</item>
+        <item>Ford</item>
+        <item>Honda</item>
+        <item>Hyundai</item>
+        <item>Maruti Suzuki</item>
+        <item>Mitsubishi</item>
+        <item>Nissan</item>
+        <item>Tata</item>
+        <item>Toyota</item>
+    </string-array>
+
+    <string-array name="areaCodeList">
+        <item>BH</item>
+        <item>DHK METRO</item>
+        <item>CTG METRO</item>
+        <item>SYL METRO</item>
+        <item>BN</item>
+        <item>BR</item>
+        <item>BA</item>
+        <item>BO</item>
+        <item>BB</item>
+        <item>CH</item>
+        <item>CN</item>
+        <item>RAJ METRO</item>
+    </string-array>
+
+    <string-array name="vehicleType">
+        <item>Select Vehicle Type</item>
+        <item>Car</item>
+        <item>Motor Bike</item>
+        <item>Cycle</item>
+        <item>Bus</item>
+        <item>CNG</item>
+        <item>Auto Rickshaw</item>
+        <item>Van</item>
+        <item>Truck</item>
+    </string-array>
+
+    <string-array name="hourCost">
+        <item>Select Hourly Cost</item>
+        <item>free*</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="totalSlot">
+        <item>Select Total Slot</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+    </string-array>
+
+    <string-array name="city">
+        <item>Select City</item>
+        <item>Dhaka</item>
+        <item>Sylhet</item>
+        <item>Chittagong</item>
+        <item>Rajshahi</item>
+    </string-array>
+
+
+    <string-array name="localityDhaka">
+        <item>Select Locality</item>
+        <item>Mirpur</item>
+        <item>Uttara</item>
+        <item>Dhanmondi</item>
+        <item>Gulshan</item>
+        <item>Polashi</item>
+        <item>BUET</item>
+        <item>Azimpur</item>
+        <item>Shahbagh</item>
+    </string-array>
+
 </resources>
