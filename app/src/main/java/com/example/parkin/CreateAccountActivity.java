@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,6 +41,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     RadioButton customer;
     RadioButton renter;
     Calendar cldr;
+
+    RadioGroup radioGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         customer.setActivated(true);
         renter.setActivated(false);
+
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         birthdate.setInputType(InputType.TYPE_NULL);
         progressDialog = new ProgressDialog(this);
@@ -97,11 +102,16 @@ public class CreateAccountActivity extends AppCompatActivity {
         final String nameStr = name.getText().toString().trim();
         final String birthdateStr = birthdate.getText().toString().trim();
         final String type;
-        if(renter.isPressed())
-            type = "renter";
-        else if(customer.isPressed())
-            type = "customer";
-        else type="";
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = (RadioButton) findViewById(selectedId);
+        //type = "customer";
+
+        type = radioButton.getText().toString();
+//        if(renter.isPressed())
+//            type = "renter";
+//        else if(customer.isPressed())
+//            type = "customer";
+//        else type="";
 
 
         progressDialog.setMessage("Registering user...");

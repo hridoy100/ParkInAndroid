@@ -2,6 +2,8 @@ package com.example.parkin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,7 +15,8 @@ import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity {
 
-
+    ActionBarDrawerToggle mToggle;
+    DrawerLayout drawerLayout;
     ImageView bgapp, clover, parkingAppIcon;
     Animation bganim, cloveranim, homeTextShow;
     LinearLayout textTopLayout, textParkIn, menus, garageLayout, nearbyLayout;
@@ -37,6 +40,10 @@ public class HomeActivity extends AppCompatActivity {
         textTop = (TextView) findViewById(R.id.textTop);
         parkingAppIcon = (ImageView) findViewById(R.id.parkingAppIcon);
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.menu_drawer);
+        mToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
         showHomePage();
 
     }
@@ -95,6 +102,11 @@ public class HomeActivity extends AppCompatActivity {
     public void vehicleActivity(View view){
         Intent vehicleIntent = new Intent(getApplicationContext(), Vehicle.class);
         startActivity(vehicleIntent);
+    }
+
+    public void mapActivity(View view){
+        Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+        startActivity(mapIntent);
     }
 
 
