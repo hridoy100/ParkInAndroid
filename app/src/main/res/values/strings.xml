@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ParkIn</string>
+    <string name="mobileNo">com.example.parkin.mobileNo</string>
+    <string name="password">com.example.parkin.password</string>
+
     <string name="open">Open</string>
     <string name="close">Close</string>
 
