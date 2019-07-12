@@ -1,7 +1,11 @@
 package com.example.parkin.DB;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.parkin.HomeActivity;
 import com.example.parkin.MainActivity;
+import com.example.parkin.R;
 import com.example.parkin.Vehicle;
 
 import org.json.JSONArray;
@@ -20,7 +25,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -31,17 +36,18 @@ import java.util.Map;
 
 public class CommunicateWithPhp {
     private MainActivity mainActivity;
-
+    private Context context;
     public void setMain (MainActivity mainActivity){
         this.mainActivity = mainActivity;
     }
+    public void setContext(Context context) {this.context = context;}
 
     public void verifyUser(final String mobileNo, String password) {
         final String mobileNoStr = mobileNo;
         final String passwordStr = password;
 
-        mainActivity.progressDialog.setMessage("Logging into account...");
-        mainActivity.progressDialog.show();
+//        mainActivity.progressDialog.setMessage("Logging into account...");
+//        mainActivity.progressDialog.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Constants.URL_LOGIN,
@@ -53,16 +59,17 @@ public class CommunicateWithPhp {
                             Log.i("response",response);
                             if(response.contains("true")) {
                                 Log.i("verify", "true");
-                                Toast.makeText(mainActivity.getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                Intent homeIntent = new Intent(mainActivity.getApplicationContext(), HomeActivity.class);
-                                mainActivity.startActivity(homeIntent);
+                                Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show();
+                                Intent homeIntent = new Intent(context, HomeActivity.class);
+                                context.startActivity(homeIntent);
                             }
                             else {
-                                Toast.makeText(mainActivity.getApplicationContext(), "Incorrect Username or Password" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Incorrect Username or Password" , Toast.LENGTH_LONG).show();
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Toast.makeText(context, "Connection Error" , Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -71,7 +78,7 @@ public class CommunicateWithPhp {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         mainActivity.progressDialog.hide();
-                        Toast.makeText(mainActivity.getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Please Check Your Internet Connection", Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -191,7 +198,7 @@ public class CommunicateWithPhp {
     }
 
 
-    public ArrayList<VehicleDetails> getAllVehicleDetailsDB() {
+    public ArrayList<VehicleDetails> getVehicleDetailsDB(Context context) {
 //        progressDialog.setMessage("Fetching Garage Details...");
 //        progressDialog.show();
         //new JSONAsyncTask().execute(Constants.URL_AllGarage);
@@ -203,7 +210,20 @@ public class CommunicateWithPhp {
 
         try {
             URL website = new URL(Constants.URL_AllVehicle);
-            URLConnection connection = website.openConnection();
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            //Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&mobileNo="+mobNo);
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String inputLine;
@@ -243,5 +263,6 @@ public class CommunicateWithPhp {
 
         return null;
     }
+
 
 }
