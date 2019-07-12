@@ -8,24 +8,33 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.parkin.util.MyClusterManagerRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
+
+import java.util.ArrayList;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    private static final String TAG ="MapActivity";
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
+    private ClusterManager<ClusterMarker> mClusterManager;
+    private MyClusterManagerRenderer mClusterManagerRenderer;
+    private ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
+    private ArrayList<GarageObject> garages = new ArrayList<>();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -47,8 +56,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
+        GarageObject garage1=new GarageObject(1,new LatLng(23.751,90.370),new Garage());
+        GarageObject garage2=new GarageObject(1,new LatLng(23.754022,90.373002),new Garage());
+        GarageObject garage3=new GarageObject(1,new LatLng(23.758169,90.369536),new Garage());
+        garages.add(garage1);
+        garages.add(garage2);
+        garages.add(garage3);
     }
 
     /**
@@ -99,11 +112,53 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
 
 
-        //Location location = new Location(mMap.getMyLocation());
-        LatLng hall = new LatLng(23.7254245, 90.3875091);
+        Location location = new Location(locationManager.getLastKnownLocation());
+        LatLng hall = new LatLng(location.getLatitude(),location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(hall).title("My Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hall, 15));
-    }
+        addMapMarkers();
 
+    }
+    private void addMapMarkers(){
+
+        if(mMap != null){
+
+            if(mClusterManager == null){
+                mClusterManager = new ClusterManager<ClusterMarker>(this, mMap);
+            }
+            if(mClusterManagerRenderer == null){
+                mClusterManagerRenderer = new MyClusterManagerRenderer(
+                        this,
+                        mMap,
+                        mClusterManager
+                );
+                mClusterManager.setRenderer(mClusterManagerRenderer);
+            }
+
+            for(GarageObject garage: garages){
+                try{
+
+                    String snippet = "This is garage no : " + String.valueOf(garage.getGarage_id());
+
+
+                    int avatar = R.drawable.default_garage; // set the default avatar
+                    ClusterMarker newClusterMarker = new ClusterMarker(
+                            garage.getPos(),
+                            "Default title",
+                            snippet,
+                            avatar,
+                            garage
+                    );
+                    mClusterManager.addItem(newClusterMarker);
+                    mClusterMarkers.add(newClusterMarker);
+
+                }catch (NullPointerException e){
+                    Log.e(TAG, "addMapMarkers: NullPointerException: " + e.getMessage() );
+                }
+
+            }
+            mClusterManager.cluster();
+        }
+    }
     // Add a marker in Sydney and move the camera @23.7254245,90.3875091
 }
