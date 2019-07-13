@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehicle Editing"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginTop="20sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="VEHICLE INFORMATION"
+                android:gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:background="#d9d9d9"/>
+            <Spinner
+                android:id="@+id/type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp" />
+
+            <Spinner
+                android:id="@+id/manufacturer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            <EditText
+                android:id="@+id/vehicleLicenseNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Driving License"
+                android:inputType="text"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="VEHICLE REGISTRATION NUMBER"
+                android:gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:background="#d9d9d9"/>
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Spinner
+                    android:id="@+id/areaCode"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:dropDownWidth="300dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_gravity="center_vertical"/>
+                <EditText
+                    android:id="@+id/vehicleCode"
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+
+                    android:hint="e.g.GA"
+                    android:inputType="text"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="16dp" />
+
+                <EditText
+                    android:id="@+id/vehicleCode1"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:digits="123456789"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="10dp"/>
+                <EditText
+                    android:id="@+id/vehicleCode2"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:digits="123456789"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="5dp"
+                    />
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="50dp" />
+                <EditText
+                    android:id="@+id/vehicleCode3"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:digits="123456789"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="5dp"
+                    />
+                <EditText
+                android:id="@+id/vehicleCode4"
+                android:layout_width="45dp"
+                android:layout_height="50dp"
+                android:digits="123456789"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:background="@drawable/custom_edit_text"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:layout_marginLeft="5dp"
+                />
+                <EditText
+                android:id="@+id/vehicleCode5"
+                android:layout_width="45dp"
+                android:layout_height="50dp"
+                android:digits="123456789"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:background="@drawable/custom_edit_text"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:layout_marginLeft="5dp"
+                />
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/fitness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Fitness Cirtificate"
+                android:inputType="text"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/tax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="Tax Token"
+                android:inputType="text"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/agree"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:background="@android:color/holo_red_light"
+                android:gravity="center"
+                android:text="Agree &amp; Add"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linLayout1"
+                android:onClick="addVehicle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -264,5 +264,59 @@ public class CommunicateWithPhp {
         return null;
     }
 
+    public VehicleDetails getOneVehicleDetails(String licenseNo) {
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_AllVehicle);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&licenseNo="+licenseNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            VehicleDetails vehicleDetails = new VehicleDetails();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("vehicleDetails");
+                Log.i("dataobj", dataobj.toString());
+                vehicleDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                vehicleDetails.setLicenseNo((String) dataobj.getString("licenseNo"));
+                vehicleDetails.setAreaCode((String) dataobj.getString("areaCode"));
+                vehicleDetails.setVehicleCode((String) dataobj.getString("vehicleCode"));
+                vehicleDetails.setRegistrationNo((String) dataobj.getString("registrationNo"));
+                vehicleDetails.setCustomerMobNo((String) dataobj.getString("customerMobNo"));
+                vehicleDetails.setType((String) dataobj.getString("type"));
+                vehicleDetails.setCompany((String) dataobj.getString("company"));
+                vehicleDetails.setFitnessCertificate((String) dataobj.getString("fitnessCertificate"));
+                vehicleDetails.setTaxToken((String) dataobj.getString("taxToken"));
+            }
+            return vehicleDetails;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 }
