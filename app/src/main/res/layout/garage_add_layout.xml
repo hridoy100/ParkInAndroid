@@ -259,6 +259,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linLayout1"
+                android:onClick="nextPage"
                 />
         </LinearLayout>
     </LinearLayout>
