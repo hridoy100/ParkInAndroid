@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
+import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.util.MyClusterManagerRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -61,6 +62,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Button arrivalTime;
     Button depatureTime;
     private Button current;
+    CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+
     View mapView;
     private SwitchDateTimeDialogFragment dateTimeFragment;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -89,12 +92,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         arrivalTime = findViewById(R.id.Arrival_button);
         depatureTime = findViewById(R.id.Departure_button);
         init = 0;
-        GarageObject garage1 = new GarageObject(1, new LatLng(23.751, 90.370), new GarageDetails());
+        ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
+
+        /*GarageObject garage1 = new GarageObject(1, new LatLng(23.751, 90.370), new GarageDetails());
         GarageObject garage2 = new GarageObject(2, new LatLng(23.754022, 90.373002), new GarageDetails());
         GarageObject garage3 = new GarageObject(3, new LatLng(23.758169, 90.369536), new GarageDetails());
         garages.add(garage1);
         garages.add(garage2);
         garages.add(garage3);
+        */
+        for (int i=0; i<garageDetailsArrayList.size(); i++){
+            garages.add(new GarageObject(i+1, new LatLng(Double.parseDouble(garageDetailsArrayList.get(i).getLatitude()),
+                    Double.parseDouble(garageDetailsArrayList.get(i).getLongitude())),garageDetailsArrayList.get(i)));
+        }
         if (dateTimeFragment == null) {
             dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
                     getString(R.string.label_datetime_dialog),
