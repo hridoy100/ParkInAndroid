@@ -270,7 +270,7 @@ public class CommunicateWithPhp {
         StrictMode.setThreadPolicy(policy);
 
         try {
-            URL website = new URL(Constants.URL_AllVehicle);
+            URL website = new URL(Constants.URL_OneVehicle);
             //URLConnection connection = website.openConnection();
             HttpURLConnection connection = (HttpURLConnection) website.openConnection();
 //            connection.setReadTimeout(15000);
@@ -297,7 +297,7 @@ public class CommunicateWithPhp {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
-                JSONObject dataobj = (JSONObject) vehicleData.get("vehicleDetails");
+                JSONObject dataobj = (JSONObject) vehicleData.get("vehicleDescription");
                 Log.i("dataobj", dataobj.toString());
                 vehicleDetails.setLicenseId((String) dataobj.getString("licenseId"));
                 vehicleDetails.setLicenseNo((String) dataobj.getString("licenseNo"));

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.GarageDetails;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Vehicle extends AppCompatActivity {
+public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
 
@@ -57,6 +59,17 @@ public class Vehicle extends AppCompatActivity {
         vehicleList.setAdapter(myAdapter);
         */
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onItemClick(int i) {
+        String licenseNo = license.get(i);
+        licenseNo = licenseNo.substring(licenseNo.lastIndexOf(" ")+1);
+        Toast.makeText(getApplicationContext(), licenseNo, Toast.LENGTH_SHORT).show();
+        Log.d("onItemClick", licenseNo);
+        Intent editIntent = new Intent(getApplicationContext(), VehicleEditActivity.class);
+        editIntent.putExtra("licenseNo",licenseNo);
+        startActivity(editIntent);
     }
 
     class MyAdapter extends ArrayAdapter<String> {
@@ -142,9 +155,10 @@ public class Vehicle extends AppCompatActivity {
 
     void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycleView_vehicle);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,license,company, reg, mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,license,company, reg, mImageUrls, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
 }

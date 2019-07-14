@@ -20,6 +20,16 @@
             android:textSize="24sp"
             android:gravity="center"
             android:layout_marginTop="20sp"/>
+        <TextView
+            android:id="@+id/licenseId"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:text="License ID : "
+            android:gravity="center"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_bold"
+            android:background="@android:color/holo_orange_light"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,19 +98,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Spinner
                     android:id="@+id/areaCode"
-                    android:layout_width="75dp"
+                    android:layout_width="84dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
+                    android:layout_gravity="center_vertical"
                     android:dropDownWidth="300dp"
+                    android:paddingLeft="16dp"
                     android:paddingTop="16dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="16dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:paddingBottom="16dp" />
                 <EditText
                     android:id="@+id/vehicleCode"
-                    android:layout_width="65dp"
+                    android:layout_width="62dp"
                     android:layout_height="wrap_content"
 
                     android:hint="e.g.GA"
@@ -138,7 +149,7 @@
                     android:layout_marginLeft="5dp"
                     />
                 <View
-                    android:layout_width="10dp"
+                    android:layout_width="5dp"
                     android:layout_height="50dp" />
                 <EditText
                     android:id="@+id/vehicleCode3"
@@ -234,12 +245,12 @@
                 android:layout_gravity="bottom"
                 android:background="@android:color/holo_red_light"
                 android:gravity="center"
-                android:text="Agree &amp; Add"
+                android:text="Submit Changes"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linLayout1"
-                android:onClick="addVehicle"/>
+                android:onClick="submitEditedVehicle"/>
         </LinearLayout>
     </LinearLayout>
 
