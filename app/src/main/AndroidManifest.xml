@@ -45,6 +45,7 @@
         <activity android:name=".Vehicle" />
         <activity android:name=".AddVehicle" />
         <activity android:name=".AddGarage" />
+        <activity android:name=".VehicleEditActivity" />
 
 
         <meta-data

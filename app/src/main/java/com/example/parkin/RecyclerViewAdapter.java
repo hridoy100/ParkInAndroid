@@ -23,20 +23,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ArrayList<String> regNo = new ArrayList<>();
     ArrayList<String> mImages = new ArrayList<>();
     Context context;
+    OnItemClickListener onItemClickListener;
 
     public RecyclerViewAdapter(Context context, ArrayList<String> licenseNumber, ArrayList<String> companyName,
-                               ArrayList<String> regNo, ArrayList<String> mImages) {
+                               ArrayList<String> regNo, ArrayList<String> mImages, OnItemClickListener onItemClickListener) {
         this.licenseNumber = licenseNumber;
         this.companyName = companyName;
         this.regNo = regNo;
         this.mImages = mImages;
         this.context = context;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listitem_recycle_view_vehicle,viewGroup, false);
-        ViewHolder holder = new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view, onItemClickListener);
 
         return holder;
     }
@@ -51,7 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.compName.setText(companyName.get(i));
         viewHolder.regCode.setText(regNo.get(i));
 
-        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if(mImagesNames.get(i).equals("Bangladesh Power Division")){
@@ -69,7 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //                else
                     Toast.makeText(context, licenseNumber.get(i), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -77,13 +79,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return licenseNumber.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CircleImageView circleImageView;
         TextView licenseNo;
         TextView compName;
         TextView regCode;
         LinearLayout parentLayout;
-        public ViewHolder(View itemView) {
+        OnItemClickListener onItemClickListener;
+        public ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             circleImageView = itemView.findViewById(R.id.listImage);
             licenseNo = itemView.findViewById(R.id.licenseNo);
@@ -91,6 +94,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             regCode = itemView.findViewById(R.id.regCode);
 
             parentLayout = itemView.findViewById(R.id.linearRecycleView_category);
+            this.onItemClickListener = onItemClickListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onItemClick(getAdapterPosition());
+        }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(int i);
     }
 }
