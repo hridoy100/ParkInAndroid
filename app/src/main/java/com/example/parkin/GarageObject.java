@@ -1,26 +1,27 @@
 package com.example.parkin;
 
+import com.example.parkin.DB.GarageDetails;
 import com.google.android.gms.maps.model.LatLng;
 
 public class GarageObject {
     private int garage_id;
     private LatLng pos;
-    private Garage garage;
+    private GarageDetails garage;
 
     public GarageObject() {
     }
 
-    public GarageObject(int garage_id, LatLng pos, Garage garage) {
+    public GarageObject(int garage_id, LatLng pos, GarageDetails garage) {
         this.garage_id = garage_id;
         this.pos = pos;
         this.garage = garage;
     }
 
-    public Garage getGarage() {
+    public GarageDetails getGarage() {
         return garage;
     }
 
-    public void setGarage(Garage garage) {
+    public void setGarage(GarageDetails garage) {
         this.garage = garage;
     }
 

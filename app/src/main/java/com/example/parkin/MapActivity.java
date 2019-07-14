@@ -1,6 +1,7 @@
 package com.example.parkin;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -17,8 +18,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TimePicker;
 
+import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.util.MyClusterManagerRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,10 +35,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "MapActivity";
@@ -45,7 +56,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
     private ArrayList<GarageObject> garages = new ArrayList<>();
     private Marker current_loc;
+    private Marker search_loc;
     int init;
+    Button arrivalTime;
+    Button depatureTime;
+    private Button current;
+    View mapView;
+    private SwitchDateTimeDialogFragment dateTimeFragment;
+    private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -66,21 +84,62 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        mapView = mapFragment.getView();
         mapFragment.getMapAsync(this);
-        GarageObject garage1 = new GarageObject(1, new LatLng(23.751, 90.370), new Garage());
-        GarageObject garage2 = new GarageObject(2, new LatLng(23.754022, 90.373002), new Garage());
-        GarageObject garage3 = new GarageObject(3, new LatLng(23.758169, 90.369536), new Garage());
+        arrivalTime = findViewById(R.id.Arrival_button);
+        depatureTime = findViewById(R.id.Departure_button);
+        init = 0;
+        GarageObject garage1 = new GarageObject(1, new LatLng(23.751, 90.370), new GarageDetails());
+        GarageObject garage2 = new GarageObject(2, new LatLng(23.754022, 90.373002), new GarageDetails());
+        GarageObject garage3 = new GarageObject(3, new LatLng(23.758169, 90.369536), new GarageDetails());
         garages.add(garage1);
         garages.add(garage2);
         garages.add(garage3);
-        init = 0;
+        if (dateTimeFragment == null) {
+            dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
+                    getString(R.string.label_datetime_dialog),
+                    getString(android.R.string.ok),
+                    getString(android.R.string.cancel)
+                    // Optional
+            );
+        }
+
+        // Optionally define a timezone
+        dateTimeFragment.setTimeZone(TimeZone.getDefault());
+
+        // Init format
+        final SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm", java.util.Locale.getDefault());
+        // Assign unmodifiable values
+        Calendar calendar = Calendar.getInstance();
+        dateTimeFragment.set24HoursMode(false);
+        dateTimeFragment.setHighlightAMPMSelection(false);
+        dateTimeFragment.setMinimumDateTime(calendar.getTime());
+        dateTimeFragment.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
+        dateTimeFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
+            @Override
+            public void onPositiveButtonClick(Date date) {
+                current.setText(myDateFormat.format(date));
+            }
+
+            @Override
+            public void onNegativeButtonClick(Date date) {
+                // Do nothing
+            }
+
+            @Override
+            public void onNeutralButtonClick(Date date) {
+                // Optional if neutral button does'nt exists
+            }
+        });
+
     }
 
     public void onMapSearch(View view) {
         EditText locationSearch = (EditText) findViewById(R.id.editText);
         String location = locationSearch.getText().toString();
         List<Address> addressList = null;
-
+        if (search_loc != null)
+            search_loc.remove();
         if (location != null || !location.equals("")) {
             Geocoder geocoder = new Geocoder(this);
             try {
@@ -91,8 +150,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            search_loc = mMap.addMarker(new MarkerOptions().position(latLng).title("location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(address.getLatitude(), address.getLongitude()))      // Sets the center of the map to Mountain View
+                    .zoom(17)                   // Sets the zoom
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
     }
 
@@ -116,9 +181,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            //return;
         }
         mMap.setMyLocationEnabled(true);
+        if (mapView != null &&
+                mapView.findViewById(Integer.parseInt("1")) != null) {
+            // Get the button view
+            View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            // and next place it, on bottom right (as Google Maps app)
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
+                    locationButton.getLayoutParams();
+            // position on right bottom
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            layoutParams.setMargins(0, 0, 30, 30);
+        }
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -174,9 +251,65 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( 23.777176, 90.399452), 15));
         addMapMarkers();
 
     }
+    public void setDepatureTime(View view)
+    {
+        current=depatureTime;
+        Calendar calendar=Calendar.getInstance();
+        dateTimeFragment.startAtCalendarView();
+        dateTimeFragment.setDefaultDateTime(calendar.getTime());
+        dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
+    }
+    public void setArrivalTime(View view)
+    {
+        current=arrivalTime;
+        Calendar calendar=Calendar.getInstance();
+        dateTimeFragment.startAtCalendarView();
+        dateTimeFragment.setDefaultDateTime(calendar.getTime());
+        dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
+    }
+//    public void setDepatureTime(View view){
+//        Calendar mcurrentTime = Calendar.getInstance();
+//        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//        int minute = mcurrentTime.get(Calendar.MINUTE);
+//        TimePickerDialog mTimePicker;
+//        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+//            @Override
+//            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                Log.i("hr", String.valueOf(selectedHour));
+//                Log.i("min", String.valueOf(selectedMinute));
+//                if(selectedMinute<10)
+//                    depatureTime.setText( selectedHour + ":0" + selectedMinute);
+//                else
+//                    depatureTime.setText( selectedHour + ":" + selectedMinute);
+//            }
+//        }, hour, minute, false);//No 24 hour time
+//        mTimePicker.setTitle("Select Time");
+//        mTimePicker.show();
+//    }
+//
+//    public void setArrivalTime(View view){
+//        Calendar mcurrentTime = Calendar.getInstance();
+//        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//        int minute = mcurrentTime.get(Calendar.MINUTE);
+//        TimePickerDialog mTimePicker;
+//        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+//            @Override
+//            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                Log.i("hr", String.valueOf(selectedHour));
+//                Log.i("min", String.valueOf(selectedMinute));
+//                if(selectedMinute<10)
+//                    arrivalTime.setText( selectedHour + ":0" + selectedMinute);
+//                else
+//                    arrivalTime.setText( selectedHour + ":" + selectedMinute);
+//            }
+//        }, hour, minute, false);//No 24 hour time
+//        mTimePicker.setTitle("Select Time");
+//        mTimePicker.show();
+//    }
     private void addMapMarkers(){
 
         if(mMap != null){
@@ -199,7 +332,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     String snippet = "This is garage no : " + String.valueOf(garage.getGarage_id());
 
 
-                    int avatar = R.drawable.parking_location; // set the default avatar
+                    int avatar = R.drawable.garage; // set the default avatar
                     ClusterMarker newClusterMarker = new ClusterMarker(
                             garage.getPos(),
                             "Default title",
