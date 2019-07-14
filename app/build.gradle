@@ -43,6 +43,7 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    compile 'com.github.Kunzisoft:Android-SwitchDateTimePicker:2.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
