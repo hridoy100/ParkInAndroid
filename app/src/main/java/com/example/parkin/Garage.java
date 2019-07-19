@@ -45,6 +45,8 @@ public class Garage extends AppCompatActivity {
     ListView garageList;
     private MainActivity mainActivity;
 
+    ProgressDialog progressDialog;
+
     public void setMain (MainActivity mainActivity){
         this.mainActivity = mainActivity;
     }
@@ -54,9 +56,12 @@ public class Garage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.garage_list_layout);
+        progressDialog = new ProgressDialog(this);
 
         garageList = findViewById(R.id.garageList);
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+        progressDialog.setMessage("Loading Garage Details");
+        progressDialog.show();
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
         String title[] = new String[garageDetailsArrayList.size()];
         for (int i=0; i<garageDetailsArrayList.size(); i++){
@@ -64,6 +69,7 @@ public class Garage extends AppCompatActivity {
         }
         MyAdapter myAdapter = new MyAdapter(this, garageDetailsArrayList, title);
         garageList.setAdapter(myAdapter);
+        progressDialog.dismiss();
     }
 
     class MyAdapter extends ArrayAdapter<String> {
@@ -96,64 +102,4 @@ public class Garage extends AppCompatActivity {
         Intent addGarageIntent = new Intent(getApplicationContext(),AddGarage.class);
         startActivity(addGarageIntent);
     }
-
-
-
-
-    /*
-    class JSONAsyncTask extends AsyncTask<String, Void, ArrayList<GarageDetails>> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected ArrayList<GarageDetails> doInBackground(String... urls) {
-            try {
-                URL website = new URL(Constants.URL_AllGarage);
-                URLConnection connection = website.openConnection();
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                    System.out.println(inputLine);
-                }
-                in.close();
-                System.out.println(response.toString());
-                JSONArray jsonArray = new JSONArray(response.toString());
-                garageDetailsArrayList = new ArrayList<>();
-                ArrayList<String> garageNameArrayList = new ArrayList<>();
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    GarageDetails garageDetails = new GarageDetails();
-                    JSONObject garageData = (JSONObject) jsonArray.get(i);
-                    JSONObject dataobj = (JSONObject) garageData.get("garageDetails");
-                    Log.i("dataobj", dataobj.toString());
-                    garageDetails.setAddressId((String) dataobj.getString("addressId"));
-                    garageDetails.setGarageId((String) dataobj.getString("garageId"));
-                    garageDetails.setAddressName((String) dataobj.getString("addressName"));
-                    garageDetails.setPostalId((String) dataobj.getString("postalId"));
-                    garageDetails.setLongitude((String) dataobj.getString("longitude"));
-                    garageDetails.setLatitude((String) dataobj.getString("latitude"));
-
-                    garageDetailsArrayList.add(garageDetails);
-                    garageNameArrayList.add(garageDetails.getAddressName());
-
-                }
-                return garageDetailsArrayList;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Boolean result) {
-
-        }
-    }
-    */
-
 }

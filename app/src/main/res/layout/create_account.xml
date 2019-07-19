@@ -214,7 +214,9 @@
                         android:drawablePadding="30dp"
                         android:hint="Birthdate"
                         android:onClick="setDate"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:focusableInTouchMode="false"
+                        />
 
                     <View
                         android:id="@+id/view5"
@@ -224,42 +226,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:background="#71d2d2d2" />
-
-                    <RadioGroup
-                        android:id="@+id/radioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_below="@+id/view5"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Type:"
-                            android:layout_marginRight="20dp"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                        <RadioButton
-                            android:id="@+id/customer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="customer"
-                            android:textSize="16sp"
-                            android:layout_marginRight="10dp"/>
-                        <RadioButton
-                            android:id="@+id/renter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="renter"
-                            android:textSize="16sp"/>
-                    </RadioGroup>
-
 
                 </RelativeLayout>
 
