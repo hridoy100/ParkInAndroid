@@ -126,7 +126,7 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
         ArrayList<VehicleDetails> vehicleDetailsArrayList = communicateWithPhp.getVehicleDetailsDB(getApplicationContext());
 
         for (int i=0; i<vehicleDetailsArrayList.size(); i++){
-             license.add("License No: "+vehicleDetailsArrayList.get(i).getLicenseId());
+             license.add("License No: "+vehicleDetailsArrayList.get(i).getLicenseNo());
              company.add("Company: "+vehicleDetailsArrayList.get(i).getCompany());
              reg.add("Registration No: "+vehicleDetailsArrayList.get(i).getRegistrationNo());
              if(vehicleDetailsArrayList.get(i).getType().equals("Car")){
