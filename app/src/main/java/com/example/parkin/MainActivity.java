@@ -4,6 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +40,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    public SharedPreferences mySharedPreferences; // for storing data into local storage.
+    public SharedPreferences.Editor myEditor; // for storing data into local storage.
+    Context mainContext; // for later use..
+
 
     EditText username;
     EditText password;
@@ -50,25 +58,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_window);
+        mainContext = this;
+
+        mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        myEditor = mySharedPreferences.edit();
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
-        username.setText("123");
-        password.setText("admin");
-
         progressDialog = new ProgressDialog(this);
 
-//        loginDetails = this.getSharedPreferences("com.example.parkin", Context.MODE_PRIVATE);
-//
-//        usernameFromLocal= loginDetails.getString("username", "");
-//        passwordFromLocal = loginDetails.getString("password", "");
+        checkSharedPreferences();
+        tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
+                mySharedPreferences.getString(getString(R.string.password), ""));
 
-//        System.out.println("username from local: " +usernameFromLocal+ "hu");
-//        if(!usernameFromLocal.equals("")){
-//            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-//            startActivity(homeIntent);
-//        }
+//        username.setText("123");
+//        password.setText("admin");
+
 
     }
 
@@ -77,45 +83,91 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(username.getText());
         System.out.println(password.getText());
+//        CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+//        communicateWithPhp.setMain(this);
+//        communicateWithPhp.setContext(this);
+//        String mobileNo = username.getText().toString();
+//        if(mobileNo.startsWith("0"))
+//            mobileNo = mobileNo.substring(mobileNo.indexOf("0")+1);
+//
+//        System.out.println("mobileNo: "+mobileNo);
+//        System.out.println("password: "+password.getText().toString()+"end");
+
+        tryToLogin(username.getText().toString(), password.getText().toString());
+//
+//        if(mobileNo.length()>0 && password.getText().length()>0) {
+//            //Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+//            //startActivity(mapIntent);
+//            progressDialog.setMessage("Logging into account...");
+//            progressDialog.show();
+//            communicateWithPhp.verifyUser(mobileNo, password.getText().toString());
+//            setSharedPreferences(mobileNo, password.getText().toString());
+//        }
+//        else {
+//            Toast.makeText(getApplicationContext(), "Please enter correct details", Toast.LENGTH_SHORT).show();
+//            vibratePhone(250);
+//        }
+    }
+
+    public void tryToLogin(String username, String password){
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         communicateWithPhp.setMain(this);
-        //if(username.getText().toString().equals("123") && password.getText().toString().equals("admin")){
-        String mobileNo = username.getText().toString();
+        communicateWithPhp.setContext(this);
+        String mobileNo = username;
         if(mobileNo.startsWith("0"))
             mobileNo = mobileNo.substring(mobileNo.indexOf("0")+1);
 
         System.out.println("mobileNo: "+mobileNo);
-        System.out.println("password: "+password.getText().toString()+"end");
+        System.out.println("password: "+password);
 
-        if(mobileNo.length()!=0 && password.getText().length()!=0) {
+        if(mobileNo.length()>0 && password.length()>0) {
             //Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
             //startActivity(mapIntent);
-            communicateWithPhp.verifyUser(mobileNo, password.getText().toString());
+            progressDialog.setMessage("Logging into account...");
+            progressDialog.show();
+            communicateWithPhp.verifyUser(mobileNo, password);
+            setSharedPreferences(mobileNo, password);
         }
         else {
             Toast.makeText(getApplicationContext(), "Please enter correct details", Toast.LENGTH_SHORT).show();
+            vibratePhone(250);
         }
-//        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-//        startActivity(homeIntent);
-
-        //if(communicateWithPhp.verifyUser(mobileNo, password.getText().toString())){
-//            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-//            startActivity(homeIntent);
-        //}
-//        else {
-//            Toast.makeText(getApplicationContext(), "Incorrect Username & Password", Toast.LENGTH_LONG).show();
-//        }
     }
+
 
     public void onCreateAccountButton(View view){
         Intent createAccountIntent = new Intent(getApplicationContext(), CreateAccountActivity.class);
         startActivity(createAccountIntent);
     }
+    public void checkSharedPreferences() {
+        String userMob = mySharedPreferences.getString(getString(R.string.mobileNo), "");
+        String userpassword = mySharedPreferences.getString(getString(R.string.password), "");
+        if(userMob.length()>0){
+            username.setText(userMob);
+        }
+        if(userpassword.length()>0){
+            password.setText(userpassword);
+        }
+    }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        this.finish();
-//    }
+
+
+    public void setSharedPreferences(String userMob, String userPass) {
+        myEditor.putString(getString(R.string.mobileNo), userMob);
+        myEditor.commit();
+        myEditor.putString(getString(R.string.password), userPass);
+        myEditor.commit();
+    }
+
+    public void vibratePhone(int seconds){
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for x milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(seconds, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(seconds);
+        }
+    }
 
 }

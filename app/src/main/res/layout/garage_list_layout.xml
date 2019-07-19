@@ -63,7 +63,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="addGarageActivity"
-                app:layout_constraintTop_toBottomOf="@id/vehicleList" />
+                app:layout_constraintTop_toBottomOf="@id/garageList" />
         </LinearLayout>
     </LinearLayout>
 

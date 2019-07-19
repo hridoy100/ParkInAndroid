@@ -38,11 +38,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     DatePickerDialog picker;
     EditText birthdate;
     private ProgressDialog progressDialog;
-    RadioButton customer;
-    RadioButton renter;
     Calendar cldr;
 
-    RadioGroup radioGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +50,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         address = (EditText) findViewById(R.id.address);
         birthdate = (EditText) findViewById(R.id.birthdate);
-
-        customer = (RadioButton) findViewById(R.id.customer);
-        renter = (RadioButton) findViewById(R.id.renter);
-
-        customer.setActivated(true);
-        renter.setActivated(false);
-
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         birthdate.setInputType(InputType.TYPE_NULL);
         progressDialog = new ProgressDialog(this);
@@ -101,18 +90,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         final String addressStr = address.getText().toString().trim();
         final String nameStr = name.getText().toString().trim();
         final String birthdateStr = birthdate.getText().toString().trim();
-        final String type;
-        int selectedId = radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = (RadioButton) findViewById(selectedId);
-        //type = "customer";
-
-        type = radioButton.getText().toString();
-//        if(renter.isPressed())
-//            type = "renter";
-//        else if(customer.isPressed())
-//            type = "customer";
-//        else type="";
-
 
         progressDialog.setMessage("Registering user...");
         progressDialog.show();
@@ -155,7 +132,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 params.put("name", nameStr);
                 params.put("address", addressStr);
                 params.put("birthdate", birthdateStr);
-                params.put("type", type);
+                params.put("type", "customer");
                 return params;
             }
         };

@@ -7,6 +7,8 @@ public class Constants {
     public static final String URL_LOGIN = ROOT_URL+"parkin.php/verifyAdmin";
     public static final String URL_AllGarage = ROOT_URL+"parkin.php/getAllGarageDetails";
     public static final String URL_AllVehicle = ROOT_URL+"parkin.php/getVehicleDetails";
+    public static final String URL_OneVehicle = ROOT_URL+"parkin.php/getVehicleDescription";
     public static final String URL_AddVehicle = ROOT_URL+"parkin.php/addVehicle";
+    public static final String URL_EditVehicle = ROOT_URL+"parkin.php/updateVehicleInfo";
 
 }
