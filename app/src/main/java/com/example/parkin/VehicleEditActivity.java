@@ -1,8 +1,12 @@
 package com.example.parkin;
 
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +37,7 @@ import java.util.Map;
 
 
 public class VehicleEditActivity extends AppCompatActivity {
+    String TAG = "VehicleEditActivity";
     String manufacturerString[] = {
             "Ford",
             "Honda",
@@ -237,6 +242,12 @@ public class VehicleEditActivity extends AppCompatActivity {
 
         final String registrationNo = vehicleCode1Str+vehicleCode2Str+vehicleCode3Str+vehicleCode4Str+vehicleCode5Str;
 
+        SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        final String userMob = mySharedPreferences.getString(getString(R.string.mobileNo), "");
+
+
+
         progressDialog.setMessage("Submitting Edit Details...");
         progressDialog.show();
 
@@ -251,7 +262,8 @@ public class VehicleEditActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             if(response.contains("success")){
                                 Toast.makeText(getApplicationContext(),"Success" , Toast.LENGTH_SHORT).show();
-                                finishActivity(1);
+                                //navigateUp();
+                                finish();
 
                             }else {
                                 Toast.makeText(getApplicationContext(),"Failed" , Toast.LENGTH_SHORT).show();
@@ -281,9 +293,13 @@ public class VehicleEditActivity extends AppCompatActivity {
                 params.put("fitnessCertificate", fitnessStr);
                 params.put("taxToken", taxStr);
                 params.put("type", type);
+                params.put("customerMobNo", userMob);
                 return params;
             }
         };
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+
+
     }
 }
+

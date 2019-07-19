@@ -111,16 +111,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/garage"
-                    android:onClick="garageActivity"/>
+                    android:onClick="garageActivity"
+                    android:src="@drawable/garage" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:text="Garage"
                     android:onClick="garageActivity"
+                    android:text="Garage"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -160,9 +160,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:onClick="mapActivity"
                 android:orientation="vertical"
-                android:padding="30dp"
-                android:onClick="mapActivity">
+                android:padding="30dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -176,7 +176,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:text="Parking Location"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -191,16 +191,50 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/car"
-                    android:onClick="vehicleActivity"/>
+                    android:onClick="vehicleActivity"
+                    android:src="@drawable/car" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Vehicles"
                     android:onClick="vehicleActivity"
+                    android:text="Vehicles"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="cameraActivity"
+                android:orientation="vertical"
+                android:padding="30dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:onClick="cameraActivity"
+                    android:src="@drawable/ic_linked_camera_black_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:onClick="cameraActivity"
+                    android:text="Camera"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>

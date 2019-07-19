@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.parkin.ipcamera.IPCamera;
+
 public class HomeActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle mToggle;
@@ -118,6 +120,11 @@ public class HomeActivity extends AppCompatActivity {
     public void mapActivity(View view){
         Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
         startActivity(mapIntent);
+    }
+
+    public void cameraActivity(View view){
+        Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
+        startActivity(cameraIntent);
     }
 
 

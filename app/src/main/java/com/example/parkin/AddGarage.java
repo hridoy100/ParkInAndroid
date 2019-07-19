@@ -144,7 +144,7 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -153,11 +153,6 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("Location", location.toString());
-                Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location
-                        .getLongitude());
-                //mMap.clear();
-
                 LatLng hall = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(hall).title("Marker"));
@@ -187,6 +182,11 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
+
+        LatLng hall = new LatLng(23.7254245, 90.3875091);
+        //mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(hall).title("Marker"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hall, 20));
     }
     public void nextPage(View view){
         setContentView(R.layout.garage_location_layout);
