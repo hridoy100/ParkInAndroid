@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -319,7 +320,7 @@ public class CommunicateWithPhp {
 
         return null;
     }
-    public ArrayList<SpaceDetails> getAvailableSpaces(int garageid, SimpleDateFormat arrivaltime, SimpleDateFormat departuretime) {
+    public ArrayList<SpaceDetails> getAvailableSpaces(int garageid, Calendar arrivaltime,Calendar departuretime) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -361,8 +362,12 @@ public class CommunicateWithPhp {
                 spaceDetails.setGarageid(dataobj.getInt("garageId"));
                 spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
                 spaceDetails.setPosition(dataobj.getString("position"));
-                spaceDetails.setStarttime1(new SimpleDateFormat(dataobj.getString("start_time")));
-                spaceDetails.setGetStarttime2(new SimpleDateFormat(dataobj.getString("end_time")));
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Calendar cal=Calendar.getInstance();
+                cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
+                spaceDetails.setStarttime1(cal);
+                cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
+                spaceDetails.setGetStarttime2(cal);
                 spaceDetails.setAvailability(dataobj.getString("availability"));
                 spaceDetailsArrayList.add(spaceDetails);
             }

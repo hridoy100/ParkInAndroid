@@ -2,17 +2,18 @@ package com.example.parkin.DB;
 
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class SpaceDetails {
     int spaceid;
     int garageid;
     int spacesize;
     String position;
-    SimpleDateFormat starttime1;
-    SimpleDateFormat getStarttime2;
+    Calendar starttime1;
+    Calendar getStarttime2;
     String availability;
 
-    public SpaceDetails(int spaceid, int garageid, int spacesize, String position, SimpleDateFormat starttime1, SimpleDateFormat getStarttime2, String availability) {
+    public SpaceDetails(int spaceid, int garageid, int spacesize, String position, Calendar starttime1, Calendar getStarttime2, String availability) {
         this.spaceid = spaceid;
         this.garageid = garageid;
         this.spacesize = spacesize;
@@ -57,19 +58,19 @@ public class SpaceDetails {
         this.position = position;
     }
 
-    public SimpleDateFormat getStarttime1() {
+    public Calendar getStarttime1() {
         return starttime1;
     }
 
-    public void setStarttime1(SimpleDateFormat starttime1) {
+    public void setStarttime1(Calendar starttime1) {
         this.starttime1 = starttime1;
     }
 
-    public SimpleDateFormat getGetStarttime2() {
+    public Calendar getGetStarttime2() {
         return getStarttime2;
     }
 
-    public void setGetStarttime2(SimpleDateFormat getStarttime2) {
+    public void setGetStarttime2(Calendar getStarttime2) {
         this.getStarttime2 = getStarttime2;
     }
 
