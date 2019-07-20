@@ -72,7 +72,7 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
         startActivity(editIntent);
     }
 
-    class MyAdapter extends ArrayAdapter<String> {
+    /*class MyAdapter extends ArrayAdapter<String> {
         Context context;
         ArrayList<VehicleDetails> vehicleDetailsArrayList;
 
@@ -108,7 +108,7 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
             }
             return row;
         }
-    }
+    }*/
     public void addVehicleActivity(View view){
         Intent addVehicleIntent = new Intent(getApplicationContext(),AddVehicle.class);
         startActivity(addVehicleIntent);
