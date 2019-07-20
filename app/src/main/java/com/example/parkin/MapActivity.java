@@ -300,7 +300,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 spaceintent.putExtra("arrivaltime",arrivaltime.getCalendar().getTimeInMillis());
                 spaceintent.putExtra("departuretime",departuretime.getCalendar().getTimeInMillis());
                 spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getGarage().getAddressName());
-                spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarage().getGarageId());
+                spaceintent.putExtra("garageid",Integer.parseInt(ClusterItem.getGarage().getGarage().getGarageId()));
                 startActivity(spaceintent);
                 return true;
             }
@@ -383,7 +383,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     String snippet = "This is garage no : " + String.valueOf(garage.getGarage_id());
 
 
-                    int avatar = R.drawable.garage; // set the default avatar
+                    int avatar = R.drawable.garage_for_map_small; // set the default avatar
                     ClusterMarker newClusterMarker = new ClusterMarker(
                             garage.getPos(),
                             "Default title",
