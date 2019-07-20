@@ -59,7 +59,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         long arrtime=myintent.getLongExtra("arrivaltime", Calendar.getInstance().getTimeInMillis());
         long dtime=myintent.getLongExtra("departuretime", Calendar.getInstance().getTimeInMillis());
         garageaddress=myintent.getStringExtra("garagelocation");
-        garageid=myintent.getIntExtra("garageid",1);
+        garageid=myintent.getIntExtra("garageid",1);//Integer.parseInt(myintent.getExtras().get("garageid").toString());
         arrivaltime=myDateFormat;
         departuretime=myDateFormat;
         arrivaltime.setCalendar(gettime(arrtime));
@@ -97,33 +97,6 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
 //        startActivity(editIntent);
     }
 
-    class MyAdapter extends ArrayAdapter<String> {
-        Context context;
-        ArrayList<SpaceDetails>spaceDetailslist ;
-
-        public MyAdapter(Context context, ArrayList<SpaceDetails> spacedetailslist, String title[]) {
-            super(context, R.layout.garage_list_row, title);
-            this.context = context;
-            this.spaceDetailslist = spacedetailslist;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.vehicle_list_row, parent, false);
-            TextView spaceno = row.findViewById(R.id.licenseNo);
-            TextView spacesize = row.findViewById(R.id.company);
-            TextView minimumcost = row.findViewById(R.id.regCode);
-            CircleImageView imageView = row.findViewById(R.id.vehicleImage);
-
-            spaceno.setText("Space No: "+ spacenolist.get(position));
-            spacesize.setText("Space Size: "+spacesizelist.get(position));
-            minimumcost.setText("Minimum Cost: "+"10 Taka");
-            imageView.setImageResource(R.drawable.ic_directions_car_blue);
-            return row;
-        }
-    }
     public void goBackActivity(View view){
         Intent mapIntent = new Intent(getApplicationContext(),MapActivity.class);
         startActivity(mapIntent);
@@ -138,14 +111,16 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         mNames.add("Bangladesh Power Division");
         */
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-        ArrayList<SpaceDetails>spaceDetails = new ArrayList<>();
+        Log.d("GarageID",Integer.toString(garageid));
+        Log.d("arrivalTime",arrivaltime.toString());
+        Log.d("DepartureTime",departuretime.toString());
+        ArrayList<SpaceDetails>spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
         //ArrayList<VehicleDetails> vehicleDetailsArrayList = communicateWithPhp.getVehicleDetailsDB(getApplicationContext());
 
         for (int i=0; i<spaceDetails.size(); i++){
             spacenolist.add("Space No: "+ i);
             spacesizelist.add("Space Size: "+spaceDetails.get(i).getSpacesize());
             minimumcostlist.add("Minimum Cost: "+"10 taka");
-
         }
 
 
