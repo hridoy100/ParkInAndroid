@@ -39,7 +39,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MapActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,7 +54,6 @@
         <activity android:name=".AddGarage" />
         <activity android:name=".VehicleEditActivity" />
         <activity android:name=".Camera" />
-        <activity android:name=".SpaceDetailsView" />
 
 
         <meta-data
