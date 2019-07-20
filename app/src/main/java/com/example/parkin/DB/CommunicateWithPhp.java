@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -319,5 +320,64 @@ public class CommunicateWithPhp {
 
         return null;
     }
+    public ArrayList<SpaceDetails> getAvailableSpaces(int garageid, Calendar arrivaltime,Calendar departuretime) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_AVAILABLESPACES);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&garageId="+garageid);
+            ps.print("&start_time="+arrivaltime);
+            ps.print("&end_time="+departuretime);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                SpaceDetails spaceDetails = new SpaceDetails();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("availableSpace");
+                Log.i("dataobj", dataobj.toString());
+                spaceDetails.setSpaceid(dataobj.getInt("spaceId"));
+                spaceDetails.setGarageid(dataobj.getInt("garageId"));
+                spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
+                spaceDetails.setPosition(dataobj.getString("position"));
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Calendar cal=Calendar.getInstance();
+                cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
+                spaceDetails.setStarttime1(cal);
+                cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
+                spaceDetails.setGetStarttime2(cal);
+                spaceDetails.setAvailability(dataobj.getString("availability"));
+                spaceDetailsArrayList.add(spaceDetails);
+            }
+            return spaceDetailsArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 }
