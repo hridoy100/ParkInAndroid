@@ -40,8 +40,8 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     ArrayList<String> spacesizelist= new ArrayList<>();
     ArrayList<String> minimumcostlist = new ArrayList<>();
     ArrayList<String> mImageUrls = new ArrayList<>();
-    SimpleDateFormat arrivaltime;
-    SimpleDateFormat departuretime;
+    Calendar arrivaltime;
+    Calendar departuretime;
     String garageaddress;
     int garageid;
     @Override
@@ -60,10 +60,8 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         long dtime=myintent.getLongExtra("departuretime", Calendar.getInstance().getTimeInMillis());
         garageaddress=myintent.getStringExtra("garagelocation");
         garageid=myintent.getIntExtra("garageid",1);//Integer.parseInt(myintent.getExtras().get("garageid").toString());
-        arrivaltime=myDateFormat;
-        departuretime=myDateFormat;
-        arrivaltime.setCalendar(gettime(arrtime));
-        departuretime.setCalendar(gettime(dtime));
+        arrivaltime=gettime(arrtime);
+        departuretime=gettime(dtime);
         initImageBitmaps();
 /*
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
@@ -110,10 +108,11 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         mImageUrls.add("https://youthcarnival.org/bn/wp-content/uploads/2018/04/BPDB1-3-1.png");
         mNames.add("Bangladesh Power Division");
         */
+        SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         Log.d("GarageID",Integer.toString(garageid));
-        Log.d("arrivalTime",arrivaltime.toString());
-        Log.d("DepartureTime",departuretime.toString());
+        Log.d("arrivalTime",myDateFormat.format(arrivaltime.getTime()));
+        Log.d("DepartureTime",myDateFormat.format(departuretime.getTime()));
         ArrayList<SpaceDetails>spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
         //ArrayList<VehicleDetails> vehicleDetailsArrayList = communicateWithPhp.getVehicleDetailsDB(getApplicationContext());
 
