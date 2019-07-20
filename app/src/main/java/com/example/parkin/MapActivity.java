@@ -3,6 +3,7 @@ package com.example.parkin;
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
@@ -64,7 +66,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Button depatureTime;
     private Button current;
     CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-
+    SimpleDateFormat arrivaltime;
+    SimpleDateFormat departuretime;
     View mapView;
     private SwitchDateTimeDialogFragment dateTimeFragment;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -119,8 +122,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         dateTimeFragment.setTimeZone(TimeZone.getDefault());
 
         // Init format
-        final SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm", java.util.Locale.getDefault());
+        final SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         // Assign unmodifiable values
+        arrivaltime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        departuretime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        Calendar cal=Calendar.getInstance();
+        arrivaltime.setCalendar(cal);
+        cal.add(Calendar.MINUTE,30);
+        departuretime.setCalendar(cal);
         Calendar calendar = Calendar.getInstance();
         dateTimeFragment.set24HoursMode(false);
         dateTimeFragment.setHighlightAMPMSelection(false);
@@ -130,6 +139,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public void onPositiveButtonClick(Date date) {
                 current.setText(myDateFormat.format(date));
+                if(current==arrivalTime) {
+                    Calendar cal=Calendar.getInstance();
+                    cal.setTime(date);
+                    arrivaltime.setCalendar(cal);
+                }
+                else
+                {
+                    if(current==arrivalTime) {
+                        Calendar cal=Calendar.getInstance();
+                        cal.setTime(date);
+                        departuretime.setCalendar(cal);
+                    }
+                }
             }
 
             @Override
@@ -276,14 +298,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( 23.777176, 90.399452), 15));
         addMapMarkers();
-
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<ClusterMarker>() {
+            @Override
+            public boolean onClusterItemClick(ClusterMarker ClusterItem) {
+                //Log.d("custeritemcheck","hoitese");
+                Toast.makeText(getApplicationContext(),"Opening SpaceList",Toast.LENGTH_SHORT).show();
+                Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
+                spaceintent.putExtra("arrivaltime",arrivaltime.getCalendar().getTimeInMillis());
+                spaceintent.putExtra("departuretime",departuretime.getCalendar().getTimeInMillis());
+                spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getGarage().getAddressName());
+                spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarage().getGarageId());
+                startActivity(spaceintent);
+                return true;
+            }
+        });
     }
     public void setDepatureTime(View view)
     {
         current=depatureTime;
         Calendar calendar=Calendar.getInstance();
         dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(calendar.getTime());
+        dateTimeFragment.setDefaultDateTime(departuretime.getCalendar().getTime());
         dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
     public void setArrivalTime(View view)
@@ -291,7 +327,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         current=arrivalTime;
         Calendar calendar=Calendar.getInstance();
         dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(calendar.getTime());
+        dateTimeFragment.setDefaultDateTime(arrivaltime.getCalendar().getTime());
         dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
 //    public void setDepatureTime(View view){
@@ -372,6 +408,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
             }
             mClusterManager.cluster();
+
         }
     }
     // Add a marker in Sydney and move the camera @23.7254245,90.3875091
