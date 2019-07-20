@@ -1,14 +1,18 @@
 package com.example.parkin;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         checkSharedPreferences();
         tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
                 mySharedPreferences.getString(getString(R.string.password), ""));
+
 
 //        username.setText("123");
 //        password.setText("admin");
