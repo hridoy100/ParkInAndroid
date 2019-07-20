@@ -66,8 +66,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Button depatureTime;
     private Button current;
     CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-    SimpleDateFormat arrivaltime;
-    SimpleDateFormat departuretime;
+    Calendar arrivaltime;
+    Calendar departuretime;
     View mapView;
     private SwitchDateTimeDialogFragment dateTimeFragment;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -116,12 +116,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Init format
         final SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         // Assign unmodifiable values
-        arrivaltime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
-        departuretime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
-        Calendar cal=Calendar.getInstance();
-        arrivaltime.setCalendar(cal);
-        cal.add(Calendar.MINUTE,30);
-        departuretime.setCalendar(cal);
+        //arrivaltime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        //departuretime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        arrivaltime=Calendar.getInstance();
+        departuretime=Calendar.getInstance();
+        departuretime.add(Calendar.MINUTE,30);
         Calendar calendar = Calendar.getInstance();
         dateTimeFragment.set24HoursMode(false);
         dateTimeFragment.setHighlightAMPMSelection(false);
@@ -132,16 +131,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             public void onPositiveButtonClick(Date date) {
                 current.setText(myDateFormat.format(date));
                 if(current==arrivalTime) {
-                    Calendar cal=Calendar.getInstance();
-                    cal.setTime(date);
-                    arrivaltime.setCalendar(cal);
+                    arrivaltime.setTime(date);
                 }
                 else
                 {
                     if(current==arrivalTime) {
-                        Calendar cal=Calendar.getInstance();
-                        cal.setTime(date);
-                        departuretime.setCalendar(cal);
+                        departuretime.setTime(date);
                     }
                 }
             }
@@ -296,9 +291,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             public boolean onClusterItemClick(ClusterMarker ClusterItem) {
                 //Log.d("custeritemcheck","hoitese");
                 Toast.makeText(getApplicationContext(),"Opening SpaceList",Toast.LENGTH_SHORT).show();
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Log.d("arrivaltime",myDateFormat.format(arrivaltime.getTime()));
+                Log.d("departuretime",myDateFormat.format(departuretime.getTime()));
+                Log.d("GarageLocation",ClusterItem.getGarage().getGarage().getAddressName());
+                Log.d("GarageId",ClusterItem.getGarage().getGarage().getGarageId());
                 Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
-                spaceintent.putExtra("arrivaltime",arrivaltime.getCalendar().getTimeInMillis());
-                spaceintent.putExtra("departuretime",departuretime.getCalendar().getTimeInMillis());
+                spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
+                spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
                 spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getGarage().getAddressName());
                 spaceintent.putExtra("garageid",Integer.parseInt(ClusterItem.getGarage().getGarage().getGarageId()));
                 startActivity(spaceintent);
@@ -311,7 +311,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         current=depatureTime;
         Calendar calendar=Calendar.getInstance();
         dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(departuretime.getCalendar().getTime());
+        dateTimeFragment.setDefaultDateTime(departuretime.getTime());
         dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
     public void setArrivalTime(View view)
@@ -319,7 +319,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         current=arrivalTime;
         Calendar calendar=Calendar.getInstance();
         dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(arrivaltime.getCalendar().getTime());
+        dateTimeFragment.setDefaultDateTime(arrivaltime.getTime());
         dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
 //    public void setDepatureTime(View view){
