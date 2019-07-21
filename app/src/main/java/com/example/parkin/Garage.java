@@ -9,10 +9,12 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +45,7 @@ import java.util.List;
 public class Garage extends AppCompatActivity {
 
     ListView garageList;
+    RecyclerView garageView;
     private MainActivity mainActivity;
 
     ProgressDialog progressDialog;
@@ -70,6 +73,13 @@ public class Garage extends AppCompatActivity {
         MyAdapter myAdapter = new MyAdapter(this, garageDetailsArrayList, title);
         garageList.setAdapter(myAdapter);
         progressDialog.dismiss();
+        garageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("onclick " +parent.getItemAtPosition(position));
+                Log.d("onclick", (String) parent.getItemAtPosition(position));
+            }
+        });
     }
 
     class MyAdapter extends ArrayAdapter<String> {

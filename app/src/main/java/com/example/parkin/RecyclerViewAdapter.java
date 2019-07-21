@@ -52,26 +52,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.licenseNo.setText(licenseNumber.get(i));
         viewHolder.compName.setText(companyName.get(i));
         viewHolder.regCode.setText(regNo.get(i));
-
-        /*viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if(mImagesNames.get(i).equals("Bangladesh Power Division")){
-//                    Intent pdbIntent = new Intent(context, PDBJobList.class);
-//                    pdbIntent.putExtra("image_url", mImages.get(i));
-//                    pdbIntent.putExtra("image_name", mImagesNames.get(i));
-//                    context.startActivity(pdbIntent);
-//                }
-//                else if(mImagesNames.get(i).equals("Bank")){
-//                    Intent bankIntent = new Intent(context, BankJobList.class);
-//                    bankIntent.putExtra("image_url", mImages.get(i));
-//                    bankIntent.putExtra("image_name", mImagesNames.get(i));
-//                    context.startActivity(bankIntent);
-//                }
-//                else
-                    Toast.makeText(context, licenseNumber.get(i), Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     @Override

@@ -54,6 +54,8 @@
         <activity android:name=".AddGarage" />
         <activity android:name=".VehicleEditActivity" />
         <activity android:name=".Camera" />
+        <activity android:name=".MapActivity" />
+        <activity android:name=".SpaceDetailsView" />
 
 
         <meta-data
