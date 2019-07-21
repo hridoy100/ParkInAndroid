@@ -15,9 +15,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -41,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
 
-public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
+public class AddGarage extends FragmentActivity implements OnMapReadyCallback, AdapterView.OnItemSelectedListener, RecyclerViewAdapterSpace.OnItemClickListener {
 
     private static final String TAG = "AddGarage";
     TimePicker timePicker;
@@ -53,6 +56,8 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
 
     Button openTime;
     Button closeTime;
+    RecyclerView viewSpace;
+    Spinner position;
 
     private GoogleMap mMap;
     LocationManager locationManager;
@@ -64,6 +69,9 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
     int init;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     private GoogleMap.OnCameraMoveListener onCameraMoveListener;
+
+    //RecyclerView Items
+    ArrayList<String> spaceNo;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -77,41 +85,53 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         }
     }
     public void initVariables(){
-        hrCost = (Spinner) findViewById(R.id.hourlyCost);
-        totalSlot = (Spinner) findViewById(R.id.totalSlot);
-        city = (Spinner) findViewById(R.id.cityCode);
-        locality = (Spinner) findViewById(R.id.localityCode);
-        openTime = (Button) findViewById(R.id.openTime);
-        closeTime = (Button) findViewById(R.id.closeTime);
+//        hrCost = (Spinner) findViewById(R.id.hourlyCost);
+        totalSlot = (Spinner) findViewById(R.id.spaceCount);
+//        city = (Spinner) findViewById(R.id.cityCode);
+//        locality = (Spinner) findViewById(R.id.localityCode);
+//        openTime = (Button) findViewById(R.id.openTime);
+//        closeTime = (Button) findViewById(R.id.closeTime);
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.hourCost));
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hrCost.setAdapter(arrayAdapter);
+        ArrayAdapter arrayAdapter;// = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.hourCost));
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        hrCost.setAdapter(arrayAdapter);
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.totalSlot));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         totalSlot.setAdapter(arrayAdapter);
 
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.city));
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        city.setAdapter(arrayAdapter);
+        viewSpace = (RecyclerView) findViewById(R.id.recycleView_space);
+        /*position = (Spinner) findViewById(R.id.position);
 
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.localityDhaka));
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.position));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locality.setAdapter(arrayAdapter);
+        position.setAdapter(arrayAdapter);
+        */
+
+//        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.city));
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        city.setAdapter(arrayAdapter);
+
+//        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.localityDhaka));
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        locality.setAdapter(arrayAdapter);
         init = 0;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.garage_add_layout);
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map2);
-//        mapFragment.getMapAsync(this);
-        initVariables();
+        setContentView(R.layout.garage_location_layout);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map3);
+        mapFragment.getMapAsync(this);
+        mapView = mapFragment.getView();
+        configureCameraIdle();
+        configureCameraMove();
+        init=0;
+        //initVariables();
     }
 
-    public void setOpenTime(View view){
+    /*public void setOpenTime(View view){
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -129,8 +149,8 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         }, hour, minute, false);//No 24 hour time
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
-    }
-
+    }*/
+    /*
     public void setCloseTime(View view){
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -150,7 +170,7 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }
-
+    */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -281,18 +301,22 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         });*/
     }
     public void nextPage(View view){
-        setContentView(R.layout.garage_location_layout);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map3);
-        mapFragment.getMapAsync(this);
-        mapView = mapFragment.getView();
-        configureCameraIdle();
-        configureCameraMove();
+        setContentView(R.layout.garage_add_layout);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map2);
+//        mapFragment.getMapAsync(this);
+
+        initVariables();
+        totalSlot.setOnItemSelectedListener(this);
+
+        
+
     }
 
     public void back(View view){
-        setContentView(R.layout.garage_add_layout);
-        initVariables();
+        setContentView(R.layout.garage_location_layout);
+        init=0;
+        //initVariables();
     }
 
     private void configureCameraIdle() {
@@ -313,4 +337,35 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback {
         };
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(position!=0) {
+            spaceNo = new ArrayList<>();
+            for(int i=0; i<position; i++)
+                spaceNo.add("Space "+(i+1));
+            initRecyclerView();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    void initRecyclerView() {
+        RecyclerView recyclerView = findViewById(R.id.recycleView_space);
+        RecyclerViewAdapterSpace adapterSpace = new RecyclerViewAdapterSpace(spaceNo, this, this);
+        recyclerView.setAdapter(adapterSpace);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void onItemClick(int i) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }
