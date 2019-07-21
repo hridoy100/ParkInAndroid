@@ -77,14 +77,6 @@
         <item>4</item>
         <item>5</item>
         <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>25</item>
-        <item>30</item>
-        <item>35</item>
-        <item>40</item>
-        <item>45</item>
-        <item>50</item>
     </string-array>
 
     <string-array name="city">
@@ -93,6 +85,19 @@
         <item>Sylhet</item>
         <item>Chittagong</item>
         <item>Rajshahi</item>
+    </string-array>
+
+    <string-array name="position">
+        <item>Select Space Position</item>
+        <item>EAST (E)</item>
+        <item>WEST (W)</item>
+        <item>NORTH (N)</item>
+        <item>SOUTH (S)</item>
+        <item>NORTH EAST (NE)</item>
+        <item>SOUTH EAST (SE)</item>
+        <item>NORTH WEST (NW)</item>
+        <item>SOUTH WEST (SW)</item>
+
     </string-array>
 
 
