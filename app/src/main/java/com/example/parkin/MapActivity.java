@@ -70,6 +70,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Calendar departuretime;
     View mapView;
     private SwitchDateTimeDialogFragment dateTimeFragment;
+    private SwitchDateTimeDialogFragment dateTimeFragment2;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
 
     @Override
@@ -109,10 +110,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     // Optional
             );
         }
-
+        if (dateTimeFragment2 == null) {
+            dateTimeFragment2 = SwitchDateTimeDialogFragment.newInstance(
+                    getString(R.string.label_datetime_dialog),
+                    getString(android.R.string.ok),
+                    getString(android.R.string.cancel)
+                    // Optional
+            );
+        }
         // Optionally define a timezone
         dateTimeFragment.setTimeZone(TimeZone.getDefault());
-
+        dateTimeFragment2.setTimeZone(TimeZone.getDefault());
         // Init format
         final SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         // Assign unmodifiable values
@@ -126,19 +134,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         dateTimeFragment.setHighlightAMPMSelection(false);
         dateTimeFragment.setMinimumDateTime(calendar.getTime());
         dateTimeFragment.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
+        dateTimeFragment2.set24HoursMode(false);
+        dateTimeFragment2.setHighlightAMPMSelection(false);
+        dateTimeFragment2.setMinimumDateTime(departuretime.getTime());
+        dateTimeFragment2.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
         dateTimeFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
             @Override
             public void onPositiveButtonClick(Date date) {
+                arrivaltime.setTime(date);
                 current.setText(myDateFormat.format(date));
-                if(current==arrivalTime) {
-                    arrivaltime.setTime(date);
-                }
-                else
-                {
-                    if(current==arrivalTime) {
-                        departuretime.setTime(date);
-                    }
-                }
+
+
+                //dateTimeFragment2.setMinimumDateTime(cal.getTime());
             }
 
             @Override
@@ -151,7 +158,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 // Optional if neutral button does'nt exists
             }
         });
+        dateTimeFragment2.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
+            @Override
+            public void onPositiveButtonClick(Date date) {
+                departuretime.setTime(date);
+                current.setText(myDateFormat.format(date));
+            }
 
+            @Override
+            public void onNegativeButtonClick(Date date) {
+                // Do nothing
+            }
+
+            @Override
+            public void onNeutralButtonClick(Date date) {
+                // Optional if neutral button does'nt exists
+            }
+        });
     }
 
     public void onMapSearch(View view) {
@@ -310,9 +333,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     {
         current=depatureTime;
         Calendar calendar=Calendar.getInstance();
-        dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(departuretime.getTime());
-        dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
+        dateTimeFragment2.startAtCalendarView();
+        dateTimeFragment2.setDefaultDateTime(departuretime.getTime());
+        dateTimeFragment2.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
     public void setArrivalTime(View view)
     {
