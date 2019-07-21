@@ -40,6 +40,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     ArrayList<String> spacesizelist= new ArrayList<>();
     ArrayList<String> minimumcostlist = new ArrayList<>();
     ArrayList<String> mImageUrls = new ArrayList<>();
+    ArrayList<SpaceDetails>spaceDetails=new ArrayList<>();
     Calendar arrivaltime;
     Calendar departuretime;
     String garageaddress;
@@ -113,13 +114,14 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         Log.d("GarageID",Integer.toString(garageid));
         Log.d("arrivalTime",myDateFormat.format(arrivaltime.getTime()));
         Log.d("DepartureTime",myDateFormat.format(departuretime.getTime()));
-        ArrayList<SpaceDetails>spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
+        spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
         //ArrayList<VehicleDetails> vehicleDetailsArrayList = communicateWithPhp.getVehicleDetailsDB(getApplicationContext());
 
         for (int i=0; i<spaceDetails.size(); i++){
             spacenolist.add("Space No: "+ i);
             spacesizelist.add("Space Size: "+spaceDetails.get(i).getSpacesize());
             minimumcostlist.add("Minimum Cost: "+"10 taka");
+            mImageUrls.add("https://banner2.kisspng.com/20180211/kgq/kisspng-car-icon-driving-car-5a804313d86b14.6905057915183552198865.jpg");
         }
 
 
