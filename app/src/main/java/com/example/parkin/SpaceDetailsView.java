@@ -2,10 +2,12 @@ package com.example.parkin;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +42,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     ArrayList<String> spacesizelist= new ArrayList<>();
     ArrayList<String> minimumcostlist = new ArrayList<>();
     ArrayList<String> mImageUrls = new ArrayList<>();
+    ArrayList<SpaceDetails>spaceDetails=new ArrayList<>();
     Calendar arrivaltime;
     Calendar departuretime;
     String garageaddress;
@@ -93,6 +96,34 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
 //        Intent editIntent = new Intent(getApplicationContext(), VehicleEditActivity.class);
 //        editIntent.putExtra("licenseNo",licenseNo);
 //        startActivity(editIntent);
+        final int gid=garageid;
+        final int sid=spaceDetails.get(i).getSpaceid();
+        final String glocation=garageaddress;
+        final Calendar arrive=arrivaltime;
+        final Calendar depart=departuretime;
+        SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault());
+        new AlertDialog.Builder(this)
+                .setTitle("Space Allocation Confirmation")
+                .setMessage("Do you Want to Book this space?\n"+"Arrival Time: "+myDateFormat.format(arrivaltime.getTime())
+                +"\n"+"Departure Time: "+myDateFormat.format(departuretime.getTime())
+                        +"\n"+"Space Size: "+spaceDetails.get(i).getSpacesize()+"\n"+
+                        "Space Position: "+spaceDetails.get(i).getPosition())
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
+                        CommunicateWithPhp com=new CommunicateWithPhp();
+                        com.bookGarageSpace(garageid,sid,arrivaltime,departuretime);
+                        Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
+                        spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
+                        spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
+                        spaceintent.putExtra("garagelocation",garageaddress);
+                        spaceintent.putExtra("garageid",garageid);
+                        startActivity(spaceintent);
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
     }
 
     public void goBackActivity(View view){
@@ -113,13 +144,14 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         Log.d("GarageID",Integer.toString(garageid));
         Log.d("arrivalTime",myDateFormat.format(arrivaltime.getTime()));
         Log.d("DepartureTime",myDateFormat.format(departuretime.getTime()));
-        ArrayList<SpaceDetails>spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
+        spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
         //ArrayList<VehicleDetails> vehicleDetailsArrayList = communicateWithPhp.getVehicleDetailsDB(getApplicationContext());
-
+        Log.d("size",String.valueOf(spaceDetails.size()));
         for (int i=0; i<spaceDetails.size(); i++){
             spacenolist.add("Space No: "+ i);
             spacesizelist.add("Space Size: "+spaceDetails.get(i).getSpacesize());
             minimumcostlist.add("Minimum Cost: "+"10 taka");
+            mImageUrls.add("https://banner2.kisspng.com/20180211/kgq/kisspng-car-icon-driving-car-5a804313d86b14.6905057915183552198865.jpg");
         }
 
 
