@@ -334,11 +334,17 @@ public class CommunicateWithPhp {
             connection.setRequestMethod("POST");
 //            connection.setDoInput(true);
             connection.setDoOutput(true);
-
+            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            Log.d("starttime",DateFormat.format(arrivaltime.getTime()));
+            Log.d("endtime",DateFormat.format(departuretime.getTime()));
+            String arrive=DateFormat.format(arrivaltime.getTime());
+            String end=DateFormat.format(departuretime.getTime());
             PrintStream ps = new PrintStream(connection.getOutputStream());
             ps.print("&garageId="+garageid);
-            ps.print("&start_time="+arrivaltime);
-            ps.print("&end_time="+departuretime);
+            //ps.print("&start_time="+arrivaltime);
+            //ps.print("&end_time="+departuretime);
+            ps.print("&start_time="+arrive);
+            ps.print("&end_time="+end);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -378,6 +384,47 @@ public class CommunicateWithPhp {
 
         return null;
     }
+    public void bookGarageSpace(int garageid,int spaceid, Calendar arrivaltime,Calendar departuretime) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_BOOKSPACE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            Log.d("starttime", DateFormat.format(arrivaltime.getTime()));
+            Log.d("endtime", DateFormat.format(departuretime.getTime()));
+            String arrive = DateFormat.format(arrivaltime.getTime());
+            String end = DateFormat.format(departuretime.getTime());
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&garageId=" + garageid);
+            ps.print("&spaceId=" + spaceid);
+            //ps.print("&start_time="+arrivaltime);
+            //ps.print("&end_time="+departuretime);
+            ps.print("&start_time=" + arrive);
+            ps.print("&end_time=" + end);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 }
