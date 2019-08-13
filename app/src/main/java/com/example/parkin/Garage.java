@@ -94,7 +94,7 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
         mNames.add("Bangladesh Power Division");
         */
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-        ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
+        ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getMyGaragesDB(this);
 
         for (int i=0; i<garageDetailsArrayList.size(); i++){
             locationName.add(garageDetailsArrayList.get(i).getAddressName());

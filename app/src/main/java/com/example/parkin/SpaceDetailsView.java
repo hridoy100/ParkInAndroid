@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +113,17 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
+                        LayoutInflater inflater = getLayoutInflater();
+                        View layout = inflater.inflate(R.layout.custom_toast,
+                                (ViewGroup) findViewById(R.id.custom_toast_container));
+                        TextView text = (TextView) layout.findViewById(R.id.text);
+                        text.setText("Space Allocatin Successful");
+                        Toast toast=new Toast(getApplicationContext());
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setView(layout);
+                        toast.show();
+                        //Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
                         CommunicateWithPhp com=new CommunicateWithPhp();
                         com.bookGarageSpace(garageid,sid,arrivaltime,departuretime);
                         Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);

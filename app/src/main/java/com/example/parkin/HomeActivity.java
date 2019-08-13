@@ -127,6 +127,10 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(cameraIntent);
     }
 
+    public void historyActivity(View view){
+        Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
+        startActivity(historyIntent);
+    }
 
 //    void showLoginWindow(){
 //        Intent showLoginScreen = new Intent(getApplicationContext(), CreateAccountActivity.class);
