@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,6 +26,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -42,30 +46,32 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 
 public class AddGarage extends FragmentActivity implements OnMapReadyCallback, AdapterView.OnItemSelectedListener, RecyclerViewAdapterSpace.OnItemClickListener {
 
     private static final String TAG = "AddGarage";
-    TimePicker timePicker;
-
-    Spinner hrCost;
     Spinner totalSlot;
-    Spinner city;
-    Spinner locality;
+    RadioGroup facilities;
 
-    Button openTime;
-    Button closeTime;
     RecyclerView viewSpace;
-    Spinner position;
 
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
-
+    String address;
+    String city;
+    String state;
+    String country;
+    String postalCode;
+    String knownName;
     View mapView;
+    LatLng latLngCur;
     private Marker current_loc;
     private Marker search_loc;
+    public LatLng latlng;
     int init;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     private GoogleMap.OnCameraMoveListener onCameraMoveListener;
@@ -101,6 +107,7 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
         totalSlot.setAdapter(arrayAdapter);
 
         viewSpace = (RecyclerView) findViewById(R.id.recycleView_space);
+        facilities = (RadioGroup) findViewById(R.id.radioGroup);
         /*position = (Spinner) findViewById(R.id.position);
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.position));
@@ -208,10 +215,13 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
                 Log.v(TAG, "IN ON LOCATION CHANGE, lat=" + location.getLatitude() + ", lon=" + location
                         .getLongitude());
                 //mMap.clear();
+                LatLng hall=null;
                 if(init==1)
                     current_loc.remove();
-                LatLng hall = new LatLng(location.getLatitude(), location.getLongitude());
-                current_loc=mMap.addMarker(new MarkerOptions().position(hall).title("My Location"));
+                if(init!=2) {
+                    hall = new LatLng(location.getLatitude(), location.getLongitude());
+                    current_loc = mMap.addMarker(new MarkerOptions().position(hall).title("My Location"));
+                }
                 mMap.setOnCameraIdleListener(onCameraIdleListener);
                 mMap.setOnCameraMoveListener(onCameraMoveListener);
                 if(init==0) {
@@ -232,7 +242,8 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 }
-                init=1;
+                if(init!=2)
+                    init=1;
 
             }
             @Override
@@ -288,15 +299,17 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }
 
-        LatLng hall = new LatLng(23.7254245, 90.3875091);
+        //LatLng hall = new LatLng(23.7254245, 90.3875091);
         //mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(hall).title("Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hall, 20));
+        //mMap.addMarker(new MarkerOptions().position(hall).title("Marker"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hall, 20));
+
         /*mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
                 //get latlng at the center by calling
                 LatLng midLatLng = mMap.getCameraPosition().target;
+                mMap.addMarker(new MarkerOptions().position(midLatLng).title("Marker"));
             }
         });*/
     }
@@ -305,12 +318,35 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 //                .findFragmentById(R.id.map2);
 //        mapFragment.getMapAsync(this);
+        latlng=current_loc.getPosition();
+        Log.i("Lat",Double.toString(latlng.latitude));
+        Log.i("Lng",Double.toString(latlng.longitude));
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(latLngCur.latitude, latLngCur.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            city = addresses.get(0).getLocality();
+            state = addresses.get(0).getAdminArea();
+            country = addresses.get(0).getCountryName();
+            postalCode = addresses.get(0).getPostalCode();
+            String admin = addresses.get(0).getAdminArea();
+            knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+            Log.i("address",address);
+            Log.i("admin area",admin);
+            Log.i("city",city);
+            Log.i("state",state);
+            Log.i("country",country);
+            Log.i("postalCode",postalCode);
+            Log.i("knownName",knownName);
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         initVariables();
         totalSlot.setOnItemSelectedListener(this);
-
-        
-
     }
 
     public void back(View view){
@@ -323,8 +359,10 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
         onCameraIdleListener = new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                LatLng latLng = mMap.getCameraPosition().target;
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                init=2;
+                current_loc.remove();
+                latLngCur = mMap.getCameraPosition().target;
+                mMap.addMarker(new MarkerOptions().position(latLngCur).title("Marker"));
             }
         };
     }
@@ -361,11 +399,18 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
 
     @Override
     public void onItemClick(int i) {
-
+        Toast.makeText(this,spaceNo.get(i),Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+    public void submit(View view){
+        RadioButton radioSelected = (RadioButton) findViewById(facilities.getCheckedRadioButtonId());
+
+        Log.i("selected",radioSelected.getText().toString());
+        String slot = totalSlot.getSelectedItem().toString();
+        Log.i("slot",slot);
     }
 }
