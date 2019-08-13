@@ -201,6 +201,64 @@ public class CommunicateWithPhp {
     }
 
 
+    public ArrayList<GarageDetails> getMyGaragesDB(Context context){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+        List<GarageDetails> res = new ArrayList<>();
+        try {
+            URL website = new URL(Constants.URL_GETMYGARAGES);
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            //Log.i("SharedmobileNo: ",mobNo);
+            Log.i("Mob No", mobNo);
+            ps.print("&mobileNo="+mobNo);
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray= new JSONArray(response.toString());
+            ArrayList<GarageDetails> garageDetailsArrayList = new ArrayList<>();
+            ArrayList<String> garageNameArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                GarageDetails garageDetails = new GarageDetails();
+                JSONObject garageData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) garageData.get("myGarage");
+                Log.i("dataobj", dataobj.toString());
+                garageDetails.setAddressId((String) dataobj.getString("addressId"));
+                garageDetails.setGarageId((String)dataobj.getString("garageId"));
+                garageDetails.setAddressName((String)dataobj.getString("addressName"));
+                garageDetails.setPostalId((String)dataobj.getString("postalId"));
+                garageDetails.setLongitude((String)dataobj.getString("longitude"));
+                garageDetails.setLatitude((String)dataobj.getString("latitude"));
+
+                garageDetailsArrayList.add(garageDetails);
+                garageNameArrayList.add(garageDetails.getAddressName());
+
+            }
+            return garageDetailsArrayList;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     public ArrayList<VehicleDetails> getVehicleDetailsDB(Context context) {
 //        progressDialog.setMessage("Fetching Garage Details...");
 //        progressDialog.show();
@@ -483,5 +541,68 @@ public class CommunicateWithPhp {
         return null;
     }
 
+
+    public ArrayList<Rent> getHistory(Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETHISTORY);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&customerMobNo="+mobNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            ArrayList<Rent> rentArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Rent rentDetails = new Rent();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("customerHistory");
+                Log.i("dataobj", dataobj.toString());
+                rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                rentDetails.setRentNo((String) dataobj.getString("rentNo"));
+                rentDetails.setPaymentNo((String) dataobj.getString("paymentNo"));
+                rentDetails.setRenterMobNo((String) dataobj.getString("renterMobNo"));
+                rentDetails.setSpaceId((String) dataobj.getString("spaceId"));
+                rentDetails.setCustomerMobNo((String) dataobj.getString("customerMobNo"));
+                rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                rentDetails.setSpaceSize((String) dataobj.getString("spaceSize"));
+                rentDetails.setStart_time((String) dataobj.getString("start_time"));
+                rentDetails.setEnd_time((String) dataobj.getString("end_time"));
+                rentDetails.setStatus((String) dataobj.getString("status"));
+                rentDetails.setCost((String) dataobj.getString("cost"));
+                rentDetails.setReview((String) dataobj.getString("review"));
+                rentArrayList.add(rentDetails);
+
+            }
+            return rentArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }

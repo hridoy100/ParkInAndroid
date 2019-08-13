@@ -15,15 +15,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Garage Details"
-            android:background="@android:color/holo_orange_light"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/roboto_bold"
-            android:textSize="24sp"
-            android:gravity="center"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<ImageButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@drawable/ic_arrow_back_black_24dp"-->
+                <!--android:id="@+id/back"-->
+                <!--android:onClick="back"/>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Garage Details"
+                android:background="@android:color/holo_purple"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_marginTop="10dp"
             android:paddingTop="10dp"
@@ -55,6 +68,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:padding="10dp"
+                android:id="@+id/radioGroup"
                 >
 
                 <RadioButton
@@ -179,12 +193,12 @@
                 android:layout_gravity="bottom"
                 android:background="@android:color/holo_blue_light"
                 android:gravity="center"
-                android:text="Next Page"
+                android:text="Submit"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linLayout1"
-                android:onClick="nextPage"
+                android:onClick="submit"
                 />
         </LinearLayout>
     </LinearLayout>
