@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Garage">
+    tools:actionBarNavMode="standard"
+    tools:context=".HistoryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My Garage List"
+                android:text="History"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
@@ -33,47 +34,23 @@
                 android:layout_marginTop="10dp"/>
 
             <!--<ListView-->
-                <!--android:id="@+id/garageList"-->
-                <!--android:layout_width="395dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="8dp"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:layout_marginEnd="8dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                 <!--/>-->
+            <!--android:id="@+id/garageList"-->
+            <!--android:layout_width="395dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--/>-->
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycleView_garage"
+                android:layout_height="match_parent"
+                android:id="@+id/recycleView_history"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:gravity="bottom"
-            android:orientation="vertical"
-            android:layout_weight="10"
-            android:id="@id/agreeAdd">
-
-            <Button
-                android:id="@+id/agreeAddGarage"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom"
-                android:background="@android:color/holo_blue_light"
-                android:gravity="center"
-                android:text="Add New Garage"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:onClick="addGarageActivity"
-                app:layout_constraintTop_toBottomOf="@id/recycleView_garage" />
         </LinearLayout>
     </LinearLayout>
 
