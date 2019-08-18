@@ -112,5 +112,7 @@
         <item>Azimpur</item>
         <item>Shahbagh</item>
     </string-array>
+    <string name="title_activity_my_stepper_test">Rent Out A Space</string>
+    <string name="title_activity_toolbar">Toolbar</string>
 
 </resources>
