@@ -1,48 +1,22 @@
 package com.example.parkin;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.example.parkin.Add.AddGarage;
 import com.example.parkin.DB.CommunicateWithPhp;
-import com.example.parkin.DB.Constants;
 import com.example.parkin.DB.GarageDetails;
-import com.example.parkin.DB.RequestHandler;
-import com.example.parkin.DB.VehicleDetails;
-import com.example.parkin.R;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterGarage;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Garage extends AppCompatActivity implements RecyclerViewAdapterGarage.OnItemClickListener{
 
@@ -82,7 +56,7 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
         startActivity(showPopUpIntent);
     }
     public void addGarageActivity(View view){
-        Intent addGarageIntent = new Intent(getApplicationContext(),AddGarage.class);
+        Intent addGarageIntent = new Intent(getApplicationContext(), AddGarage.class);
         startActivity(addGarageIntent);
     }
 

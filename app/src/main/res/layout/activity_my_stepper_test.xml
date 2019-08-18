@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Stepper.MyStepperTest">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/mainLinLay">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backImage"
+                android:layout_width="34dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|left"
+                android:background="@color/white"
+                android:onClick="returnBack"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingRight="34dp"
+                android:text="Add Parking Space"
+                android:textColor="@color/darkgray"
+                android:textStyle="bold"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#e4f5ef"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/step1"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_textview"
+                    android:backgroundTint="@color/ms_white"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#9daba6"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:id="@+id/step1roundText"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="Address"
+                    android:textColor="#9daba6"
+                    android:textSize="15sp"
+                    android:id="@+id/step1Text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/step2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_textview"
+                    android:backgroundTint="@color/ms_white"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="#9daba6"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:id="@+id/step2roundText"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="Location"
+                    android:textColor="#9daba6"
+                    android:textSize="15sp"
+                    android:id="@+id/step2Text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/step3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_textview"
+                    android:backgroundTint="@color/ms_white"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="#9daba6"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:id="@+id/step3roundText"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto_bold"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="Details"
+                    android:textColor="#9daba6"
+                    android:textSize="15sp"
+                    android:id="@+id/step3Text"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Where is your parking space?"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="17sp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/ms_black"
+                android:id="@+id/question"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="City"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/ms_black"
+                android:id="@+id/cityText"/>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/sp_city"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_dropdown"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What is the address of your parking space?"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/ms_black"
+                android:id="@+id/qstn2"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Only down when drivers book your space"
+                android:textColor="@color/darkgray"
+                android:textSize="14sp"
+                android:paddingBottom="10dp"
+                />
+            <!--<android.support.v7.widget.AppCompatEditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:id="@+id/addressFetch"-->
+                <!--android:hint="Type the address"-->
+                <!--android:textColorHint="@color/ms_material_grey_400"-->
+                <!--android:background="@drawable/bg_rounded_edit_text"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:textColor="@color/ms_black"-->
+                <!--/>-->
+            <!--<fragment-->
+                <!--android:id="@+id/place_autocomplete_fragment"-->
+                <!--android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <fragment
+                android:id="@+id/barikoiSearchAutocompleteFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:name="barikoi.barikoilocation.SearchAutoComplete.SearchAutocompleteFragment"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/googleMapBarikoi"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.viralandroid.googlemapsandroidapi.AddGarage" />
+            <!--<ImageView-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:id="@+id/imgLocationPinUp"-->
+            <!--android:src="@drawable/map_location_pin_geolocation"-->
+            <!--/>-->
+        </RelativeLayout>
+
+    </LinearLayout>
+    <android.support.v7.widget.CardView
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardView"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#71d2d2d2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Go back"
+                android:layout_gravity="left"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
+                android:textColor="#3e9c64"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="14sp"
+                android:id="@+id/goBack"
+                />
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:text="Continue"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:backgroundTint="#4ddb86"
+                android:background="@drawable/bg_rounded_edit_text"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/white"
+                android:id="@+id/continueToNext"
+                />
+
+    </android.support.v7.widget.CardView>
+
+
+
+</android.support.constraint.ConstraintLayout>

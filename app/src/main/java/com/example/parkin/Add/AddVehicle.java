@@ -1,4 +1,4 @@
-package com.example.parkin;
+package com.example.parkin.Add;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.parkin.DB.Constants;
 import com.example.parkin.DB.RequestHandler;
+import com.example.parkin.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

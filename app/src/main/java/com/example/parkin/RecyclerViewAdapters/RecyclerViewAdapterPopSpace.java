@@ -1,41 +1,50 @@
-package com.example.parkin;
+package com.example.parkin.RecyclerViewAdapters;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.bumptech.glide.Glide;
+import com.example.parkin.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class RecyclerViewAdapterSpace extends RecyclerView.Adapter<RecyclerViewAdapterSpace.ViewHolder> {
+public class RecyclerViewAdapterPopSpace extends RecyclerView.Adapter<RecyclerViewAdapterPopSpace.ViewHolder> {
     static final String TAG = "RecyclerViewAdapterSpace";
-    ArrayList<String> spaceNo = new ArrayList<>();
+    ArrayList<String> spaceID = new ArrayList<>();
+    ArrayList<String> spaceSize = new ArrayList<>();
+    ArrayList<String> position = new ArrayList<>();
+    ArrayList<String> start_time = new ArrayList<>();
+    ArrayList<String> end_time = new ArrayList<>();
+    ArrayList<String> availability = new ArrayList<>();
     Context context;
     OnItemClickListener onItemClickListener;
 
-    public RecyclerViewAdapterSpace(ArrayList<String> spaceNo, Context context, OnItemClickListener onItemClickListener) {
-        this.spaceNo = spaceNo;
+    public RecyclerViewAdapterPopSpace(Context context, ArrayList<String> spaceID, ArrayList<String> spaceSize, ArrayList<String> position,
+                                       ArrayList<String> start_time, ArrayList<String> end_time, ArrayList<String> availability, OnItemClickListener onItemClickListener) {
+        this.spaceID = spaceID;
+        this.spaceSize = spaceSize;
+        this.position = position;
+        this.start_time = start_time;
+        this.end_time = end_time;
         this.context = context;
+        this.availability = availability;
         this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.space_layout_listitem_recycle_view,viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.space_recycle_view_pop,viewGroup, false);
         ViewHolder holder = new ViewHolder(view, onItemClickListener);
 
         return holder;
@@ -43,25 +52,46 @@ public class RecyclerViewAdapterSpace extends RecyclerView.Adapter<RecyclerViewA
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder,final int i) {
-        viewHolder.spaceNoTxt.setText(spaceNo.get(i));
+        viewHolder.spaceIdTxt.setText(spaceID.get(i));
+        viewHolder.positionTxt.setText(position.get(i));
+        viewHolder.openTime.setText(start_time.get(i));
+        viewHolder.closeTime.setText(end_time.get(i));
+        if(availability.get(i).equals("yes")){
+            viewHolder.availabilityTxt.setText("Available");
+            //viewHolder.availabilityTxt.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_play_circle_filled_black_24dp,0);
+            viewHolder.availabilityImg.setImageResource(R.drawable.ic_play_circle_filled_black_24dp);
+        }
+        else {
+            viewHolder.availabilityTxt.setText("Unavailable");
+            //viewHolder.availabilityTxt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_pause_circle_filled_black_24dp, 0);
+            viewHolder.availabilityImg.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return spaceNo.size();
+        return spaceID.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView spaceNoTxt;
-        Spinner position;
+        TextView spaceIdTxt;
+        TextView positionTxt;
+        TextView availabilityTxt;
+        ImageView availabilityImg;
+        RadioGroup spaceTypeTxt;
+
         OnItemClickListener onItemClickListener;
         Button openTime;
         Button closeTime;
         public ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            spaceNoTxt = (TextView) itemView.findViewById(R.id.spaceNo);
-            position = (Spinner) itemView.findViewById(R.id.position);
+            spaceIdTxt = (TextView) itemView.findViewById(R.id.spaceId);
+            positionTxt = (TextView) itemView.findViewById(R.id.spacePosition);
+            availabilityTxt = (TextView) itemView.findViewById(R.id.availability);
+            availabilityImg = (ImageView) itemView.findViewById(R.id.availabilityImg);
+            spaceTypeTxt = (RadioGroup) itemView.findViewById(R.id.spaceType);
+
             openTime = (Button) itemView.findViewById(R.id.openTime);
             closeTime = (Button) itemView.findViewById(R.id.closeTime);
 
@@ -110,10 +140,6 @@ public class RecyclerViewAdapterSpace extends RecyclerView.Adapter<RecyclerViewA
                     mTimePicker.show();
                 }
             });
-
-            ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, context.getResources().getStringArray(R.array.position));
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            position.setAdapter(arrayAdapter);
 
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);

@@ -1,4 +1,4 @@
-package com.example.parkin;
+package com.example.parkin.RecyclerViewAdapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,23 +9,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.parkin.R;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RecyclerViewAdapterGarage extends RecyclerView.Adapter<RecyclerViewAdapterGarage.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     static final String TAG = "RecyclerViewAdapter";
-    ArrayList<String> locationName = new ArrayList<>();
-    ArrayList<String> garageId = new ArrayList<>();
+    ArrayList<String> licenseNumber = new ArrayList<>();
+    ArrayList<String> companyName = new ArrayList<>();
+    ArrayList<String> regNo = new ArrayList<>();
     ArrayList<String> mImages = new ArrayList<>();
     Context context;
     OnItemClickListener onItemClickListener;
 
-    public RecyclerViewAdapterGarage(Context context, ArrayList<String> locationName, ArrayList<String> garageId, ArrayList<String> mImages,
-                                      OnItemClickListener onItemClickListener) {
-        this.locationName = locationName;
-        this.garageId = garageId;
+    public RecyclerViewAdapter(Context context, ArrayList<String> licenseNumber, ArrayList<String> companyName,
+                               ArrayList<String> regNo, ArrayList<String> mImages, OnItemClickListener onItemClickListener) {
+        this.licenseNumber = licenseNumber;
+        this.companyName = companyName;
+        this.regNo = regNo;
         this.mImages = mImages;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
@@ -33,7 +36,7 @@ public class RecyclerViewAdapterGarage extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listitem_recycle_view_garage,viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listitem_recycle_view_vehicle,viewGroup, false);
         ViewHolder holder = new ViewHolder(view, onItemClickListener);
 
         return holder;
@@ -45,28 +48,31 @@ public class RecyclerViewAdapterGarage extends RecyclerView.Adapter<RecyclerView
                 .asBitmap()
                 .load(mImages.get(i))
                 .into(viewHolder.circleImageView);
-        viewHolder.locationNameRow.setText(locationName.get(i));
-        viewHolder.garageIDRow.setText(garageId.get(i));
+        viewHolder.licenseNo.setText(licenseNumber.get(i));
+        viewHolder.compName.setText(companyName.get(i));
+        viewHolder.regCode.setText(regNo.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return garageId.size();
+        return licenseNumber.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CircleImageView circleImageView;
-        TextView locationNameRow;
-        TextView garageIDRow;
+        TextView licenseNo;
+        TextView compName;
+        TextView regCode;
         LinearLayout parentLayout;
         OnItemClickListener onItemClickListener;
         public ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            circleImageView = itemView.findViewById(R.id.listIconGarage);
-            locationNameRow = itemView.findViewById(R.id.locationName);
-            garageIDRow = itemView.findViewById(R.id.garageID);
+            circleImageView = itemView.findViewById(R.id.listImage);
+            licenseNo = itemView.findViewById(R.id.licenseNo);
+            compName = itemView.findViewById(R.id.company);
+            regCode = itemView.findViewById(R.id.regCode);
 
-            parentLayout = itemView.findViewById(R.id.linearRecycleView_layout);
+            parentLayout = itemView.findViewById(R.id.linearRecycleView_category);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }

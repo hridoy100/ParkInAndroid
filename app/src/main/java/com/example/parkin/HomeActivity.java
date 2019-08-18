@@ -1,11 +1,8 @@
 package com.example.parkin;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.parkin.ipcamera.IPCamera;
+import com.example.parkin.Stepper.MyStepperTest;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -127,8 +124,12 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(cameraIntent);
     }
 
-    public void historyActivity(View view){
+    /*public void historyActivity(View view){
         Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
+        startActivity(historyIntent);
+    }*/
+    public void historyActivity(View view){
+        Intent historyIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(historyIntent);
     }
 
