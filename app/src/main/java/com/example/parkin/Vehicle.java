@@ -1,32 +1,22 @@
 package com.example.parkin;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.parkin.Add.AddVehicle;
 import com.example.parkin.DB.CommunicateWithPhp;
-import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.DB.VehicleDetails;
-import com.example.parkin.R;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
     ListView vehicleList;
@@ -110,7 +100,7 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
         }
     }*/
     public void addVehicleActivity(View view){
-        Intent addVehicleIntent = new Intent(getApplicationContext(),AddVehicle.class);
+        Intent addVehicleIntent = new Intent(getApplicationContext(), AddVehicle.class);
         startActivity(addVehicleIntent);
     }
 

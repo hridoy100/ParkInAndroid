@@ -7,9 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.parkin.DB.CommunicateWithPhp;
-import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.DB.Rent;
-import com.example.parkin.DB.SpaceDetails;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterHistory;
 
 import java.util.ArrayList;
 

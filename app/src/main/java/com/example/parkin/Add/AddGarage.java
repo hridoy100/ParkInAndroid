@@ -1,8 +1,6 @@
-package com.example.parkin;
+package com.example.parkin.Add;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,28 +10,24 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.parkin.util.MyClusterManagerRenderer;
+import com.example.parkin.R;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSpace;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,13 +36,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
 
 public class AddGarage extends FragmentActivity implements OnMapReadyCallback, AdapterView.OnItemSelectedListener, RecyclerViewAdapterSpace.OnItemClickListener {
 
@@ -75,6 +66,10 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
     int init;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     private GoogleMap.OnCameraMoveListener onCameraMoveListener;
+
+    boolean cctvSelection;
+    boolean indoorSelection;
+    boolean guardSelection;
 
     //RecyclerView Items
     ArrayList<String> spaceNo;
@@ -107,7 +102,7 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
         totalSlot.setAdapter(arrayAdapter);
 
         viewSpace = (RecyclerView) findViewById(R.id.recycleView_space);
-        facilities = (RadioGroup) findViewById(R.id.radioGroup);
+        //facilities = (RadioGroup) findViewById(R.id.radioGroup);
         /*position = (Spinner) findViewById(R.id.position);
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.position));
@@ -137,47 +132,6 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
         init=0;
         //initVariables();
     }
-
-    /*public void setOpenTime(View view){
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Log.i("hr", String.valueOf(selectedHour));
-                Log.i("min", String.valueOf(selectedMinute));
-                if(selectedMinute<10)
-                    openTime.setText( selectedHour + ":0" + selectedMinute);
-                else
-                    openTime.setText( selectedHour + ":" + selectedMinute);
-            }
-        }, hour, minute, false);//No 24 hour time
-        mTimePicker.setTitle("Select Time");
-        mTimePicker.show();
-    }*/
-    /*
-    public void setCloseTime(View view){
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Log.i("hr", String.valueOf(selectedHour));
-                Log.i("min", String.valueOf(selectedMinute));
-                if(selectedMinute<10)
-                    closeTime.setText( selectedHour + ":0" + selectedMinute);
-                else
-                    closeTime.setText( selectedHour + ":" + selectedMinute);
-            }
-        }, hour, minute, false);//No 24 hour time
-        mTimePicker.setTitle("Select Time");
-        mTimePicker.show();
-    }
-    */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -261,37 +215,6 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
 
             }
         };
-
-        /*
-        mMap.setMyLocationEnabled(true);
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng hall = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(hall).title("Marker"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hall, 20));
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        */
-
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
@@ -299,20 +222,48 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }
 
-        //LatLng hall = new LatLng(23.7254245, 90.3875091);
-        //mMap.clear();
-        //mMap.addMarker(new MarkerOptions().position(hall).title("Marker"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hall, 20));
-
-        /*mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-            @Override
-            public void onCameraIdle() {
-                //get latlng at the center by calling
-                LatLng midLatLng = mMap.getCameraPosition().target;
-                mMap.addMarker(new MarkerOptions().position(midLatLng).title("Marker"));
-            }
-        });*/
     }
+
+
+    public void onCheckboxClicked(View view){
+        //Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        //check which checkbox was clicked
+        switch (view.getId()){
+            case R.id.cctv :
+                if(checked){
+                    cctvSelection = true;
+                    //cctv true;
+                }
+                else {
+                    cctvSelection = false;
+                    //cctv false;
+                }
+                break;
+            case R.id.guard :
+                if(checked){
+                    //cctv true;
+                    guardSelection = true;
+                }
+                else {
+                    //cctv false;
+                    guardSelection = false;
+                }
+                break;
+            case R.id.indoor :
+                if(checked){
+                    //cctv true;
+                    indoorSelection = true;
+                }
+                else {
+                    //cctv false;
+                    indoorSelection = false;
+                }
+                break;
+        }
+    }
+
     public void nextPage(View view){
         setContentView(R.layout.garage_add_layout);
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -349,10 +300,12 @@ public class AddGarage extends FragmentActivity implements OnMapReadyCallback, A
         totalSlot.setOnItemSelectedListener(this);
     }
 
-    public void back(View view){
-        setContentView(R.layout.garage_location_layout);
-        init=0;
-        //initVariables();
+    public void backToPRevIntent(View view){
+        finish();
+    }
+    public void backToPRevLayout(View view){
+        finish();
+        startActivity(getIntent());
     }
 
     private void configureCameraIdle() {
