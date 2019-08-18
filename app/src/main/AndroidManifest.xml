@@ -26,7 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".Stepper.MyStepperTest"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Add.AddGarageStepped"
+            android:theme="@style/Stepper" />
+        <activity android:name=".HistoryActivity" />
         <activity
             android:name=".PopGarageDetails"
             android:theme="@style/AppTheme.CustomTheme" />
@@ -53,8 +58,10 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".Garage" />
         <activity android:name=".Vehicle" />
-        <activity android:name=".AddVehicle" />
-        <activity android:name=".AddGarage" />
+        <activity android:name=".Add.AddVehicle" />
+        <activity
+            android:name=".Add.AddGarage"
+            android:theme="@style/Splash" />
         <activity android:name=".VehicleEditActivity" />
         <activity android:name=".Camera" />
         <activity android:name=".MapActivity" />

@@ -2,7 +2,6 @@ package com.example.parkin;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +11,7 @@ import android.widget.TextView;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.SpaceDetails;
-
-import org.w3c.dom.Text;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterPopSpace;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
