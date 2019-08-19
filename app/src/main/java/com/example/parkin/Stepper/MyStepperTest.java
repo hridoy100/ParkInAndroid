@@ -569,6 +569,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         longitude = lon;
         this.addressTitle = addressTitle;
         test.setText(Double.toString(latitude)+ " " +Double.toString(longitude)+" "+addressTitle);
+        locationFragment.setLatLng(lat,lon, addressTitle);
     }
 
     @Override
