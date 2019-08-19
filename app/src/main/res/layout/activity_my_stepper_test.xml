@@ -158,103 +158,25 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingTop="20dp">
+            android:id="@+id/test"
+            android:textColor="@color/ms_black"
+            android:text="hq"
+            />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Where is your parking space?"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="17sp"
-                android:paddingBottom="20dp"
-                android:textColor="@color/ms_black"
-                android:id="@+id/question"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="City"
-                android:fontFamily="@font/roboto_bold"
-                android:textColor="@color/ms_black"
-                android:id="@+id/cityText"/>
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/sp_city"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bg_dropdown"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="20dp"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="What is the address of your parking space?"
-                android:fontFamily="@font/roboto_bold"
-                android:textColor="@color/ms_black"
-                android:id="@+id/qstn2"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Only down when drivers book your space"
-                android:textColor="@color/darkgray"
-                android:textSize="14sp"
-                android:paddingBottom="10dp"
-                />
-            <!--<android.support.v7.widget.AppCompatEditText-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:id="@+id/addressFetch"-->
-                <!--android:hint="Type the address"-->
-                <!--android:textColorHint="@color/ms_material_grey_400"-->
-                <!--android:background="@drawable/bg_rounded_edit_text"-->
-                <!--android:paddingLeft="10dp"-->
-                <!--android:textColor="@color/ms_black"-->
-                <!--/>-->
-            <!--<fragment-->
-                <!--android:id="@+id/place_autocomplete_fragment"-->
-                <!--android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
-
-            <fragment
-                android:id="@+id/barikoiSearchAutocompleteFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:name="barikoi.barikoilocation.SearchAutoComplete.SearchAutocompleteFragment"/>
-
-        </LinearLayout>
-
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/fragContainer"/>
 
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/googleMapBarikoi"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.viralandroid.googlemapsandroidapi.AddGarage" />
-            <!--<ImageView-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:id="@+id/imgLocationPinUp"-->
-            <!--android:src="@drawable/map_location_pin_geolocation"-->
+        <!--<fragment-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:name="com.example.parkin.MyFragment.AddressFragment"-->
+            <!--android:id="@+id/fragment"-->
             <!--/>-->
-        </RelativeLayout>
-
     </LinearLayout>
     <android.support.v7.widget.CardView
         android:layout_marginTop="100dp"

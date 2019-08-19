@@ -105,7 +105,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void garageActivity(View view){
-        Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
+        //Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
+        Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(garageIntent);
     }
 
@@ -129,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(historyIntent);
     }*/
     public void historyActivity(View view){
-        Intent historyIntent = new Intent(getApplicationContext(), MyStepperTest.class);
+        Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
         startActivity(historyIntent);
     }
 
