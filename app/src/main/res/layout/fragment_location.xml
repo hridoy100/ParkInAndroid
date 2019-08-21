@@ -23,13 +23,21 @@
             android:textColor="@color/ms_black"
             android:id="@+id/question"
             />
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location_text"
-                android:id="@+id/locationText"
-                android:textColor="@color/ms_black"
-                />
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_text"
+            android:id="@+id/locationText"
+            android:textColor="@color/ms_black"
+            />
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:id="@+id/testLoc"
+            android:textColor="@color/ms_black"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,7 +45,7 @@
 
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/googleMapBarikoi"
+                android:id="@+id/googleMap"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

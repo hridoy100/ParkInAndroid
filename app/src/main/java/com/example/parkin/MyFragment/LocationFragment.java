@@ -3,6 +3,7 @@ package com.example.parkin.MyFragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
 
 
 /**
@@ -38,6 +43,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * create an instance of this fragment.
  */
 public class LocationFragment extends Fragment implements OnMapReadyCallback {
+
+    private static final String TAG = "LocationFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,8 +72,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename and change types and number of parameters
 
 
-    Double latitude,longitude;
-    String addressTitle;
+    static Double latitude,longitude;
+    static String addressTitle;
 
     GoogleMap mMap;
     LocationManager locationManager;
@@ -78,7 +86,20 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap.OnCameraMoveListener onCameraMoveListener;
     View mapView;
     TextView locationText;
+    TextView test;
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                }
+            }
+        }
+    }
 
     public static LocationFragment newInstance(String param1, String param2) {
         LocationFragment fragment = new LocationFragment();
@@ -87,6 +108,12 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static void setLatLng(Double lat, Double lon, String title){
+        latitude = lat;
+        longitude = lon;
+        addressTitle = title;
     }
 
     @Override
@@ -110,7 +137,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.googleMapBarikoi);
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.googleMap);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
         init=0;
@@ -118,7 +145,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         locationText.setText(Html.fromHtml(getString(R.string.location_text)));
         configureCameraIdle();
         configureCameraMove();
-
+        test = view.findViewById(R.id.testLoc);
+        if (!Places.isInitialized()) {
+            Places.initialize(getContext(), "AIzaSyAK9AJgEjjqpjbQ-dd5NjNT9Q9CTKrkvbQ");
+        }
+        if(latitude!=null) {
+            test.setText(Double.toString(latitude) + " " + Double.toString(longitude) + " " + addressTitle);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -148,14 +181,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -173,10 +206,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 30, 30);
-            mapView.setVisibility(View.INVISIBLE);
+            //mapView.setVisibility(View.INVISIBLE);
         }
 
-        /*locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -188,8 +221,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                 if(init==1)
                     current_loc.remove();
                 if(init!=2) {
-                    //hall = new LatLng(latitude, longitude);
-                    hall = new LatLng(location.getLatitude(), location.getLongitude());
+                    if(latitude!=null)
+                        hall = new LatLng(latitude, longitude);
+                    else hall = new LatLng(location.getLatitude(), location.getLongitude());
                     current_loc = mMap.addMarker(new MarkerOptions().position(hall).title("My Location"));
                 }
                 mMap.setOnCameraIdleListener(onCameraIdleListener);
@@ -204,7 +238,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
                     // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to Mountain View
+                            .target(hall)      // Sets the center of the map to Mountain View
                             .zoom(17)                   // Sets the zoom
                             .bearing(90)                // Sets the orientation of the camera to east
                             .tilt(30)                   // Sets the tilt of the camera to 30 degrees
@@ -231,13 +265,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
             }
         };
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         else {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }
-        */
+
     }
 
     private void configureCameraIdle() {
@@ -247,6 +281,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
                 init=2;
                 current_loc.remove();
                 latLngCur = mMap.getCameraPosition().target;
+                test.setText(Double.toString(latLngCur.latitude)+ " " + Double.toString(latLngCur.longitude));
                 mMap.addMarker(new MarkerOptions().position(latLngCur).title("Marker"));
             }
         };
