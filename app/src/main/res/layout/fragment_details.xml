@@ -1,14 +1,605 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MyFragment.DetailsFragment">
+    android:layout_height="wrap_content"
+    tools:context=".MyFragment.DetailsFragment"
+    android:background="@color/ms_white">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cardView"
+                android:paddingBottom="10dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Space location"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        android:id="@+id/spaceLocation"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="selected location"
+                        android:id="@+id/locationAddress"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/sym_def_app_icon"
+                        android:id="@+id/mapViewImage"
+                        android:background="@drawable/bg_rounded_edit_text"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/sym_def_app_icon"
+                        android:id="@+id/streetViewImage"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_edit_text"
+                        android:layout_margin="5dp"/>
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#3e9c64"
+                    android:textStyle="bold"
+                    android:text="Edit Location"
+                    android:textSize="14sp"/>
+
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="What type of parking do you have?"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Driveway"
+                            android:id="@+id/driveWay"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Garage"
+                            android:id="@+id/garage"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Car Park"
+                            android:id="@+id/carPark"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="On-street"
+                            android:id="@+id/onStreet"/>
+                    </RadioGroup>
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="How many spaces do you have for rent?"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/btn_bg_round"
+                            android:id="@+id/minusButton"
+                            android:text="-"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#3e9c64"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginRight="20dp"
+                            android:paddingBottom="2dp"/>
+                        <android.support.v7.widget.AppCompatEditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spaceCount"
+                            android:background="@drawable/bg_rounded_edit_text"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/ms_black"
+                            android:text="1"
+                            android:fontFamily="@font/roboto_bold"
+                            android:enabled="false"
+                            />
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/btn_bg_round"
+                            android:id="@+id/plusButton"
+                            android:text="+"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#3e9c64"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="20dp"
+                            android:paddingBottom="2dp"/>
+
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="What is the largest vehicle your space can accommodate?"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Select the largest vehicle possible that can fit through the entrance and into the space itself."
+                        android:layout_marginBottom="10dp"
+                        />
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_rounded_edit_text"
+                        >
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Small Car"
+                            android:id="@+id/smallCar"
+                            android:drawableRight="@drawable/small_car2"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Medium Car"
+                            android:id="@+id/mediumCar"
+                            android:drawableRight="@drawable/pajero_small"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Mini Van"
+                            android:id="@+id/miniVan"
+                            android:drawableRight="@drawable/pickup_truck_small"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Large Van or Minibus"
+                            android:id="@+id/largeVan"
+                            android:drawableRight="@drawable/minivan"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Bike"
+                            android:id="@+id/bike"
+                            android:drawableRight="@drawable/bike_small"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cycle"
+                            android:id="@+id/cycle"
+                            android:drawableRight="@drawable/cycle_small"/>
+                    </RadioGroup>
+
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Access Information"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Tick the boxes for options that apply to your space"
+                        android:layout_marginBottom="10dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/checkbox">
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My space has a height restriction when accessing it"
+                            android:id="@+id/box1"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My space requires a permit"
+                            android:id="@+id/box2"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My space is marked with a letter or number"
+                            android:id="@+id/box3"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My space requires a key or security fob to open a gate"
+                            android:id="@+id/box4"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My space requires a security code to open a gate"
+                            android:id="@+id/box5"/>
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/view5"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="About your space &amp; local area"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Write something here to help drivers choose your space.
+Any nearby selling points e.g. how far is it from transport links or nearby attractions (in minutes)? Anything drivers should be aware of before booking?
+
+Don't include any contact details or sensitive information here."
+                        android:layout_marginBottom="10dp"
+                        />
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:id="@+id/aboutSpace"
+                        android:background="@drawable/bg_rounded_edit_text"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:textColor="@color/ms_black"
+                        android:hint="1 space located on BUET in Polashi Bazar"
+                        android:gravity="top"
+                        />
+                    <View
+                        android:id="@+id/view6"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Access instructions"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="These are the instructions that drivers will receive once they've paid to reserve your space.
+
+Is there a specific place they should park e.g. under the tree or by the fence? Are there different instructions based on which direction the driver is arriving from?"
+                        android:layout_marginBottom="10dp"
+                        />
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:id="@+id/accessInfo"
+                        android:background="@drawable/bg_rounded_edit_text"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:textColor="@color/ms_black"
+                        android:hint="The space is located at BUET in Polashi Bazar
+
+Should you require any assistance, you can contact the space owner, Raihanul Alam."
+                        android:gravity="top"
+                        />
+                    <View
+                        android:id="@+id/view7"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="What features does your location offer?"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/featuresBox">
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Covered parking"
+                            android:id="@+id/feature1"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="CCTV"
+                            android:id="@+id/feature2"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Securely gated"
+                            android:id="@+id/feature3"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Disabled access"
+                            android:id="@+id/feature4"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Electric vehicle charging"
+                            android:id="@+id/feature5"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lighting"
+                            android:id="@+id/feature6"/>
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Oil buying facility"
+                            android:id="@+id/feature7"/>
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/view8"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Which mobile number should be contacted?"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="17sp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/ms_black"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <android.support.v7.widget.AppCompatEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/countryCode"
+                            android:background="@drawable/bg_rounded_edit_text"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/ms_black"
+                            android:text="+880"
+                            android:layout_weight="3"
+                            android:enabled="false"
+                            />
+                        <android.support.v7.widget.AppCompatEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mobileNo"
+                            android:background="@drawable/bg_rounded_edit_text"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/ms_black"
+                            android:text="1521300267"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            />
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/termsAndCo"
+                        android:text="By proceeding to add your space, you agree"
+                        android:layout_marginTop="10dp"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

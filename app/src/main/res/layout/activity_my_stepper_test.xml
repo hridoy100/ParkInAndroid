@@ -7,16 +7,15 @@
     tools:context=".Stepper.MyStepperTest">
 
     <LinearLayout
+        android:id="@+id/mainLinLay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cardView"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/mainLinLay">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,9 +29,9 @@
                 android:layout_gravity="center|left"
                 android:background="@color/white"
                 android:onClick="returnBack"
+                android:paddingLeft="10dp"
                 android:src="@drawable/ic_arrow_back_black_24dp"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:paddingLeft="10dp"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,15 +57,15 @@
             android:padding="15dp">
 
             <LinearLayout
+                android:id="@+id/step1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:id="@+id/step1"
-                >
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/step1roundText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded_textview"
@@ -76,10 +75,10 @@
                     android:text="1"
                     android:textColor="#9daba6"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:id="@+id/step1roundText"/>
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/step1Text"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto_bold"
@@ -87,19 +86,19 @@
                     android:paddingLeft="10dp"
                     android:text="Address"
                     android:textColor="#9daba6"
-                    android:textSize="15sp"
-                    android:id="@+id/step1Text"/>
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/step2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:id="@+id/step2">
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/step2roundText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded_textview"
@@ -109,10 +108,10 @@
                     android:text="2"
                     android:textColor="#9daba6"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:id="@+id/step2roundText"/>
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/step2Text"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto_bold"
@@ -120,19 +119,19 @@
                     android:paddingLeft="10dp"
                     android:text="Location"
                     android:textColor="#9daba6"
-                    android:textSize="15sp"
-                    android:id="@+id/step2Text"/>
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/step3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:id="@+id/step3">
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/step3roundText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded_textview"
@@ -142,10 +141,10 @@
                     android:text="3"
                     android:textColor="#9daba6"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:id="@+id/step3roundText"/>
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/step3Text"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto_bold"
@@ -153,77 +152,78 @@
                     android:paddingLeft="10dp"
                     android:text="Details"
                     android:textColor="#9daba6"
-                    android:textSize="15sp"
-                    android:id="@+id/step3Text"/>
+                    android:textSize="15sp" />
             </LinearLayout>
 
         </LinearLayout>
+
         <TextView
+            android:id="@+id/test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/test"
-            android:textColor="@color/ms_black"
             android:text="hq"
-            />
+            android:textColor="@color/ms_black" />
 
         <FrameLayout
+            android:id="@+id/fragContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fragContainer"/>
+            android:layout_height="wrap_content" />
 
         <!--<fragment-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:name="com.example.parkin.MyFragment.AddressFragment"-->
-            <!--android:id="@+id/fragment"-->
-            <!--/>-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:name="com.example.parkin.MyFragment.AddressFragment"-->
+        <!--android:id="@+id/fragment"-->
+        <!--/>-->
+
     </LinearLayout>
+
     <android.support.v7.widget.CardView
-        android:layout_marginTop="100dp"
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cardView"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <View
             android:id="@+id/view1"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#71d2d2d2" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Go back"
-                android:layout_gravity="left"
-                android:gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
-                android:textColor="#3e9c64"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="14sp"
-                android:id="@+id/goBack"
-                />
 
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:text="Continue"
-                android:fontFamily="@font/roboto_bold"
-                android:layout_gravity="right"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:backgroundTint="#4ddb86"
-                android:background="@drawable/bg_rounded_edit_text"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/white"
-                android:id="@+id/continueToNext"
-                />
+        <TextView
+            android:id="@+id/goBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="Go back"
+            android:textColor="#3e9c64"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/continueToNext"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_rounded_edit_text"
+            android:backgroundTint="#4ddb86"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="Continue"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
     </android.support.v7.widget.CardView>
-
 
 
 </android.support.constraint.ConstraintLayout>
