@@ -3,6 +3,7 @@ package com.example.parkin;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,23 +14,31 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.SpaceDetails;
+import com.example.parkin.DB.VehicleDetails;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapter;
+
+import org.checkerframework.checker.units.qual.C;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
-
+    int selectedItem;
     ArrayList<String> spacenolist = new ArrayList<>();
     ArrayList<String> spacesizelist= new ArrayList<>();
     ArrayList<String> minimumcostlist = new ArrayList<>();
@@ -94,14 +103,96 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         final Calendar arrive=arrivaltime;
         final Calendar depart=departuretime;
         SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault());
-        new AlertDialog.Builder(this)
-                .setTitle("Space Allocation Confirmation")
-                .setMessage("Do you Want to Book this space?\n"+"Arrival Time: "+myDateFormat.format(arrivaltime.getTime())
-                +"\n"+"Departure Time: "+myDateFormat.format(departuretime.getTime())
-                        +"\n"+"Space Size: "+spaceDetails.get(i).getSpacesize()+"\n"+
-                        "Space Position: "+spaceDetails.get(i).getPosition())
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = (this).getLayoutInflater();
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the
+        // dialog layout
+        View layout = inflater.inflate(R.layout.custom_dialogue,null);
+        TextView start_time=(TextView)layout.findViewById(R.id.Start_time);
+        TextView end_time=(TextView)layout.findViewById(R.id.End_time);
+        TextView space_size=(TextView)layout.findViewById(R.id.Space_size);
+        TextView space_location=(TextView)layout.findViewById(R.id.Space_location);
+        start_time.setText("Arrival Time : "+myDateFormat.format(arrivaltime.getTime()));
+        end_time.setText("Departure Time : "+myDateFormat.format(departuretime.getTime()));
+        space_size.setText("Space Size : "+spaceDetails.get(i).getSpacesize());
+        space_location.setText("Space Position : "+spaceDetails.get(i).getPosition());
+        Spinner spinner = (Spinner) layout.findViewById(R.id.vehicle_list);
+        CommunicateWithPhp com=new CommunicateWithPhp();
+        ArrayList<VehicleDetails>vehcilelist=com.getVehicleDetailsDB(this);
+        System.out.println(vehcilelist.size());
+        List<String>spinneritem=new ArrayList<String>();
+        spinneritem.add("Select Vehicle");
+        for(int j=0;j<vehcilelist.size();j++)
+        {
+            String s="License No:"+vehcilelist.get(j).getLicenseNo()+
+                    "\n Vehicle code:"+vehcilelist.get(j).getVehicleCode()+
+                    "\n Type:"+vehcilelist.get(j).getType()+
+                    "\n Company:"+vehcilelist.get(j).getCompany();
+            spinneritem.add(s);
+        }
+        spinneritem.add("Add a vehicle");
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedItem=position;
+                if(position==vehcilelist.size()+1)
+                {
+                    Intent vehicleintent=new Intent(getApplicationContext(),Vehicle.class);
+                    startActivity(vehicleintent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
+            }
+        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinneritem){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0)
+                {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent)
+            {
+                View v = null;
+                v = super.getDropDownView(position, null, parent);
+                // If this is the selected item position
+                if (position == selectedItem) {
+                    v.setBackgroundColor(Color.BLUE);
+                }
+                return v;
+            }
+        };
+
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter);
+        builder.setTitle("Rent this Space?");
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_bike_blue);
+        builder.setView(layout)
+                // Add action buttons
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         LayoutInflater inflater = getLayoutInflater();
@@ -123,8 +214,41 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                         spaceintent.putExtra("garagelocation",garageaddress);
                         spaceintent.putExtra("garageid",garageid);
                         startActivity(spaceintent);
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
+                    }});
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.create();
+        builder.show();
+//        new AlertDialog.Builder(this)
+//                .setTitle("Space Allocation Confirmation")
+//                .setMessage("Do you Want to Book this space?\n"+"Arrival Time: "+myDateFormat.format(arrivaltime.getTime())
+//                +"\n"+"Departure Time: "+myDateFormat.format(departuretime.getTime())
+//                        +"\n"+"Space Size: "+spaceDetails.get(i).getSpacesize()+"\n"+
+//                        "Space Position: "+spaceDetails.get(i).getPosition())
+//                .setIcon(android.R.drawable.ic_dialog_info)
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        LayoutInflater inflater = getLayoutInflater();
+//                        View layout = inflater.inflate(R.layout.custom_toast,
+//                                (ViewGroup) findViewById(R.id.custom_toast_container));
+//                        TextView text = (TextView) layout.findViewById(R.id.text);
+//                        text.setText("Space Allocatin Successful");
+//                        Toast toast=new Toast(getApplicationContext());
+//                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//                        toast.setDuration(Toast.LENGTH_LONG);
+//                        toast.setView(layout);
+//                        toast.show();
+//                        //Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
+//                        CommunicateWithPhp com=new CommunicateWithPhp();
+//                        com.bookGarageSpace(garageid,sid,arrivaltime,departuretime);
+//                        Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
+//                        spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
+//                        spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
+//                        spaceintent.putExtra("garagelocation",garageaddress);
+//                        spaceintent.putExtra("garageid",garageid);
+//                        startActivity(spaceintent);
+//                    }})
+//                .setNegativeButton(android.R.string.no, null).show();
 
     }
 
