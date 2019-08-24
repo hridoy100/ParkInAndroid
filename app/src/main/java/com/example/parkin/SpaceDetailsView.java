@@ -1,6 +1,7 @@
 package com.example.parkin;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -48,6 +49,8 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     Calendar departuretime;
     String garageaddress;
     int garageid;
+    int licenseid;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,10 +105,12 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         final String glocation=garageaddress;
         final Calendar arrive=arrivaltime;
         final Calendar depart=departuretime;
+        selectedItem=0;
         SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         LayoutInflater inflater = (this).getLayoutInflater();
+        context=this;
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the
         // dialog layout
@@ -178,42 +183,43 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                 return v;
             }
         };
-
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter);
         builder.setTitle("Rent this Space?");
         builder.setCancelable(false);
         builder.setIcon(R.drawable.ic_bike_blue);
-        builder.setView(layout)
-                // Add action buttons
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                });
+        builder.setView(layout);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        int flag=1;
                         LayoutInflater inflater = getLayoutInflater();
                         View layout = inflater.inflate(R.layout.custom_toast,
                                 (ViewGroup) findViewById(R.id.custom_toast_container));
+                        if(selectedItem==0)
+                            flag=0;
                         TextView text = (TextView) layout.findViewById(R.id.text);
-                        text.setText("Space Allocatin Successful");
+                        if(flag==0)
+                            text.setText("Please select a vehicle");
+                        else
+                            text.setText("Space Allocatin Successful");
                         Toast toast=new Toast(getApplicationContext());
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.setDuration(Toast.LENGTH_LONG);
                         toast.setView(layout);
                         toast.show();
-                        //Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
-                        CommunicateWithPhp com=new CommunicateWithPhp();
-                        com.bookGarageSpace(garageid,sid,arrivaltime,departuretime);
-                        Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
-                        spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
-                        spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
-                        spaceintent.putExtra("garagelocation",garageaddress);
-                        spaceintent.putExtra("garageid",garageid);
-                        startActivity(spaceintent);
+                        if(flag==1) {
+                            licenseid=Integer.getInteger(vehcilelist.get(selectedItem-1).getLicenseId());
+                            //Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
+                            CommunicateWithPhp com = new CommunicateWithPhp();
+                            com.bookGarageSpace(context, garageid, sid, arrivaltime, departuretime,licenseid);
+                            Intent spaceintent = new Intent(getApplicationContext(), SpaceDetailsView.class);
+                            spaceintent.putExtra("arrivaltime", arrivaltime.getTimeInMillis());
+                            spaceintent.putExtra("departuretime", departuretime.getTimeInMillis());
+                            spaceintent.putExtra("garagelocation", garageaddress);
+                            spaceintent.putExtra("garageid", garageid);
+                            startActivity(spaceintent);
+                        }
                     }});
         builder.setNegativeButton(android.R.string.no, null);
         builder.create();

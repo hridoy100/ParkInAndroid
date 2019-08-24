@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        username.setText("123");
 //        password.setText("admin");
-
 
     }
 
