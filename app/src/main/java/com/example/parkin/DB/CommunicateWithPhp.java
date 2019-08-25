@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.parkin.HomeActivity;
 import com.example.parkin.MainActivity;
+import com.example.parkin.Notification;
 import com.example.parkin.R;
 import com.example.parkin.Vehicle;
 
@@ -598,6 +599,71 @@ public class CommunicateWithPhp {
 
             }
             return rentArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public ArrayList<Notification> getNotifications(Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETHISTORY);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&customerMobNo="+mobNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            ArrayList<Notification> notificationArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Notification notificationDetails = new Notification();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("customerHistory");
+                Log.i("dataobj", dataobj.toString());
+                /*rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                rentDetails.setRentNo((String) dataobj.getString("rentNo"));
+                rentDetails.setPaymentNo((String) dataobj.getString("paymentNo"));
+                rentDetails.setRenterMobNo((String) dataobj.getString("renterMobNo"));
+                rentDetails.setSpaceId((String) dataobj.getString("spaceId"));
+                rentDetails.setCustomerMobNo((String) dataobj.getString("customerMobNo"));
+                rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                rentDetails.setSpaceSize((String) dataobj.getString("spaceSize"));
+                rentDetails.setStart_time((String) dataobj.getString("start_time"));
+                rentDetails.setEnd_time((String) dataobj.getString("end_time"));
+                rentDetails.setStatus((String) dataobj.getString("status"));
+                rentDetails.setCost((String) dataobj.getString("cost"));
+                rentDetails.setReview((String) dataobj.getString("review"));
+                */
+                notificationArrayList.add(notificationDetails);
+
+            }
+            return notificationArrayList;
         } catch (Exception e) {
             e.printStackTrace();
         }

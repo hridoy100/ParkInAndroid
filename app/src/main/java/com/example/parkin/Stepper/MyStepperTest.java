@@ -109,7 +109,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         goBack.setEnabled(false);
         goBack.setVisibility(View.INVISIBLE);
 
-        test = findViewById(R.id.test);
+        //test = findViewById(R.id.test);
 
         //google map initialization..
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -134,8 +134,8 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
             @Override
             public void onClick(View v) {
                 currentStep++;
-                if(currentStep>3)
-                    currentStep=3;
+                if(currentStep>4)
+                    currentStep=4;
                 onNextOrBackPressed();
 
                 /*mapView.setVisibility(View.VISIBLE);
@@ -319,6 +319,9 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
                 step3roundedView.setTextColor(Color.parseColor("#FFFFFF"));
                 step3roundedView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
                 displayDetailsFragment();
+                break;
+            case 4 :
+                getDataFromDetailsFragment();
                 break;
             default:
                 throw new IllegalStateException();
@@ -542,7 +545,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         latitude = lat;
         longitude = lon;
         this.addressTitle = addressTitle;
-        test.setText(Double.toString(latitude)+ " " +Double.toString(longitude)+" "+addressTitle);
+        //test.setText(Double.toString(latitude)+ " " +Double.toString(longitude)+" "+addressTitle);
         locationFragment.setLatLng(lat,lon, addressTitle);
 
         //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(addressTitle));
@@ -551,5 +554,13 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
     @Override
     public void onFragmentInteraction(Uri uri){
         //you can leave it empty
+    }
+
+    void getDataFromDetailsFragment(){
+
+    }
+
+    public String getAddressTitle() {
+        return addressTitle;
     }
 }

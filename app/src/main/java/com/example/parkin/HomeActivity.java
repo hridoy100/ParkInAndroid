@@ -133,6 +133,10 @@ public class HomeActivity extends AppCompatActivity {
         Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
         startActivity(historyIntent);
     }
+    public void notificationActivity(View view){
+            Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
+            startActivity(notificationIntent);
+        }
 
 //    void showLoginWindow(){
 //        Intent showLoginScreen = new Intent(getApplicationContext(), CreateAccountActivity.class);
