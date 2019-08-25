@@ -614,13 +614,13 @@ public class CommunicateWithPhp {
     }
 
 
-    public ArrayList<Notification> getNotifications(Context context) {
+    public ArrayList<Notification> getNotification(Context context) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
 
         try {
-            URL website = new URL(Constants.URL_GETHISTORY);
+            URL website = new URL(Constants.URL_GETNOTIFICATION);
             //URLConnection connection = website.openConnection();
             HttpURLConnection connection = (HttpURLConnection) website.openConnection();
 //            connection.setReadTimeout(15000);
@@ -633,7 +633,7 @@ public class CommunicateWithPhp {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
             Log.i("SharedmobileNo: ",mobNo);
-            ps.print("&customerMobNo="+mobNo);
+            ps.print("&mobileNo="+mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -651,7 +651,7 @@ public class CommunicateWithPhp {
             for (int i = 0; i < jsonArray.length(); i++) {
                 Notification notificationDetails = new Notification();
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
-                JSONObject dataobj = (JSONObject) vehicleData.get("customerHistory");
+                JSONObject dataobj = (JSONObject) vehicleData.get("notification");
                 Log.i("dataobj", dataobj.toString());
                 /*rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
                 rentDetails.setRentNo((String) dataobj.getString("rentNo"));
@@ -667,6 +667,10 @@ public class CommunicateWithPhp {
                 rentDetails.setCost((String) dataobj.getString("cost"));
                 rentDetails.setReview((String) dataobj.getString("review"));
                 */
+                notificationDetails.setId((String)dataobj.getString("id"));
+                notificationDetails.setRentno((String)dataobj.getString("rent_no"));
+                notificationDetails.setStatus((String)dataobj.getString("seen"));
+                notificationDetails.setTime((String)dataobj.getString("timestamp"));
                 notificationArrayList.add(notificationDetails);
 
             }
