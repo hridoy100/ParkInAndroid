@@ -39,7 +39,7 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
     @Override
     public void onBindViewHolder(RecyclerViewAdapterSimpleCardView.ViewHolder viewHolder, final int i) {
         viewHolder.notifMsg.setText(notificationArrayList.get(i).getNotificationMessage());
-        viewHolder.date.setText(notificationArrayList.get(i).getDate());
+        //viewHolder.date.setText(notificationArrayList.get(i).getDate());
         viewHolder.time.setText(notificationArrayList.get(i).getTime());
     }
 
