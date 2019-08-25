@@ -1,8 +1,16 @@
 package com.example.parkin;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.Stepper.MyStepperTest;
+import com.example.parkin.util.NotificationThread;
+import com.google.android.gms.common.util.AndroidUtilsLight;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     Animation bganim, cloveranim, homeTextShow;
     LinearLayout textTopLayout, textParkIn, menus, garageLayout, nearbyLayout;
     TextView textTop;
-
+    Context mContext;
     public ProgressDialog progressDialog;
 
     boolean loggedIn;
@@ -51,9 +61,32 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-
+        mContext=this;
         progressDialog = new ProgressDialog(this);
+        runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                int notifyID = 1;
+                String CHANNEL_ID = "my_channel_01";// The id of the channel.
+                CharSequence name = "eito chole";// The user-visible name of the channel.
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+// Create a notification and set the notification channel.
+                Notification notification = new Notification.Builder(mContext)
+                        .setContentTitle("New Message")
+                        .setContentText("You've received new messages.")
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
+                        .setChannelId(CHANNEL_ID)
+                        .build();
+                NotificationManager mNotificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.createNotificationChannel(mChannel);
 
+// Issue the notification.
+                mNotificationManager.notify(notifyID , notification);
+            }
+        });
         showHomePage();
 
     }

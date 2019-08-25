@@ -19,6 +19,7 @@ import com.example.parkin.HomeActivity;
 import com.example.parkin.MainActivity;
 import com.example.parkin.R;
 import com.example.parkin.Vehicle;
+import com.example.parkin.util.NotificationThread;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +64,7 @@ public class CommunicateWithPhp {
                             if(response.contains("true")) {
                                 Log.i("verify", "true");
                                 Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show();
+
                                 Intent homeIntent = new Intent(context, HomeActivity.class);
                                 context.startActivity(homeIntent);
                             }
@@ -442,7 +444,7 @@ public class CommunicateWithPhp {
 
         return null;
     }
-    public void bookGarageSpace(int garageid,int spaceid, Calendar arrivaltime,Calendar departuretime) {
+    public void bookGarageSpace(Context context,int garageid,int spaceid, Calendar arrivaltime,Calendar departuretime,int licenseid) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -462,8 +464,13 @@ public class CommunicateWithPhp {
             String arrive = DateFormat.format(arrivaltime.getTime());
             String end = DateFormat.format(departuretime.getTime());
             PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&customerMobNo="+mobNo);
             ps.print("&garageId=" + garageid);
             ps.print("&spaceId=" + spaceid);
+            ps.print("licenseID=" +licenseid);
             //ps.print("&start_time="+arrivaltime);
             //ps.print("&end_time="+departuretime);
             ps.print("&start_time=" + arrive);
