@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MyFragment.DetailsFragment"
-    android:background="@color/ms_white">
+    android:background="@color/ms_white"
+    tools:context=".MyFragment.DetailsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -37,7 +36,7 @@
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="17sp"
                         android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
+                        android:textColor="@android:color/black"
                         android:id="@+id/spaceLocation"
                         />
                     <TextView
@@ -45,7 +44,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="selected location"
-                        android:id="@+id/locationAddress"/>
+                        android:textColor="@android:color/black"
+                        android:fontFamily="@font/roboto"
+                        android:id="@+id/selectedLocation"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -78,7 +79,8 @@
                     android:textColor="#3e9c64"
                     android:textStyle="bold"
                     android:text="Edit Location"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:id="@+id/editLocation"/>
 
                     <View
                         android:id="@+id/view1"
@@ -91,59 +93,60 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="What type of parking do you have?"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textSize="17sp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
-                        />
-                    <RadioGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <RadioButton
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Driveway"
-                            android:id="@+id/driveWay"/>
-                        <RadioButton
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Garage"
-                            android:id="@+id/garage"/>
-                        <RadioButton
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Car Park"
-                            android:id="@+id/carPark"/>
-                        <RadioButton
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="On-street"
-                            android:id="@+id/onStreet"/>
-                    </RadioGroup>
-                    <View
-                        android:id="@+id/view2"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="#71d2d2d2"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
-                </LinearLayout>
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingBottom="10dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="What type of parking do you have?"-->
+                        <!--android:fontFamily="@font/roboto_bold"-->
+                        <!--android:textSize="17sp"-->
+                        <!--android:paddingBottom="10dp"-->
+                        <!--android:textColor="@color/ms_black"-->
+                        <!--/>-->
+                    <!--<RadioGroup-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:id="@+id/typeOfParking">-->
+                        <!--<RadioButton-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="Driveway"-->
+                            <!--android:id="@+id/driveWay"/>-->
+                        <!--<RadioButton-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="Garage"-->
+                            <!--android:id="@+id/garage"/>-->
+                        <!--<RadioButton-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="Car Park"-->
+                            <!--android:id="@+id/carPark"/>-->
+                        <!--<RadioButton-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="On-street"-->
+                            <!--android:id="@+id/onStreet"/>-->
+                    <!--</RadioGroup>-->
+                    <!--<View-->
+                        <!--android:id="@+id/view2"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="2dp"-->
+                        <!--android:background="#71d2d2d2"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_marginBottom="10dp"/>-->
+                <!--</LinearLayout>-->
 
-            </android.support.v7.widget.CardView>
+            <!--</android.support.v7.widget.CardView>-->
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -161,7 +164,7 @@
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="17sp"
                         android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
+                        android:textColor="@android:color/black"
                         />
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -180,7 +183,8 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:layout_marginRight="20dp"
-                            android:paddingBottom="2dp"/>
+                            android:paddingBottom="2dp"
+                            />
                         <android.support.v7.widget.AppCompatEditText
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -207,7 +211,8 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:layout_marginLeft="20dp"
-                            android:paddingBottom="2dp"/>
+                            android:paddingBottom="2dp"
+                            />
 
                     </LinearLayout>
                     <View
@@ -236,7 +241,7 @@
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="17sp"
                         android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
+                        android:textColor="@android:color/black"
                         />
                     <TextView
                         android:layout_width="match_parent"
@@ -244,49 +249,65 @@
                         android:layout_marginTop="10dp"
                         android:text="Select the largest vehicle possible that can fit through the entrance and into the space itself."
                         android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/roboto"
                         />
                     <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="@drawable/bg_rounded_edit_text"
+                        android:id="@+id/vehicleType"
                         >
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Small Car"
                             android:id="@+id/smallCar"
-                            android:drawableRight="@drawable/small_car2"/>
+                            android:drawableRight="@drawable/car"
+                            android:fontFamily="@font/roboto"/>
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Medium Car"
                             android:id="@+id/mediumCar"
-                            android:drawableRight="@drawable/pajero_small"/>
+                            android:drawableRight="@drawable/small_car2"
+                            android:fontFamily="@font/roboto"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="4x4 or Large Car"
+                            android:id="@+id/largeCar"
+                            android:drawableRight="@drawable/pajero_small"
+                            android:fontFamily="@font/roboto"/>
+
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Mini Van"
                             android:id="@+id/miniVan"
-                            android:drawableRight="@drawable/pickup_truck_small"/>
+                            android:drawableRight="@drawable/pickup_truck_small"
+                            android:fontFamily="@font/roboto"/>
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Large Van or Minibus"
                             android:id="@+id/largeVan"
-                            android:drawableRight="@drawable/minivan"/>
+                            android:drawableRight="@drawable/minivan"
+                            android:fontFamily="@font/roboto"/>
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Bike"
                             android:id="@+id/bike"
-                            android:drawableRight="@drawable/bike_small"/>
+                            android:drawableRight="@drawable/bike_small"
+                            android:fontFamily="@font/roboto"/>
                         <RadioButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Cycle"
                             android:id="@+id/cycle"
-                            android:drawableRight="@drawable/cycle_small"/>
+                            android:drawableRight="@drawable/cycle_small"
+                            android:fontFamily="@font/roboto"/>
                     </RadioGroup>
 
 
@@ -301,171 +322,172 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Access Information"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textSize="17sp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Tick the boxes for options that apply to your space"
-                        android:layout_marginBottom="10dp"
-                        />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/checkbox">
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="My space has a height restriction when accessing it"
-                            android:id="@+id/box1"/>
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="My space requires a permit"
-                            android:id="@+id/box2"/>
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="My space is marked with a letter or number"
-                            android:id="@+id/box3"/>
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="My space requires a key or security fob to open a gate"
-                            android:id="@+id/box4"/>
-                        <CheckBox
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="My space requires a security code to open a gate"
-                            android:id="@+id/box5"/>
-                    </LinearLayout>
-                    <View
-                        android:id="@+id/view5"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="#71d2d2d2"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingBottom="10dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Access Information"-->
+                        <!--android:fontFamily="@font/roboto_bold"-->
+                        <!--android:textSize="17sp"-->
+                        <!--android:paddingBottom="10dp"-->
+                        <!--android:textColor="@color/ms_black"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:text="Tick the boxes for options that apply to your space"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--/>-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:id="@+id/accessInfoCheckBox">-->
+                        <!--<CheckBox-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="My space has a height restriction when accessing it"-->
+                            <!--android:id="@+id/box1"/>-->
+                        <!--<CheckBox-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="My space requires a permit"-->
+                            <!--android:id="@+id/box2"/>-->
+                        <!--<CheckBox-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="My space is marked with a letter or number"-->
+                            <!--android:id="@+id/box3"/>-->
+                        <!--<CheckBox-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="My space requires a key or security fob to open a gate"-->
+                            <!--android:id="@+id/box4"/>-->
+                        <!--<CheckBox-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="My space requires a security code to open a gate"-->
+                            <!--android:id="@+id/box5"/>-->
+                    <!--</LinearLayout>-->
+                    <!--<View-->
+                        <!--android:id="@+id/view5"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="2dp"-->
+                        <!--android:background="#71d2d2d2"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_marginBottom="10dp"/>-->
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
 
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="About your space &amp; local area"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textSize="17sp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Write something here to help drivers choose your space.
-Any nearby selling points e.g. how far is it from transport links or nearby attractions (in minutes)? Anything drivers should be aware of before booking?
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingBottom="10dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="About your space &amp; local area"-->
+                        <!--android:fontFamily="@font/roboto_bold"-->
+                        <!--android:textSize="17sp"-->
+                        <!--android:paddingBottom="10dp"-->
+                        <!--android:textColor="@color/ms_black"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:text="Write something here to help drivers choose your space.-->
+<!--Any nearby selling points e.g. how far is it from transport links or nearby attractions (in minutes)? Anything drivers should be aware of before booking?-->
 
-Don't include any contact details or sensitive information here."
-                        android:layout_marginBottom="10dp"
-                        />
-                    <android.support.v7.widget.AppCompatEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:id="@+id/aboutSpace"
-                        android:background="@drawable/bg_rounded_edit_text"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/ms_black"
-                        android:hint="1 space located on BUET in Polashi Bazar"
-                        android:gravity="top"
-                        />
-                    <View
-                        android:id="@+id/view6"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="#71d2d2d2"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+<!--Don't include any contact details or sensitive information here."-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--/>-->
+                    <!--<android.support.v7.widget.AppCompatEditText-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="200dp"-->
+                        <!--android:id="@+id/aboutSpace"-->
+                        <!--android:background="@drawable/bg_rounded_edit_text"-->
+                        <!--android:paddingLeft="20dp"-->
+                        <!--android:paddingRight="20dp"-->
+                        <!--android:textColor="@color/ms_black"-->
+                        <!--android:hint="1 space located on BUET in Polashi Bazar"-->
+                        <!--android:gravity="top"-->
+                        <!--/>-->
+                    <!--<View-->
+                        <!--android:id="@+id/view6"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="2dp"-->
+                        <!--android:background="#71d2d2d2"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_marginBottom="10dp"/>-->
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Access instructions"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textSize="17sp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="These are the instructions that drivers will receive once they've paid to reserve your space.
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingBottom="10dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Access instructions"-->
+                        <!--android:fontFamily="@font/roboto_bold"-->
+                        <!--android:textSize="17sp"-->
+                        <!--android:paddingBottom="10dp"-->
+                        <!--android:textColor="@color/ms_black"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:text="These are the instructions that drivers will receive once they've paid to reserve your space.-->
 
-Is there a specific place they should park e.g. under the tree or by the fence? Are there different instructions based on which direction the driver is arriving from?"
-                        android:layout_marginBottom="10dp"
-                        />
-                    <android.support.v7.widget.AppCompatEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:id="@+id/accessInfo"
-                        android:background="@drawable/bg_rounded_edit_text"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/ms_black"
-                        android:hint="The space is located at BUET in Polashi Bazar
+<!--Is there a specific place they should park e.g. under the tree or by the fence? Are there different instructions based on which direction the driver is arriving from?"-->
+                        <!--android:layout_marginBottom="10dp"-->
 
-Should you require any assistance, you can contact the space owner, Raihanul Alam."
-                        android:gravity="top"
-                        />
-                    <View
-                        android:id="@+id/view7"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="#71d2d2d2"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                        <!--/>-->
+                    <!--<android.support.v7.widget.AppCompatEditText-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="200dp"-->
+                        <!--android:id="@+id/accessInstruction"-->
+                        <!--android:background="@drawable/bg_rounded_edit_text"-->
+                        <!--android:paddingLeft="20dp"-->
+                        <!--android:paddingRight="20dp"-->
+                        <!--android:textColor="@color/ms_black"-->
+                        <!--android:hint="The space is located at BUET in Polashi Bazar-->
+
+<!--Should you require any assistance, you can contact the space owner, Raihanul Alam."-->
+                        <!--android:gravity="top"-->
+                        <!--/>-->
+                    <!--<View-->
+                        <!--android:id="@+id/view7"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="2dp"-->
+                        <!--android:background="#71d2d2d2"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_marginBottom="10dp"/>-->
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
 
 
             <android.support.v7.widget.CardView
@@ -484,7 +506,7 @@ Should you require any assistance, you can contact the space owner, Raihanul Ala
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="17sp"
                         android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
+                        android:textColor="@android:color/black"
                         />
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -495,37 +517,44 @@ Should you require any assistance, you can contact the space owner, Raihanul Ala
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Covered parking"
-                            android:id="@+id/feature1"/>
+                            android:id="@+id/feature1"
+                            android:fontFamily="@font/roboto"/>
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="CCTV"
-                            android:id="@+id/feature2"/>
+                            android:id="@+id/feature2"
+                            android:fontFamily="@font/roboto"/>
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Securely gated"
-                            android:id="@+id/feature3"/>
+                            android:id="@+id/feature3"
+                            android:fontFamily="@font/roboto"/>
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Disabled access"
-                            android:id="@+id/feature4"/>
+                            android:id="@+id/feature4"
+                            android:fontFamily="@font/roboto"/>
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Electric vehicle charging"
-                            android:id="@+id/feature5"/>
+                            android:id="@+id/feature5"
+                            android:fontFamily="@font/roboto"/>
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Lighting"
-                            android:id="@+id/feature6"/>
+                            android:id="@+id/feature6"
+                            android:fontFamily="@font/roboto"/>
                         <CheckBox
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Oil buying facility"
-                            android:id="@+id/feature7"/>
+                            android:id="@+id/feature7"
+                            android:fontFamily="@font/roboto"/>
                     </LinearLayout>
                     <View
                         android:id="@+id/view8"
@@ -554,7 +583,7 @@ Should you require any assistance, you can contact the space owner, Raihanul Ala
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="17sp"
                         android:paddingBottom="10dp"
-                        android:textColor="@color/ms_black"
+                        android:textColor="@android:color/black"
                         />
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -568,10 +597,11 @@ Should you require any assistance, you can contact the space owner, Raihanul Ala
                             android:background="@drawable/bg_rounded_edit_text"
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
-                            android:textColor="@color/ms_black"
+                            android:textColor="@android:color/black"
                             android:text="+880"
                             android:layout_weight="3"
                             android:enabled="false"
+                            android:fontFamily="@font/roboto"
                             />
                         <android.support.v7.widget.AppCompatEditText
                             android:layout_width="match_parent"
@@ -580,11 +610,13 @@ Should you require any assistance, you can contact the space owner, Raihanul Ala
                             android:background="@drawable/bg_rounded_edit_text"
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
-                            android:textColor="@color/ms_black"
+                            android:textColor="@android:color/black"
                             android:text="1521300267"
                             android:layout_weight="1"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
+                            android:inputType="number"
+                            android:fontFamily="@font/roboto"
                             />
 
                     </LinearLayout>
@@ -593,7 +625,10 @@ Should you require any assistance, you can contact the space owner, Raihanul Ala
                         android:layout_height="wrap_content"
                         android:id="@+id/termsAndCo"
                         android:text="By proceeding to add your space, you agree"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="12sp"
+                        />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
