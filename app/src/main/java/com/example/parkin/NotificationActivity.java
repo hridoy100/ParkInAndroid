@@ -27,7 +27,7 @@ public class NotificationActivity extends AppCompatActivity implements RecyclerV
 
     void init() {
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-        notificationArrayList = communicateWithPhp.getNotifications(this);
+        notificationArrayList = communicateWithPhp.getNotification(this);
         System.out.println(notificationArrayList.size());
 
         initRecyclerView();

@@ -22,9 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.Stepper.MyStepperTest;
 import com.example.parkin.util.NotificationThread;
 import com.google.android.gms.common.util.AndroidUtilsLight;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -67,25 +70,42 @@ public class HomeActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                int notifyID = 1;
-                String CHANNEL_ID = "my_channel_01";// The id of the channel.
-                CharSequence name = "eito chole";// The user-visible name of the channel.
-                int importance = NotificationManager.IMPORTANCE_HIGH;
-                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+                int prev_notif_count=0;
+                //while(true) {
+                    int notif_count=0;
+                    CommunicateWithPhp com=new CommunicateWithPhp();
+                    ArrayList<com.example.parkin.Notification> notif_list=com.getNotification(mContext);
+                    System.out.println(notif_list.size());
+                    for(int i=0;i<notif_list.size();i++)
+                    {
+                        if(notif_list.get(i).getStatus()=="no")
+                        {
+                            notif_count++;
+                        }
+                    }
+                    if(notif_count>0 && prev_notif_count!=notif_count) {
+                        int notifyID = 1;
+                        String CHANNEL_ID = "my_channel_01";// The id of the channel.
+                        CharSequence name = "eito chole";// The user-visible name of the channel.
+                        int importance = NotificationManager.IMPORTANCE_HIGH;
+                        NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
 // Create a notification and set the notification channel.
-                Notification notification = new Notification.Builder(mContext)
-                        .setContentTitle("New Message")
-                        .setContentText("You've received new messages.")
-                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
-                        .setChannelId(CHANNEL_ID)
-                        .build();
-                NotificationManager mNotificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.createNotificationChannel(mChannel);
-
+                        Notification notification = new Notification.Builder(mContext)
+                                .setContentTitle("New Rent")
+                                .setContentText("You've " + notif_count + "Notifications")
+                                .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
+                                .setChannelId(CHANNEL_ID)
+                                .build();
+                        NotificationManager mNotificationManager =
+                                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.createNotificationChannel(mChannel);
 // Issue the notification.
-                mNotificationManager.notify(notifyID , notification);
-            }
+                        //mNotificationManager.cancel(notifyID);
+                        mNotificationManager.notify(notifyID, notification);
+                    }
+                    prev_notif_count=notif_count;
+                }
+        //    }
         });
         showHomePage();
 

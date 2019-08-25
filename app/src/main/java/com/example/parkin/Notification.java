@@ -4,14 +4,14 @@ public class Notification {
     String id;
     String status;
     String notificationMessage;
-    String date;
+    String rentno;
     String time;
 
-    public Notification(String id, String status, String notificationMessage, String date, String time) {
+    public Notification(String id, String status, String notificationMessage, String rentno, String time) {
         this.id = id;
         this.status = status;
         this.notificationMessage = notificationMessage;
-        this.date = date;
+        this.rentno = rentno;
         this.time = time;
     }
 
@@ -43,12 +43,12 @@ public class Notification {
         this.notificationMessage = notificationMessage;
     }
 
-    public String getDate() {
-        return date;
+    public String getRentno() {
+        return rentno;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setRentno(String rentno) {
+        this.rentno = rentno;
     }
 
     public String getTime() {
