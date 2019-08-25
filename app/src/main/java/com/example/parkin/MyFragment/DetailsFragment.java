@@ -3,12 +3,29 @@ package com.example.parkin.MyFragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatEditText;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.parkin.R;
+import com.example.parkin.Stepper.MyStepperTest;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 
 
 /**
@@ -30,6 +47,54 @@ public class DetailsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    //TextView..........
+    TextView selectedLocationShow;
+    TextView editLocationButton;
+    TextView termsAndCo;
+
+    //...........
+
+
+    //RadioGroup........
+    RadioGroup typeOfSpace;
+    RadioGroup vehicleType;
+    //......
+
+    //RadioButton......
+    RadioButton vehilceTypeRadio;
+    RadioButton parkTypeRadio;
+    //
+
+    // Checkbox......
+    CheckBox feature1;
+    CheckBox feature2;
+    CheckBox feature3;
+    CheckBox feature4;
+    CheckBox feature5;
+    CheckBox feature6;
+    CheckBox feature7;
+    //
+
+    // Button........
+    Button plus;
+    Button minus;
+
+    //......
+
+    //LinearLayout for checkboxes...
+    LinearLayout accessInfoCheckbox;
+    LinearLayout featureCheckBox;
+    //.....
+
+    //EditText.........
+    AppCompatEditText spaceCount;
+    AppCompatEditText aboutSpace;
+    AppCompatEditText accessInstruction;
+    AppCompatEditText mobileNo;
+    //..........
+
+    String featuresStr ="";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -66,7 +131,192 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false);
+        View v = inflater.inflate(R.layout.fragment_details, container, false);
+
+        //plus.setOnClickListener(this);
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //TextView Initialization..
+        selectedLocationShow = (TextView) view.findViewById(R.id.selectedLocation);
+        editLocationButton = (TextView) view.findViewById(R.id.editLocation);
+        //EditText init..
+        spaceCount = (AppCompatEditText) view.findViewById(R.id.spaceCount);
+        mobileNo = (AppCompatEditText) view.findViewById(R.id.mobileNo);
+        ////aboutSpace = (AppCompatEditText) view.findViewById(R.id.aboutSpace);
+        ////accessInstruction = (AppCompatEditText) view.findViewById(R.id.accessInstruction);
+        //RadioGroup
+        ////typeOfSpace = (RadioGroup) view.findViewById(R.id.typeOfParking);
+        vehicleType = (RadioGroup) view.findViewById(R.id.vehicleType);
+
+//        typeOfSpace.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                parkTypeRadio = (RadioButton) view.findViewById(checkedId);
+//            }
+//        });
+
+        vehicleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                vehilceTypeRadio = (RadioButton) view.findViewById(checkedId);
+                Toast.makeText(getContext(), vehilceTypeRadio.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Checkboxes..
+        //accessInfoCheckbox = (LinearLayout) view.findViewById(R.id.accessInfoCheckBox);
+        featureCheckBox = (LinearLayout) view.findViewById(R.id.featuresBox);
+
+        plus = (Button) view.findViewById(R.id.plusButton);
+        minus = (Button) view.findViewById(R.id.minusButton);
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = Integer.parseInt(spaceCount.getText().toString());
+                if(count<20)
+                    count++;
+                spaceCount.setText(Integer.toString(count));
+            }
+        });
+
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = Integer.parseInt(spaceCount.getText().toString());
+                if(count>1)
+                    count--;
+                spaceCount.setText(Integer.toString(count));
+            }
+        });
+
+        feature1 = (CheckBox) view.findViewById(R.id.feature1);
+        feature2 = (CheckBox) view.findViewById(R.id.feature2);
+        feature3 = (CheckBox) view.findViewById(R.id.feature3);
+        feature4 = (CheckBox) view.findViewById(R.id.feature4);
+        feature5 = (CheckBox) view.findViewById(R.id.feature5);
+        feature6 = (CheckBox) view.findViewById(R.id.feature6);
+        feature7 = (CheckBox) view.findViewById(R.id.feature7);
+
+
+        feature1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="Covered parking,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("Covered parking,")){
+                        featuresStr = featuresStr.replace("Covered parking,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        feature2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="CCTV,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("CCTV,")){
+                        featuresStr = featuresStr.replace("CCTV,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        feature3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="Securely gated,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("Securely gated,")){
+                        featuresStr = featuresStr.replace("Securely gated,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        feature4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="Disabled access,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("Disabled access,")){
+                        featuresStr = featuresStr.replace("Disabled access,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        feature5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="Electric vehicle charging,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("Electric vehicle charging,")){
+                        featuresStr = featuresStr.replace("Electric vehicle charging,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        feature6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="Lighting,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("Lighting,")){
+                        featuresStr = featuresStr.replace("Lighting,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        feature7.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    featuresStr +="Oil buying facility,";
+                    Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if(featuresStr.contains("Oil buying facility,")){
+                        featuresStr = featuresStr.replace("Oil buying facility,", "");
+                        Toast.makeText(getContext(), featuresStr, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        termsAndCo = (TextView) view.findViewById(R.id.termsAndCo);
+        String termsString = "By proceeding to add your space, you agree that this parking space listing is advertised in accordance with ParkIn's <font color=#3e9c64>Terms & Conditions</font>, "+
+                "you have the legal right to list this parking location for rent, and that you agree with ParkIn <font color=#3e9c64>Privacy Policy</font>.";
+        termsAndCo.setText(Html.fromHtml(termsString));
+
+        MyStepperTest myStepperTest = (MyStepperTest) getActivity();
+        selectedLocationShow.setText(myStepperTest.getAddressTitle());
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,5 +356,14 @@ public class DetailsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void getFinalizedData(){
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("space_count", spaceCount.getText().toString());
+        hashMap.put("vehicle_type",vehilceTypeRadio.getText().toString());
+        hashMap.put("features", featuresStr);
+        String mob = "880"+mobileNo.getText().toString();
+        hashMap.put("mobileNo", mob);
     }
 }

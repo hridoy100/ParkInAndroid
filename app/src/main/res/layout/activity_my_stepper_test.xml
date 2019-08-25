@@ -157,12 +157,12 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="hq"
-            android:textColor="@color/ms_black" />
+        <!--<TextView-->
+            <!--android:id="@+id/test"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="hq"-->
+            <!--android:textColor="@color/ms_black" />-->
 
         <FrameLayout
             android:id="@+id/fragContainer"
