@@ -15,4 +15,5 @@ public class Constants {
     public static final String URL_BOOKSPACE = ROOT_URL+"parkin.php/bookGarageSpace";
     public static final String URL_GETMYGARAGES = ROOT_URL+"parkin.php/getMyGarages";
     public static final String URL_GETHISTORY = ROOT_URL+"parkin.php/getCustomerHistory";
+    public static final String URL_GETNOTIFICATION = ROOT_URL+"parkin.php/getNotification";
 }
