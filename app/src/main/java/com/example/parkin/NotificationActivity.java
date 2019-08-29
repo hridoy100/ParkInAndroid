@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.example.parkin.DB.CommunicateWithPhp;
@@ -28,7 +29,7 @@ public class NotificationActivity extends AppCompatActivity implements RecyclerV
     void init() {
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         notificationArrayList = communicateWithPhp.getNotification(this);
-        System.out.println(notificationArrayList.size());
+        Log.d("notification list size", Integer.toString(notificationArrayList.size()));
 
         initRecyclerView();
     }
