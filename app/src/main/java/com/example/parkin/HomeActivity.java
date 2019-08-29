@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mContext=this;
         progressDialog = new ProgressDialog(this);
-        runOnUiThread(new Runnable() {
+        /*runOnUiThread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
@@ -106,7 +106,8 @@ public class HomeActivity extends AppCompatActivity {
                     prev_notif_count=notif_count;
                 }
         //    }
-        });
+        });*/
+
         showHomePage();
 
     }

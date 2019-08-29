@@ -34,7 +34,7 @@ public class NotificationActivity extends AppCompatActivity implements RecyclerV
     }
 
     void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recycleView_history);
+        RecyclerView recyclerView = findViewById(R.id.notificationList);
         RecyclerViewAdapterSimpleCardView adapter = new RecyclerViewAdapterSimpleCardView(this, notificationArrayList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

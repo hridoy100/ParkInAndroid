@@ -209,7 +209,10 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                         toast.setView(layout);
                         toast.show();
                         if(flag==1) {
-                            licenseid=Integer.getInteger(vehcilelist.get(selectedItem-1).getLicenseId());
+                            Log.d("SelectedItem",Integer.toString(selectedItem));
+                            Log.d("VehicleList Size",Integer.toString(vehcilelist.size()));
+                            Log.d("License ID", vehcilelist.get(selectedItem-1).getLicenseId());
+                            licenseid=Integer.parseInt(vehcilelist.get(selectedItem-1).getLicenseId());
                             //Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
                             CommunicateWithPhp com = new CommunicateWithPhp();
                             com.bookGarageSpace(context, garageid, sid, arrivaltime, departuretime,licenseid);
