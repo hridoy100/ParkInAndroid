@@ -471,7 +471,7 @@ public class CommunicateWithPhp {
             ps.print("&customerMobNo="+mobNo);
             ps.print("&garageId=" + garageid);
             ps.print("&spaceId=" + spaceid);
-            ps.print("licenseID=" +licenseid);
+            ps.print("&licenseID=" +licenseid);
             //ps.print("&start_time="+arrivaltime);
             //ps.print("&end_time="+departuretime);
             ps.print("&start_time=" + arrive);
