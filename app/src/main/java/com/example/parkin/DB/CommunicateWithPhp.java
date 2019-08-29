@@ -653,24 +653,27 @@ public class CommunicateWithPhp {
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
                 JSONObject dataobj = (JSONObject) vehicleData.get("notification");
                 Log.i("dataobj", dataobj.toString());
-                /*rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
-                rentDetails.setRentNo((String) dataobj.getString("rentNo"));
-                rentDetails.setPaymentNo((String) dataobj.getString("paymentNo"));
-                rentDetails.setRenterMobNo((String) dataobj.getString("renterMobNo"));
-                rentDetails.setSpaceId((String) dataobj.getString("spaceId"));
-                rentDetails.setCustomerMobNo((String) dataobj.getString("customerMobNo"));
-                rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
-                rentDetails.setSpaceSize((String) dataobj.getString("spaceSize"));
-                rentDetails.setStart_time((String) dataobj.getString("start_time"));
-                rentDetails.setEnd_time((String) dataobj.getString("end_time"));
-                rentDetails.setStatus((String) dataobj.getString("status"));
-                rentDetails.setCost((String) dataobj.getString("cost"));
-                rentDetails.setReview((String) dataobj.getString("review"));
-                */
                 notificationDetails.setId((String)dataobj.getString("id"));
                 notificationDetails.setRentno((String)dataobj.getString("rent_no"));
                 notificationDetails.setStatus((String)dataobj.getString("seen"));
-                notificationDetails.setTime((String)dataobj.getString("timestamp"));
+                String timeStamp = dataobj.getString("cur_timestamp");
+                String time = timeStamp.substring(timeStamp.indexOf(" ")+1);
+                String date = timeStamp.substring(0, timeStamp.indexOf(" "));
+                notificationDetails.setTime(time);
+                notificationDetails.setDate(date);
+
+                String renterMob = dataobj.getString("renter_mob_no");
+                String customerMob = dataobj.getString("customer_mob_no");
+                String notifMsg=null;
+                if(customerMob.equals(mobNo)) {
+                    notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
+                    notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob+"</font>");
+                }
+                else if(renterMob.equals(mobNo)){
+                    notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
+                    notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob+"</font>");
+                }
+                notificationDetails.setNotificationMessage(notifMsg);
                 notificationArrayList.add(notificationDetails);
 
             }
