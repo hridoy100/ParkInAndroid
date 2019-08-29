@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Space;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -16,8 +17,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.parkin.HomeActivity;
 import com.example.parkin.MainActivity;
+import com.example.parkin.Notification;
 import com.example.parkin.R;
 import com.example.parkin.Vehicle;
+import com.example.parkin.util.NotificationThread;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +32,9 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +65,7 @@ public class CommunicateWithPhp {
                             if(response.contains("true")) {
                                 Log.i("verify", "true");
                                 Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show();
+
                                 Intent homeIntent = new Intent(context, HomeActivity.class);
                                 context.startActivity(homeIntent);
                             }
@@ -198,6 +204,64 @@ public class CommunicateWithPhp {
     }
 
 
+    public ArrayList<GarageDetails> getMyGaragesDB(Context context){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+        List<GarageDetails> res = new ArrayList<>();
+        try {
+            URL website = new URL(Constants.URL_GETMYGARAGES);
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            //Log.i("SharedmobileNo: ",mobNo);
+            Log.i("Mob No", mobNo);
+            ps.print("&mobileNo="+mobNo);
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray= new JSONArray(response.toString());
+            ArrayList<GarageDetails> garageDetailsArrayList = new ArrayList<>();
+            ArrayList<String> garageNameArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                GarageDetails garageDetails = new GarageDetails();
+                JSONObject garageData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) garageData.get("myGarage");
+                Log.i("dataobj", dataobj.toString());
+                garageDetails.setAddressId((String) dataobj.getString("addressId"));
+                garageDetails.setGarageId((String)dataobj.getString("garageId"));
+                garageDetails.setAddressName((String)dataobj.getString("addressName"));
+                garageDetails.setPostalId((String)dataobj.getString("postalId"));
+                garageDetails.setLongitude((String)dataobj.getString("longitude"));
+                garageDetails.setLatitude((String)dataobj.getString("latitude"));
+
+                garageDetailsArrayList.add(garageDetails);
+                garageNameArrayList.add(garageDetails.getAddressName());
+
+            }
+            return garageDetailsArrayList;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     public ArrayList<VehicleDetails> getVehicleDetailsDB(Context context) {
 //        progressDialog.setMessage("Fetching Garage Details...");
 //        progressDialog.show();
@@ -317,6 +381,308 @@ public class CommunicateWithPhp {
 
         return null;
     }
+    public ArrayList<SpaceDetails> getAvailableSpaces(int garageid, Calendar arrivaltime,Calendar departuretime) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_AVAILABLESPACES);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            Log.d("starttime",DateFormat.format(arrivaltime.getTime()));
+            Log.d("endtime",DateFormat.format(departuretime.getTime()));
+            String arrive=DateFormat.format(arrivaltime.getTime());
+            String end=DateFormat.format(departuretime.getTime());
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&garageId="+garageid);
+            //ps.print("&start_time="+arrivaltime);
+            //ps.print("&end_time="+departuretime);
+            ps.print("&start_time="+arrive);
+            ps.print("&end_time="+end);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                SpaceDetails spaceDetails = new SpaceDetails();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("availableSpace");
+                Log.i("dataobj", dataobj.toString());
+                spaceDetails.setSpaceid(dataobj.getInt("spaceId"));
+                spaceDetails.setGarageid(dataobj.getInt("garageId"));
+                spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
+                spaceDetails.setPosition(dataobj.getString("position"));
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Calendar cal=Calendar.getInstance();
+                cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
+                spaceDetails.setStarttime1(cal);
+                cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
+                spaceDetails.setGetStarttime2(cal);
+                spaceDetails.setAvailability(dataobj.getString("availability"));
+                spaceDetailsArrayList.add(spaceDetails);
+            }
+            return spaceDetailsArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public void bookGarageSpace(Context context,int garageid,int spaceid, Calendar arrivaltime,Calendar departuretime,int licenseid) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_BOOKSPACE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            Log.d("starttime", DateFormat.format(arrivaltime.getTime()));
+            Log.d("endtime", DateFormat.format(departuretime.getTime()));
+            String arrive = DateFormat.format(arrivaltime.getTime());
+            String end = DateFormat.format(departuretime.getTime());
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&customerMobNo="+mobNo);
+            ps.print("&garageId=" + garageid);
+            ps.print("&spaceId=" + spaceid);
+            ps.print("&licenseID=" +licenseid);
+            //ps.print("&start_time="+arrivaltime);
+            //ps.print("&end_time="+departuretime);
+            ps.print("&start_time=" + arrive);
+            ps.print("&end_time=" + end);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<SpaceDetails> getGarageSpace(String garageid) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GARAGESPACE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&garageId="+garageid);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                SpaceDetails spaceDetails = new SpaceDetails();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("garageTotalSpace");
+                Log.i("dataobj", dataobj.toString());
+                spaceDetails.setSpaceid(dataobj.getInt("spaceId"));
+                spaceDetails.setGarageid(dataobj.getInt("garageId"));
+                spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
+                spaceDetails.setPosition(dataobj.getString("position"));
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Calendar cal=Calendar.getInstance();
+                cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
+                spaceDetails.setStarttime1(cal);
+                cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
+                spaceDetails.setGetStarttime2(cal);
+                spaceDetails.setAvailability(dataobj.getString("availability"));
+                spaceDetailsArrayList.add(spaceDetails);
+            }
+            return spaceDetailsArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public ArrayList<Rent> getHistory(Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETHISTORY);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&customerMobNo="+mobNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            ArrayList<Rent> rentArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Rent rentDetails = new Rent();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("customerHistory");
+                Log.i("dataobj", dataobj.toString());
+                rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                rentDetails.setRentNo((String) dataobj.getString("rentNo"));
+                rentDetails.setPaymentNo((String) dataobj.getString("paymentNo"));
+                rentDetails.setRenterMobNo((String) dataobj.getString("renterMobNo"));
+                rentDetails.setSpaceId((String) dataobj.getString("spaceId"));
+                rentDetails.setCustomerMobNo((String) dataobj.getString("customerMobNo"));
+                rentDetails.setLicenseId((String) dataobj.getString("licenseId"));
+                rentDetails.setSpaceSize((String) dataobj.getString("spaceSize"));
+                rentDetails.setStart_time((String) dataobj.getString("start_time"));
+                rentDetails.setEnd_time((String) dataobj.getString("end_time"));
+                rentDetails.setStatus((String) dataobj.getString("status"));
+                rentDetails.setCost((String) dataobj.getString("cost"));
+                rentDetails.setReview((String) dataobj.getString("review"));
+                rentArrayList.add(rentDetails);
+
+            }
+            return rentArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public ArrayList<Notification> getNotification(Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETNOTIFICATION);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&mobileNo="+mobNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            ArrayList<Notification> notificationArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Notification notificationDetails = new Notification();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("notification");
+                Log.i("dataobj", dataobj.toString());
+                notificationDetails.setId((String)dataobj.getString("id"));
+                notificationDetails.setRentno((String)dataobj.getString("rent_no"));
+                notificationDetails.setStatus((String)dataobj.getString("seen"));
+                String timeStamp = dataobj.getString("cur_timestamp");
+                String time = timeStamp.substring(timeStamp.indexOf(" ")+1);
+                String date = timeStamp.substring(0, timeStamp.indexOf(" "));
+                notificationDetails.setTime(time);
+                notificationDetails.setDate(date);
+
+                String renterMob = dataobj.getString("renter_mob_no");
+                String customerMob = dataobj.getString("customer_mob_no");
+                String notifMsg=null;
+                if(customerMob.equals(mobNo)) {
+                    notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
+                    notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob+"</font>");
+                }
+                else if(renterMob.equals(mobNo)){
+                    notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
+                    notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob+"</font>");
+                }
+                notificationDetails.setNotificationMessage(notifMsg);
+                notificationArrayList.add(notificationDetails);
+
+            }
+            return notificationArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }

@@ -3,6 +3,7 @@ package com.example.parkin;
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
@@ -64,9 +66,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Button depatureTime;
     private Button current;
     CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-
+    Calendar arrivaltime;
+    Calendar departuretime;
     View mapView;
     private SwitchDateTimeDialogFragment dateTimeFragment;
+    private SwitchDateTimeDialogFragment dateTimeFragment2;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
 
     @Override
@@ -94,14 +98,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         depatureTime = findViewById(R.id.Departure_button);
         init = 0;
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
-
-        /*GarageObject garage1 = new GarageObject(1, new LatLng(23.751, 90.370), new GarageDetails());
-        GarageObject garage2 = new GarageObject(2, new LatLng(23.754022, 90.373002), new GarageDetails());
-        GarageObject garage3 = new GarageObject(3, new LatLng(23.758169, 90.369536), new GarageDetails());
-        garages.add(garage1);
-        garages.add(garage2);
-        garages.add(garage3);
-        */
         for (int i=0; i<garageDetailsArrayList.size(); i++){
             garages.add(new GarageObject(i+1, new LatLng(Double.parseDouble(garageDetailsArrayList.get(i).getLatitude()),
                     Double.parseDouble(garageDetailsArrayList.get(i).getLongitude())),garageDetailsArrayList.get(i)));
@@ -114,21 +110,58 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     // Optional
             );
         }
-
+        if (dateTimeFragment2 == null) {
+            dateTimeFragment2 = SwitchDateTimeDialogFragment.newInstance(
+                    getString(R.string.label_datetime_dialog),
+                    getString(android.R.string.ok),
+                    getString(android.R.string.cancel)
+                    // Optional
+            );
+        }
         // Optionally define a timezone
         dateTimeFragment.setTimeZone(TimeZone.getDefault());
-
+        dateTimeFragment2.setTimeZone(TimeZone.getDefault());
         // Init format
-        final SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy HH:mm", java.util.Locale.getDefault());
+        final SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         // Assign unmodifiable values
+        //arrivaltime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        //departuretime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+        arrivaltime=Calendar.getInstance();
+        departuretime=Calendar.getInstance();
+        departuretime.add(Calendar.MINUTE,30);
         Calendar calendar = Calendar.getInstance();
         dateTimeFragment.set24HoursMode(false);
         dateTimeFragment.setHighlightAMPMSelection(false);
         dateTimeFragment.setMinimumDateTime(calendar.getTime());
         dateTimeFragment.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
+        dateTimeFragment2.set24HoursMode(false);
+        dateTimeFragment2.setHighlightAMPMSelection(false);
+        dateTimeFragment2.setMinimumDateTime(departuretime.getTime());
+        dateTimeFragment2.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
         dateTimeFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
             @Override
             public void onPositiveButtonClick(Date date) {
+                arrivaltime.setTime(date);
+                current.setText(myDateFormat.format(date));
+
+
+                //dateTimeFragment2.setMinimumDateTime(cal.getTime());
+            }
+
+            @Override
+            public void onNegativeButtonClick(Date date) {
+                // Do nothing
+            }
+
+            @Override
+            public void onNeutralButtonClick(Date date) {
+                // Optional if neutral button does'nt exists
+            }
+        });
+        dateTimeFragment2.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
+            @Override
+            public void onPositiveButtonClick(Date date) {
+                departuretime.setTime(date);
                 current.setText(myDateFormat.format(date));
             }
 
@@ -142,7 +175,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 // Optional if neutral button does'nt exists
             }
         });
-
     }
 
     public void onMapSearch(View view) {
@@ -276,22 +308,41 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( 23.777176, 90.399452), 15));
         addMapMarkers();
-
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<ClusterMarker>() {
+            @Override
+            public boolean onClusterItemClick(ClusterMarker ClusterItem) {
+                //Log.d("custeritemcheck","hoitese");
+                Toast.makeText(getApplicationContext(),"Opening SpaceList",Toast.LENGTH_SHORT).show();
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Log.d("arrivaltime",myDateFormat.format(arrivaltime.getTime()));
+                Log.d("departuretime",myDateFormat.format(departuretime.getTime()));
+                Log.d("GarageLocation",ClusterItem.getGarage().getGarage().getAddressName());
+                Log.d("GarageId",ClusterItem.getGarage().getGarage().getGarageId());
+                Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
+                spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
+                spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
+                spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getGarage().getAddressName());
+                spaceintent.putExtra("garageid",Integer.parseInt(ClusterItem.getGarage().getGarage().getGarageId()));
+                startActivity(spaceintent);
+                return true;
+            }
+        });
     }
     public void setDepatureTime(View view)
     {
         current=depatureTime;
         Calendar calendar=Calendar.getInstance();
-        dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(calendar.getTime());
-        dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
+        dateTimeFragment2.startAtCalendarView();
+        dateTimeFragment2.setDefaultDateTime(departuretime.getTime());
+        dateTimeFragment2.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
     public void setArrivalTime(View view)
     {
         current=arrivalTime;
         Calendar calendar=Calendar.getInstance();
         dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.setDefaultDateTime(calendar.getTime());
+        dateTimeFragment.setDefaultDateTime(arrivaltime.getTime());
         dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
 //    public void setDepatureTime(View view){
@@ -355,7 +406,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     String snippet = "This is garage no : " + String.valueOf(garage.getGarage_id());
 
 
-                    int avatar = R.drawable.garage; // set the default avatar
+                    int avatar = R.drawable.garage_for_map_small; // set the default avatar
                     ClusterMarker newClusterMarker = new ClusterMarker(
                             garage.getPos(),
                             "Default title",
@@ -372,6 +423,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
             }
             mClusterManager.cluster();
+
         }
     }
     // Add a marker in Sydney and move the camera @23.7254245,90.3875091

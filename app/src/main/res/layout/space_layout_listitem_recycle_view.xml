@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/linearRecycleView_category">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Space No"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:id="@+id/spaceNo"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/position"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking Type:"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        >
+
+                        <RadioButton
+                            android:id="@+id/bike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_motorcycle_blue"
+                            android:textSize="16sp"
+                            android:layout_marginRight="20dp"/>
+                        <RadioButton
+                            android:id="@+id/car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_directions_car_blue"
+                            android:textSize="16sp"
+                            android:layout_marginRight="20dp"/>
+                        <RadioButton
+                            android:id="@+id/cycle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_bike_blue"
+                            android:layout_marginRight="20dp"
+                            />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/openTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textColor="@android:color/white"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_weight="1"
+                        android:layout_marginRight="10dp"
+                        android:inputType="time"
+
+                        android:text="OPEN TIME"/>
+                    <Button
+                        android:id="@+id/closeTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textColor="@android:color/white"
+                        android:background="@android:color/holo_red_light"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:inputType="time"
+                        android:text="CLOSE TIME"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

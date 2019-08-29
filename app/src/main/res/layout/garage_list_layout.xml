@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".Garage">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Garage List"
+                android:text="My Garage List"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
@@ -31,15 +32,24 @@
                 android:padding="10dp"
                 android:layout_marginTop="10dp"/>
 
-            <ListView
-                android:id="@+id/garageList"
-                android:layout_width="395dp"
+            <!--<ListView-->
+                <!--android:id="@+id/garageList"-->
+                <!--android:layout_width="395dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                 <!--/>-->
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/recycleView_garage"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                 />
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +73,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="addGarageActivity"
-                app:layout_constraintTop_toBottomOf="@id/garageList" />
+                app:layout_constraintTop_toBottomOf="@id/recycleView_garage" />
         </LinearLayout>
     </LinearLayout>
 
