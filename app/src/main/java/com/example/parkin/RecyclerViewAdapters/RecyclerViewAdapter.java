@@ -1,16 +1,15 @@
-package com.example.parkin;
+package com.example.parkin.RecyclerViewAdapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.parkin.R;
 
 import java.util.ArrayList;
 
@@ -52,26 +51,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.licenseNo.setText(licenseNumber.get(i));
         viewHolder.compName.setText(companyName.get(i));
         viewHolder.regCode.setText(regNo.get(i));
-
-        /*viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if(mImagesNames.get(i).equals("Bangladesh Power Division")){
-//                    Intent pdbIntent = new Intent(context, PDBJobList.class);
-//                    pdbIntent.putExtra("image_url", mImages.get(i));
-//                    pdbIntent.putExtra("image_name", mImagesNames.get(i));
-//                    context.startActivity(pdbIntent);
-//                }
-//                else if(mImagesNames.get(i).equals("Bank")){
-//                    Intent bankIntent = new Intent(context, BankJobList.class);
-//                    bankIntent.putExtra("image_url", mImages.get(i));
-//                    bankIntent.putExtra("image_name", mImagesNames.get(i));
-//                    context.startActivity(bankIntent);
-//                }
-//                else
-                    Toast.makeText(context, licenseNumber.get(i), Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     @Override

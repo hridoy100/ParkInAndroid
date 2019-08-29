@@ -5,6 +5,8 @@
     <color name="white">#ffffff</color>
     <color name="colorAccent">#D81B60</color>
     <color name="darkgray">#6c6c6c</color>
+    <color name="jpGreen">#3e9c64</color>
+    <color name="transparentColor">#00FFFFFF</color>
 </resources>
 
     <!--#006e62-->

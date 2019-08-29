@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <LinearLayout
         android:id="@+id/linLayout1"
@@ -12,30 +13,55 @@
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:text="Where is the entrance to your space?"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/montserrat_bold"/>
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map3"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="450dp"
-            android:layout_marginTop="20dp"
-            tools:context="com.viralandroid.googlemapsandroidapi.AddGarage" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:id="@+id/back"
+                android:onClick="backToPRevIntent"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Where is the entrance to your space?"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_bold"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:gravity="bottom"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/map3"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context="com.viralandroid.googlemapsandroidapi.AddGarage" />
+                <!--<ImageView-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:id="@+id/imgLocationPinUp"-->
+                <!--android:src="@drawable/map_location_pin_geolocation"-->
+                <!--/>-->
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/agree"
@@ -49,6 +75,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linLayout1"
+                android:onClick="nextPage"
                 />
         </LinearLayout>
     </LinearLayout>
