@@ -3,6 +3,7 @@ package com.example.parkin.RecyclerViewAdapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,10 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapterSimpleCardView.ViewHolder viewHolder, final int i) {
-        viewHolder.notifMsg.setText(notificationArrayList.get(i).getNotificationMessage());
-        //viewHolder.date.setText(notificationArrayList.get(i).getDate());
+        viewHolder.notifMsg.setText(Html.fromHtml(notificationArrayList.get(i).getNotificationMessage()));
+        viewHolder.date.setText(notificationArrayList.get(i).getDate());
         viewHolder.time.setText(notificationArrayList.get(i).getTime());
+        viewHolder.mobileNo.setText(Html.fromHtml(notificationArrayList.get(i).getMobileNo()));
     }
 
     @Override
@@ -52,6 +54,7 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView notifMsg;
         TextView date, time;
+        TextView mobileNo;
         RecyclerViewAdapterSimpleCardView.OnItemClickListener onItemClickListener;
 
         public ViewHolder(View itemView, RecyclerViewAdapterSimpleCardView.OnItemClickListener onItemClickListener) {
@@ -59,7 +62,7 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
             notifMsg = (TextView) itemView.findViewById(R.id.notificationText);
             date = (TextView) itemView.findViewById(R.id.date);
             time = (TextView) itemView.findViewById(R.id.time);
-
+            mobileNo = (TextView) itemView.findViewById(R.id.mobileNo);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }
