@@ -6,13 +6,17 @@ public class Notification {
     String notificationMessage;
     String rentno;
     String time;
+    String date;
+    String mobileNo;
 
-    public Notification(String id, String status, String notificationMessage, String rentno, String time) {
+    public Notification(String id, String status, String notificationMessage, String rentno, String time, String date, String mobileNo) {
         this.id = id;
         this.status = status;
         this.notificationMessage = notificationMessage;
         this.rentno = rentno;
         this.time = time;
+        this.date = date;
+        this.mobileNo = mobileNo;
     }
 
     public Notification() {
@@ -55,7 +59,23 @@ public class Notification {
         return time;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
     }
 }
