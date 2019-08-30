@@ -685,4 +685,66 @@ public class CommunicateWithPhp {
         return null;
     }
 
+    public ArrayList<Rent> getRentInfo(String rentNo) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETRENTINFO);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&rentNo="+rentNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            ArrayList<Rent> rentArrayList = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Rent rentDetails = new Rent();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("rent_details");
+                Log.i("dataobj", dataobj.toString());
+                rentDetails.setLicenseId((String) dataobj.getString("license_id"));
+                rentDetails.setRentNo((String) dataobj.getString("rent_no"));
+                rentDetails.setPaymentNo((String) dataobj.getString("payment_no"));
+                rentDetails.setRenterMobNo((String) dataobj.getString("renter_mob_no"));
+                rentDetails.setSpaceId((String) dataobj.getString("space_id"));
+                rentDetails.setCustomerMobNo((String) dataobj.getString("customer_mob_no"));
+                rentDetails.setLicenseId((String) dataobj.getString("license_id"));
+                rentDetails.setSpaceSize((String) dataobj.getString("space_size"));
+                rentDetails.setStart_time((String) dataobj.getString("start_time"));
+                rentDetails.setEnd_time((String) dataobj.getString("end_time"));
+                rentDetails.setStatus((String) dataobj.getString("status"));
+                rentDetails.setCost((String) dataobj.getString("cost"));
+                rentDetails.setReview((String) dataobj.getString("review"));
+                rentArrayList.add(rentDetails);
+
+            }
+            return rentArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
