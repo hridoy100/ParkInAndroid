@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         textTopLayout = (LinearLayout) findViewById(R.id.textHome);
 
         garageLayout = (LinearLayout) findViewById(R.id.garageLayout);
-        nearbyLayout = (LinearLayout) findViewById(R.id.nearbyLayout);
+        //nearbyLayout = (LinearLayout) findViewById(R.id.nearbyLayout);
 
         menus = (LinearLayout) findViewById(R.id.menus);
         textTop = (TextView) findViewById(R.id.textTop);
@@ -137,12 +137,12 @@ public class HomeActivity extends AppCompatActivity {
         textTop.setText("Home");
         menus.setAlpha(1);
         menus.startAnimation(homeTextShow);
-        nearbyLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Nearby Button Under Implementation", Toast.LENGTH_LONG).show();
-            }
-        });
+//        nearbyLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(),"Nearby Button Under Implementation", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
 //        garageLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
