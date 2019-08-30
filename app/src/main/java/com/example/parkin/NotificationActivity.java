@@ -1,5 +1,6 @@
 package com.example.parkin;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +45,8 @@ public class NotificationActivity extends AppCompatActivity implements RecyclerV
 
     @Override
     public void onItemClick(int i) {
-
+        Intent singleNotification = new Intent(getApplicationContext(),SingleNotificationActivity.class);
+        singleNotification.putExtra("rentNo",notificationArrayList.get(i).getRentno());
+        startActivity(singleNotification);
     }
 }
