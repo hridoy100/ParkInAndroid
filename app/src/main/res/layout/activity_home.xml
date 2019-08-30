@@ -108,8 +108,8 @@
                 android:padding="30dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:onClick="garageActivity"
                     android:src="@drawable/garage" />
@@ -125,26 +125,29 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/nearbyLayout"
+                android:id="@+id/notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="30dp">
+                android:padding="30dp"
+                android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/service" />
+                    android:onClick="notificationActivity"
+                    android:src="@drawable/bellcon"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Nearby Service"
+                    android:onClick="notificationActivity"
+                    android:text="Notifications"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
@@ -165,8 +168,8 @@
                 android:padding="30dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:src="@drawable/parking_location" />
 
@@ -188,8 +191,8 @@
                 android:padding="30dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:onClick="vehicleActivity"
                     android:src="@drawable/car" />
@@ -262,39 +265,6 @@
                     android:layout_marginTop="10dp"
                     android:onClick="historyActivity"
                     android:text="History"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:padding="30dp">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:onClick="notificationActivity"
-                    android:src="@drawable/bellcon"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:onClick="notificationActivity"
-                    android:text="Notifications"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>

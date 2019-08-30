@@ -26,7 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".NotificationActivity"></activity>
+        <activity android:name=".SingleNotificationActivity"></activity>
+        <activity android:name=".NotificationActivity" />
         <activity
             android:name=".Stepper.MyStepperTest"
             android:theme="@style/AppTheme.NoActionBar" />
