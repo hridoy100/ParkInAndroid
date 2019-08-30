@@ -1,13 +1,30 @@
 package com.example.parkin;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
+
+import java.util.Objects;
+
 public class ClusterMarker implements ClusterItem{
     private LatLng position;
     private String title;
     private String snippet;
     private int iconPicture;
     private GarageObject garage;
-    public ClusterMarker(LatLng position, String title, String snippet, int iconPicture,GarageObject garage) {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClusterMarker that = (ClusterMarker) o;
+        return Objects.equals(position, that.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position);
+    }
+
+    public ClusterMarker(LatLng position, String title, String snippet, int iconPicture, GarageObject garage) {
         this.position = position;
         this.title = title;
         this.snippet = snippet;
