@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,14 +20,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.GarageDetails;
+import com.example.parkin.DB.SpaceDetails;
 import com.example.parkin.util.MyClusterManagerRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,8 +43,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.io.IOException;
@@ -53,6 +61,9 @@ import java.util.TimeZone;
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "MapActivity";
     private GoogleMap mMap;
+    private Spinner vehicle_spinner;
+    private Button show_button;
+    ArrayList<Integer>marker_flag=new ArrayList<>();
     LocationManager locationManager;
     LocationListener locationListener;
     private ClusterManager<ClusterMarker> mClusterManager;
@@ -62,6 +73,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private Marker current_loc;
     private Marker search_loc;
     int init;
+    private int vehicle_size;
+    private String vehicle_type=null;
     Button arrivalTime;
     Button depatureTime;
     private Button current;
@@ -92,10 +105,61 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        vehicle_size=0;
         mapView = mapFragment.getView();
         mapFragment.getMapAsync(this);
         arrivalTime = findViewById(R.id.Arrival_button);
         depatureTime = findViewById(R.id.Departure_button);
+        show_button=findViewById(R.id.show_button);
+        vehicle_spinner=(Spinner)findViewById(R.id.vehicle_spinner);
+        List<String>spinneritem=new ArrayList<String>();
+        spinneritem.add("Any Vehicle");
+        spinneritem.add("Car");
+        spinneritem.add("Motor Bike");
+        spinneritem.add("Auto Rickshaw");
+        spinneritem.add("Bus");
+        spinneritem.add("Truck");
+        vehicle_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                switch(position){
+                    case 0:
+                        vehicle_size=0;
+                        break;
+                    case 1:
+                        vehicle_size=25;
+                        vehicle_type="Car";
+                        break;
+                    case 2:
+                        vehicle_size=10;
+                        vehicle_type="Motor Bike";
+                        break;
+                    case 3:
+                        vehicle_size=15;
+                        vehicle_type="Auto Rickshaw";
+                        break;
+                    case 4:
+                        vehicle_size=45;
+                        vehicle_type="Bus";
+                        break;
+                    case 5:
+                        vehicle_size=50;
+                        vehicle_type="Truck";
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
+            }
+        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, spinneritem);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vehicle_spinner.setAdapter(adapter);
         init = 0;
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
         for (int i=0; i<garageDetailsArrayList.size(); i++){
@@ -345,6 +409,42 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         dateTimeFragment.setDefaultDateTime(arrivaltime.getTime());
         dateTimeFragment.show(getSupportFragmentManager(), TAG_DATETIME_FRAGMENT);
     }
+    public void customiseMarkers(View view)
+    {
+        CommunicateWithPhp com=new CommunicateWithPhp();
+        for(int i=0;i<garages.size();i++)
+        {
+            ArrayList<SpaceDetails>spaceDetails=com.getAvailableSpaces(garages.get(i).getGarage_id(),arrivaltime,departuretime);
+            boolean flag=is_eligible(spaceDetails);
+            System.out.println(flag);
+            if(flag==true)
+            {
+                if(marker_flag.get(i)==0)
+                {
+                    mClusterManager.addItem(mClusterMarkers.get(i));
+                    marker_flag.set(i,1);
+                }
+            }
+            if(flag==false)
+            {
+                if(marker_flag.get(i)==1) {
+                    mClusterManager.removeItem(mClusterMarkers.get(i));
+                    marker_flag.set(i,0);
+                }
+            }
+        }
+        mClusterManager.cluster();
+    }
+    public boolean is_eligible(ArrayList<SpaceDetails>spaceDetails)
+    {
+        for(int i=0;i<spaceDetails.size();i++)
+        {
+            System.out.println(spaceDetails.get(i).getAvailability());
+            if(spaceDetails.get(i).getSpacesize()>=vehicle_size && spaceDetails.get(i).getAvailability().equals("yes"))
+                return true;
+        }
+        return false;
+    }
 //    public void setDepatureTime(View view){
 //        Calendar mcurrentTime = Calendar.getInstance();
 //        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -398,6 +498,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         mClusterManager
                 );
                 mClusterManager.setRenderer(mClusterManagerRenderer);
+                mClusterManager.setAlgorithm(new GridBasedAlgorithm<ClusterMarker>());
             }
 
             for(GarageObject garage: garages){
@@ -415,7 +516,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             garage
                     );
                     mClusterManager.addItem(newClusterMarker);
+                    //mClusterManager.removeItem(newClusterMarker);
                     mClusterMarkers.add(newClusterMarker);
+                    marker_flag.add(1);
 
                 }catch (NullPointerException e){
                     Log.e(TAG, "addMapMarkers: NullPointerException: " + e.getMessage() );

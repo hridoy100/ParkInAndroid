@@ -3,6 +3,16 @@ package com.example.parkin.DB;
 public class VehicleDetails {
     private String licenseId, licenseNo, areaCode, vehicleCode, registrationNo, customerMobNo, type, company, fitnessCertificate, taxToken;
 
+    private int space;
+
+    public int getSpaceSize() {
+        return space;
+    }
+
+    public void setSpaceSize(int space) {
+        this.space = space;
+    }
+
     public String getLicenseId() {
         return licenseId;
     }
@@ -23,8 +33,19 @@ public class VehicleDetails {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type)
+    {
         this.type = type;
+        if(type.equals("Car"))
+            setSpaceSize(25);
+        if(type.equals("Motor Bike") || type.equals("Bike"))
+            setSpaceSize(10);
+        if(type.equals("Bus"))
+            setSpaceSize(45);
+        if(type.equals("Truck"))
+            setSpaceSize(50);
+        if(type.equals("CNG") ||type.equals("Auto Rickshaw"))
+            setSpaceSize(15);
     }
 
     public String getLicenseNo() {
