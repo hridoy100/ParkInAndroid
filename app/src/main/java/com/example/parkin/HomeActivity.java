@@ -7,8 +7,12 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,7 +34,8 @@ import com.google.android.gms.common.util.AndroidUtilsLight;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
-
+    NotificationThread thread;
+    public PendingIntent pintent;
     ActionBarDrawerToggle mToggle;
     DrawerLayout drawerLayout;
     ImageView bgapp, clover, parkingAppIcon;
@@ -39,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView textTop;
     Context mContext;
     public ProgressDialog progressDialog;
-
+    int notifcount=0;
     boolean loggedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +114,48 @@ public class HomeActivity extends AppCompatActivity {
         });*/
 
         showHomePage();
+        final Handler handler=new Handler(){
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void handleMessage(Message msg)
+            {
+                if(msg.what==1 && msg.arg1>notifcount)
+                {
+                    System.out.println("From handler");
+                    int notifyID = 1;
+                    String CHANNEL_ID = "my_channel_01";// The id of the channel.
+                    CharSequence name = "eito chole";// The user-visible name of the channel.
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+// Create a notification and set the notification channel.
+                    Intent intent=new Intent(getApplicationContext(),NotificationActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    PendingIntent pintent=PendingIntent.getActivity(mContext,0,intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    Notification notification = new Notification.Builder(mContext)
+                            .setContentTitle("New Rent")
+                            .setContentText("You've " + msg.arg1 + "Notifications")
+                            .setSmallIcon(R.drawable.common_google_signin_btn_icon_light)
+                            .setChannelId(CHANNEL_ID)
+                            .setContentIntent(pintent)
+                            .build();
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.createNotificationChannel(mChannel);
+// Issue the notification.
+                    //mNotificationManager.cancel(notifyID);
+                    mNotificationManager.notify(notifyID, notification);
+                    notifcount=msg.arg1;
+                    thread.start(notifcount);
+
+                }
+                super.handleMessage(msg);
+            }
+        };
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+        thread=new NotificationThread(mobNo,handler);
+        thread.start(0);
 
     }
 
