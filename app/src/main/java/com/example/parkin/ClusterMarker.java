@@ -1,4 +1,5 @@
 package com.example.parkin;
+import com.example.parkin.DB.GarageDetails;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
@@ -9,14 +10,14 @@ public class ClusterMarker implements ClusterItem{
     private String title;
     private String snippet;
     private int iconPicture;
-    private GarageObject garage;
+    private GarageDetails garage;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClusterMarker that = (ClusterMarker) o;
-        return Objects.equals(position, that.position);
+        return Objects.equals(garage.getAddressId(), that.garage.getGarageId());
     }
 
     @Override
@@ -24,7 +25,7 @@ public class ClusterMarker implements ClusterItem{
         return Objects.hash(position);
     }
 
-    public ClusterMarker(LatLng position, String title, String snippet, int iconPicture, GarageObject garage) {
+    public ClusterMarker(LatLng position, String title, String snippet, int iconPicture, GarageDetails garage) {
         this.position = position;
         this.title = title;
         this.snippet = snippet;
@@ -62,11 +63,11 @@ public class ClusterMarker implements ClusterItem{
         this.snippet = snippet;
     }
 
-    public GarageObject getGarage() {
+    public GarageDetails getGarage() {
         return garage;
     }
 
-    public void setGarage(GarageObject garage) {
+    public void setGarage(GarageDetails garage) {
         this.garage = garage;
     }
 
