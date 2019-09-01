@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public class SingleNotificationActivity extends AppCompatActivity {
             status.setText(rentArrayList.get(i).getStatus());
             if(status.getText().toString().contains("booked") ){
                 Glide.with(this)
-                        .load(R.drawable.car_on_going)
+                        .load(R.drawable.booked)
                         .into(statusImage);
                 //statusImage.setImageResource(R.drawable.car_on_going);
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -74,10 +75,34 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo()))
                     status.setText("You have booked the space. Please arrive on time");
             }
-            if(status.getText().equals("parked")){
-                statusImage.setImageResource(R.drawable.car_parked);
+            if(status.getText().toString().contains("parked")){
+                Glide.with(this)
+                        .load(R.drawable.car_parked)
+                        .into(statusImage);
+            }
+
+            if(status.getText().toString().contains("left")){
+                Glide.with(this)
+                        .load(R.drawable.car_left)
+                        .into(statusImage);
             }
 
         }
+    }
+
+    public void onCCTVClicked(View view) {
+        Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
+        startActivity(cameraIntent);
+    }
+
+
+    public void onBackClicked(View view){
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

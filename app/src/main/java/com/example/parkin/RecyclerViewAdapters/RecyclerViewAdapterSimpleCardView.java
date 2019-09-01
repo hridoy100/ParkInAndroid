@@ -1,7 +1,9 @@
 package com.example.parkin.RecyclerViewAdapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -43,6 +45,9 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
         viewHolder.date.setText(notificationArrayList.get(i).getDate());
         viewHolder.time.setText(notificationArrayList.get(i).getTime());
         viewHolder.mobileNo.setText(Html.fromHtml(notificationArrayList.get(i).getMobileNo()));
+        if(notificationArrayList.get(i).getStatus().equals("no"))
+            viewHolder.simpleCardView.setCardBackgroundColor(Color.parseColor("#69ffcd"));
+        else viewHolder.simpleCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     @Override
@@ -55,6 +60,7 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
         TextView notifMsg;
         TextView date, time;
         TextView mobileNo;
+        CardView simpleCardView;
         RecyclerViewAdapterSimpleCardView.OnItemClickListener onItemClickListener;
 
         public ViewHolder(View itemView, RecyclerViewAdapterSimpleCardView.OnItemClickListener onItemClickListener) {
@@ -63,6 +69,7 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
             date = (TextView) itemView.findViewById(R.id.date);
             time = (TextView) itemView.findViewById(R.id.time);
             mobileNo = (TextView) itemView.findViewById(R.id.mobileNo);
+            simpleCardView = (CardView) itemView.findViewById(R.id.simpleCardView);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }
