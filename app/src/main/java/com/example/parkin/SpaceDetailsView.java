@@ -50,6 +50,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     String garageaddress;
     int garageid;
     int licenseid;
+    private String vehicle_type;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         long dtime=myintent.getLongExtra("departuretime", Calendar.getInstance().getTimeInMillis());
         garageaddress=myintent.getStringExtra("garagelocation");
         garageid=myintent.getIntExtra("garageid",1);//Integer.parseInt(myintent.getExtras().get("garageid").toString());
+        vehicle_type= myintent.getStringExtra("vehicleType");
+        System.out.println("Garage id: "+garageid);
         arrivaltime=gettime(arrtime);
         departuretime=gettime(dtime);
         initImageBitmaps();
@@ -122,13 +125,26 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         start_time.setText("Arrival Time : "+myDateFormat.format(arrivaltime.getTime()));
         end_time.setText("Departure Time : "+myDateFormat.format(departuretime.getTime()));
         space_size.setText("Space Size : "+spaceDetails.get(i).getSpacesize());
-        space_location.setText("Space Position : "+spaceDetails.get(i).getPosition());
+        space_location.setText("Space No : "+spaceDetails.get(i).getPosition());
         Spinner spinner = (Spinner) layout.findViewById(R.id.vehicle_list);
         CommunicateWithPhp com=new CommunicateWithPhp();
         ArrayList<VehicleDetails>vehcilelist=com.getVehicleDetailsDB(this);
+        ArrayList<VehicleDetails>spinnerlist=vehcilelist;
         System.out.println(vehcilelist.size());
         List<String>spinneritem=new ArrayList<String>();
         spinneritem.add("Select Vehicle");
+        int idxj=0;
+        while(true)
+        {
+            if(!spinnerlist.get(idxj).getType().equals(vehicle_type) && vehicle_type!=null)
+            {
+                spinnerlist.remove(idxj);
+            }
+            else
+                idxj++;
+            if(idxj==spinnerlist.size())
+                break;
+        }
         for(int j=0;j<vehcilelist.size();j++)
         {
             String s="License No:"+vehcilelist.get(j).getLicenseNo()+
@@ -211,8 +227,8 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                         if(flag==1) {
                             Log.d("SelectedItem",Integer.toString(selectedItem));
                             Log.d("VehicleList Size",Integer.toString(vehcilelist.size()));
-                            Log.d("License ID", vehcilelist.get(selectedItem-1).getLicenseId());
-                            licenseid=Integer.parseInt(vehcilelist.get(selectedItem-1).getLicenseId());
+                            Log.d("License ID", spinnerlist.get(selectedItem-1).getLicenseId());
+                            licenseid=Integer.parseInt(spinnerlist.get(selectedItem-1).getLicenseId());
                             //Toast.makeText(getApplicationContext(), "Space Booked", Toast.LENGTH_SHORT).show();
                             CommunicateWithPhp com = new CommunicateWithPhp();
                             com.bookGarageSpace(context, garageid, sid, arrivaltime, departuretime,licenseid);
