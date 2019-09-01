@@ -75,6 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     int init;
     private int vehicle_size;
     private String vehicle_type=null;
+    private int show_button_flag=0;
     Button arrivalTime;
     Button depatureTime;
     private Button current;
@@ -381,13 +382,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
                 Log.d("arrivaltime",myDateFormat.format(arrivaltime.getTime()));
                 Log.d("departuretime",myDateFormat.format(departuretime.getTime()));
-                Log.d("GarageLocation",ClusterItem.getGarage().getGarage().getAddressName());
-                Log.d("GarageId",ClusterItem.getGarage().getGarage().getGarageId());
+                Log.d("GarageLocation",ClusterItem.getGarage().getAddressName());
+                Log.d("GarageId",ClusterItem.getGarage().getGarageId());
                 Intent spaceintent=new Intent(getApplicationContext(),SpaceDetailsView.class);
+                String send_vehicle_type=null;
+                if(show_button_flag==1)
+                {
+                    send_vehicle_type=vehicle_type;
+                }
+                System.out.println("Onclick garageid: "+ClusterItem.getGarage().getGarageId());
                 spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
                 spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
-                spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getGarage().getAddressName());
-                spaceintent.putExtra("garageid",Integer.parseInt(ClusterItem.getGarage().getGarage().getGarageId()));
+                spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getAddressName());
+                spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarageId());
+                spaceintent.putExtra("vehicleType",send_vehicle_type);
                 startActivity(spaceintent);
                 return true;
             }
@@ -411,10 +419,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
     public void customiseMarkers(View view)
     {
+        show_button_flag=1;
         CommunicateWithPhp com=new CommunicateWithPhp();
         for(int i=0;i<garages.size();i++)
         {
-            ArrayList<SpaceDetails>spaceDetails=com.getAvailableSpaces(garages.get(i).getGarage_id(),arrivaltime,departuretime);
+            ArrayList<SpaceDetails>spaceDetails=com.getAvailableSpaces(Integer.parseInt(garages.get(i).getGarage().
+                            getGarageId()),
+                    arrivaltime,departuretime);
+            System.out.println("Iterating garagaes: "+garages.get(i).getGarage_id());
             boolean flag=is_eligible(spaceDetails);
             System.out.println(flag);
             if(flag==true)
@@ -504,7 +516,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             for(GarageObject garage: garages){
                 try{
 
-                    String snippet = "This is garage no : " + String.valueOf(garage.getGarage_id());
+                    String snippet = "This is garage no : " + garage.getGarage().getGarageId();
 
 
                     int avatar = R.drawable.garage_for_map_small; // set the default avatar
@@ -513,7 +525,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             "Default title",
                             snippet,
                             avatar,
-                            garage
+                            garage.getGarage()
                     );
                     mClusterManager.addItem(newClusterMarker);
                     //mClusterManager.removeItem(newClusterMarker);
