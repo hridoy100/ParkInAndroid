@@ -1,12 +1,15 @@
 package com.example.parkin.MyFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.R;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSingleSpace;
+import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSpace;
 import com.example.parkin.Stepper.MyStepperTest;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -36,7 +42,7 @@ import java.util.HashMap;
  * Use the {@link DetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends Fragment implements RecyclerViewAdapterSingleSpace.OnItemClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -95,6 +101,8 @@ public class DetailsFragment extends Fragment {
     //..........
 
     String featuresStr ="";
+
+    ArrayList<String> spaceNo;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -174,6 +182,11 @@ public class DetailsFragment extends Fragment {
         plus = (Button) view.findViewById(R.id.plusButton);
         minus = (Button) view.findViewById(R.id.minusButton);
 
+        spaceNo = new ArrayList<>();
+        for(int i=0; i< Integer.parseInt(spaceCount.getText().toString()); i++)
+            spaceNo.add("Space #"+(i+1));
+        initRecyclerView(view);
+
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +194,12 @@ public class DetailsFragment extends Fragment {
                 if(count<20)
                     count++;
                 spaceCount.setText(Integer.toString(count));
+
+                spaceNo = new ArrayList<>();
+                for(int i=0; i< Integer.parseInt(spaceCount.getText().toString()); i++)
+                    spaceNo.add("Space #"+(i+1));
+                initRecyclerView(view);
+
             }
         });
 
@@ -191,6 +210,10 @@ public class DetailsFragment extends Fragment {
                 if(count>1)
                     count--;
                 spaceCount.setText(Integer.toString(count));
+                spaceNo = new ArrayList<>();
+                for(int i=0; i< Integer.parseInt(spaceCount.getText().toString()); i++)
+                    spaceNo.add("Space #"+(i+1));
+                initRecyclerView(view);
             }
         });
 
@@ -343,6 +366,11 @@ public class DetailsFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onItemClick(int i) {
+        Toast.makeText(getActivity(),spaceNo.get(i),Toast.LENGTH_SHORT).show();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -366,4 +394,11 @@ public class DetailsFragment extends Fragment {
         String mob = "880"+mobileNo.getText().toString();
         hashMap.put("mobileNo", mob);
     }
+    void initRecyclerView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.recycleView_space);
+        RecyclerViewAdapterSingleSpace adapterSpace = new RecyclerViewAdapterSingleSpace(spaceNo, getActivity(), this);
+        recyclerView.setAdapter(adapterSpace);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
 }

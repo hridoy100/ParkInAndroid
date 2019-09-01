@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.parkin.MyFragment.AddressFragment;
 import com.example.parkin.MyFragment.DetailsFragment;
 import com.example.parkin.MyFragment.LocationFragment;
+import com.example.parkin.MyFragment.SpaceFragment;
 import com.example.parkin.R;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -76,6 +77,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
     AddressFragment addressFragment;
     LocationFragment locationFragment;
     DetailsFragment detailsFragment;
+    SpaceFragment spaceFragment;
 
     TextView test;
 
@@ -134,8 +136,8 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
             @Override
             public void onClick(View v) {
                 currentStep++;
-                if(currentStep>4)
-                    currentStep=4;
+                if(currentStep>5)
+                    currentStep=5;
                 onNextOrBackPressed();
 
                 /*mapView.setVisibility(View.VISIBLE);
@@ -170,6 +172,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
             addressFragment = AddressFragment.newInstance("address","add");
             locationFragment = LocationFragment.newInstance("location","loc");
             detailsFragment = DetailsFragment.newInstance("details","det");
+            spaceFragment = SpaceFragment.newInstance("space","sp");
             //fragment = new AddressFragment();
         }
 
@@ -321,6 +324,9 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
                 displayDetailsFragment();
                 break;
             case 4 :
+                displaySpaceFragment();
+                break;
+            case 5 :
                 getDataFromDetailsFragment();
                 break;
             default:
@@ -498,6 +504,12 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         if(locationFragment.isAdded()) {
             ft.hide(locationFragment);
         }
+        if(detailsFragment.isAdded()) {
+            ft.hide(detailsFragment);
+        }
+        if(spaceFragment.isAdded()) {
+            ft.hide(spaceFragment);
+        }
 
         ft.commit();
     }
@@ -517,6 +529,9 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         if(detailsFragment.isAdded()) {
             ft.hide(detailsFragment);
         }
+        if(spaceFragment.isAdded()) {
+            ft.hide(spaceFragment);
+        }
 
         ft.commit();
     }
@@ -535,6 +550,31 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         }
         if(locationFragment.isAdded()) {
             ft.hide(locationFragment);
+        }
+        if(spaceFragment.isAdded()) {
+            ft.hide(spaceFragment);
+        }
+
+        ft.commit();
+    }
+
+    void displaySpaceFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if(spaceFragment.isAdded()){
+            ft.show(spaceFragment);
+        } else {
+            ft.add(R.id.fragContainer, spaceFragment, "SpaceFragment");
+        }
+
+        //hide other fragments..
+        if(addressFragment.isAdded()) {
+            ft.hide(addressFragment);
+        }
+        if(locationFragment.isAdded()) {
+            ft.hide(locationFragment);
+        }
+        if(detailsFragment.isAdded()) {
+            ft.hide(detailsFragment);
         }
 
         ft.commit();
