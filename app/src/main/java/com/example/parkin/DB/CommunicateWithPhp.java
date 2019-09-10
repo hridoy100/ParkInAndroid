@@ -632,7 +632,7 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
-            Log.i("SharedmobileNo: ",mobNo);
+            //Log.i("SharedmobileNo: ",mobNo);
             ps.print("&mobileNo="+mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -640,10 +640,10 @@ public class CommunicateWithPhp {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             in.close();
-            System.out.println(response.toString());
+            //System.out.println(response.toString());
             JSONArray jsonArray = new JSONArray(response.toString());
 
 
@@ -652,7 +652,7 @@ public class CommunicateWithPhp {
                 Notification notificationDetails = new Notification();
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
                 JSONObject dataobj = (JSONObject) vehicleData.get("notification");
-                Log.i("dataobj", dataobj.toString());
+                //Log.i("dataobj", dataobj.toString());
                 notificationDetails.setId((String)dataobj.getString("id"));
                 notificationDetails.setRentno((String)dataobj.getString("rent_no"));
                 notificationDetails.setStatus((String)dataobj.getString("seen"));
@@ -702,7 +702,7 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
             //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             //String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
-            Log.i("SharedmobileNo: ",mobNo);
+            //Log.i("SharedmobileNo: ",mobNo);
             ps.print("&mobileNo="+mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -710,10 +710,10 @@ public class CommunicateWithPhp {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             in.close();
-            System.out.println(response.toString());
+            //System.out.println(response.toString());
             JSONArray jsonArray = new JSONArray(response.toString());
 
 
@@ -722,7 +722,7 @@ public class CommunicateWithPhp {
                 Notification notificationDetails = new Notification();
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
                 JSONObject dataobj = (JSONObject) vehicleData.get("notification");
-                Log.i("dataobj", dataobj.toString());
+                //Log.i("dataobj", dataobj.toString());
                 notificationDetails.setId((String)dataobj.getString("id"));
                 notificationDetails.setRentno((String)dataobj.getString("rent_no"));
                 notificationDetails.setStatus((String)dataobj.getString("seen"));
@@ -835,6 +835,43 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
 
             ps.print("&rentNo="+rentNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            if(response.toString().contains("success")){
+                Log.d("updating notification",response.toString());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteVehicle(String licenseNo) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_DELVEHICLE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&licenseNo="+licenseNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
