@@ -18,7 +18,7 @@ import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
+public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, RecyclerViewAdapter.OnItemLongClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
 
@@ -145,10 +145,20 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
 
     void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycleView_vehicle);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,license,company, reg, mImageUrls, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,license,company, reg, mImageUrls, this,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
+    @Override
+    public void onItemLongClick(int i) {
+        String licenseNo = license.get(i);
+        licenseNo = licenseNo.substring(licenseNo.lastIndexOf(" ")+1);
+        Toast.makeText(getApplicationContext(), licenseNo, Toast.LENGTH_SHORT).show();
+        Log.d("onItemClick", licenseNo);
+        CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+        communicateWithPhp.deleteVehicle(licenseNo);
+        Toast.makeText(getApplicationContext(),licenseNo+"del", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -36,7 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
+public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, RecyclerViewAdapter.OnItemLongClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
     int selectedItem;
@@ -311,11 +311,15 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
 
     void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycleView_space);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,spacenolist,spacesizelist, minimumcostlist, mImageUrls, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,spacenolist,spacesizelist, minimumcostlist, mImageUrls, this,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
+    @Override
+    public void onItemLongClick(int i) {
+
+    }
 }
 

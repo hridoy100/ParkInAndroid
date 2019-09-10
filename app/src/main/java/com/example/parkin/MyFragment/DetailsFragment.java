@@ -158,7 +158,7 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         ////accessInstruction = (AppCompatEditText) view.findViewById(R.id.accessInstruction);
         //RadioGroup
         ////typeOfSpace = (RadioGroup) view.findViewById(R.id.typeOfParking);
-        vehicleType = (RadioGroup) view.findViewById(R.id.vehicleType);
+        //vehicleType = (RadioGroup) view.findViewById(R.id.vehicleType);
 
 //        typeOfSpace.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //            @Override
@@ -167,13 +167,13 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
 //            }
 //        });
 
-        vehicleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                vehilceTypeRadio = (RadioButton) view.findViewById(checkedId);
-                Toast.makeText(getContext(), vehilceTypeRadio.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        vehicleType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                vehilceTypeRadio = (RadioButton) view.findViewById(checkedId);
+//                Toast.makeText(getContext(), vehilceTypeRadio.getText().toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         //Checkboxes..
         //accessInfoCheckbox = (LinearLayout) view.findViewById(R.id.accessInfoCheckBox);
