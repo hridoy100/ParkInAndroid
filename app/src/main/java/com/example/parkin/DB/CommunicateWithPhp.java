@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.util.Log;
 import android.widget.Space;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.parkin.HomeActivity;
+import com.example.parkin.LoginActivity;
 import com.example.parkin.MainActivity;
 import com.example.parkin.Notification;
 import com.example.parkin.R;
@@ -30,6 +32,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -42,12 +46,16 @@ import java.util.Map;
 public class CommunicateWithPhp {
     private MainActivity mainActivity;
     private Context context;
-    public void setMain (MainActivity mainActivity){
+
+    public void setMain(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
-    public void setContext(Context context) {this.context = context;}
 
-    public void verifyUser(final String mobileNo, String password) {
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+   /* public void verifyUser(final String mobileNo, String password) {
         final String mobileNoStr = mobileNo;
         final String passwordStr = password;
 
@@ -99,8 +107,10 @@ public class CommunicateWithPhp {
         RequestHandler.getInstance(mainActivity).addToRequestQueue(stringRequest);
     }
 
+    */
 
-    public ArrayList<GarageDetails> getAllGarageDetailsDB(){
+
+    public ArrayList<GarageDetails> getAllGarageDetailsDB() {
 //        progressDialog.setMessage("Fetching Garage Details...");
 //        progressDialog.show();
         //new JSONAsyncTask().execute(Constants.URL_AllGarage);
@@ -122,7 +132,7 @@ public class CommunicateWithPhp {
             }
             in.close();
             System.out.println(response.toString());
-            JSONArray jsonArray= new JSONArray(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
             ArrayList<GarageDetails> garageDetailsArrayList = new ArrayList<>();
             ArrayList<String> garageNameArrayList = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -131,19 +141,18 @@ public class CommunicateWithPhp {
                 JSONObject dataobj = (JSONObject) garageData.get("garageDetails");
                 Log.i("dataobj", dataobj.toString());
                 garageDetails.setAddressId((String) dataobj.getString("addressId"));
-                garageDetails.setGarageId((String)dataobj.getString("garageId"));
-                garageDetails.setAddressName((String)dataobj.getString("addressName"));
-                garageDetails.setPostalId((String)dataobj.getString("postalId"));
-                garageDetails.setLongitude((String)dataobj.getString("longitude"));
-                garageDetails.setLatitude((String)dataobj.getString("latitude"));
+                garageDetails.setGarageId((String) dataobj.getString("garageId"));
+                garageDetails.setAddressName((String) dataobj.getString("addressName"));
+                garageDetails.setPostalId((String) dataobj.getString("postalId"));
+                garageDetails.setLongitude((String) dataobj.getString("longitude"));
+                garageDetails.setLatitude((String) dataobj.getString("latitude"));
 
                 garageDetailsArrayList.add(garageDetails);
                 garageNameArrayList.add(garageDetails.getAddressName());
 
             }
             return garageDetailsArrayList;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -204,7 +213,7 @@ public class CommunicateWithPhp {
     }
 
 
-    public ArrayList<GarageDetails> getMyGaragesDB(Context context){
+    public ArrayList<GarageDetails> getMyGaragesDB(Context context) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -223,7 +232,7 @@ public class CommunicateWithPhp {
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
             //Log.i("SharedmobileNo: ",mobNo);
             Log.i("Mob No", mobNo);
-            ps.print("&mobileNo="+mobNo);
+            ps.print("&mobileNo=" + mobNo);
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String inputLine;
@@ -233,7 +242,7 @@ public class CommunicateWithPhp {
             }
             in.close();
             System.out.println(response.toString());
-            JSONArray jsonArray= new JSONArray(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
             ArrayList<GarageDetails> garageDetailsArrayList = new ArrayList<>();
             ArrayList<String> garageNameArrayList = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -242,19 +251,18 @@ public class CommunicateWithPhp {
                 JSONObject dataobj = (JSONObject) garageData.get("myGarage");
                 Log.i("dataobj", dataobj.toString());
                 garageDetails.setAddressId((String) dataobj.getString("addressId"));
-                garageDetails.setGarageId((String)dataobj.getString("garageId"));
-                garageDetails.setAddressName((String)dataobj.getString("addressName"));
-                garageDetails.setPostalId((String)dataobj.getString("postalId"));
-                garageDetails.setLongitude((String)dataobj.getString("longitude"));
-                garageDetails.setLatitude((String)dataobj.getString("latitude"));
+                garageDetails.setGarageId((String) dataobj.getString("garageId"));
+                garageDetails.setAddressName((String) dataobj.getString("addressName"));
+                garageDetails.setPostalId((String) dataobj.getString("postalId"));
+                garageDetails.setLongitude((String) dataobj.getString("longitude"));
+                garageDetails.setLatitude((String) dataobj.getString("latitude"));
 
                 garageDetailsArrayList.add(garageDetails);
                 garageNameArrayList.add(garageDetails.getAddressName());
 
             }
             return garageDetailsArrayList;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -286,7 +294,7 @@ public class CommunicateWithPhp {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
             //Log.i("SharedmobileNo: ",mobNo);
-            ps.print("&mobileNo="+mobNo);
+            ps.print("&mobileNo=" + mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -329,7 +337,7 @@ public class CommunicateWithPhp {
     }
 
     public VehicleDetails getOneVehicleDetails(String licenseNo) {
-      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
 
@@ -344,7 +352,7 @@ public class CommunicateWithPhp {
             connection.setDoOutput(true);
 
             PrintStream ps = new PrintStream(connection.getOutputStream());
-            ps.print("&licenseNo="+licenseNo);
+            ps.print("&licenseNo=" + licenseNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -381,7 +389,8 @@ public class CommunicateWithPhp {
 
         return null;
     }
-    public ArrayList<SpaceDetails> getAvailableSpaces(int garageid, Calendar arrivaltime,Calendar departuretime) {
+
+    public ArrayList<SpaceDetails> getAvailableSpaces(int garageid, Calendar arrivaltime, Calendar departuretime) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -396,16 +405,16 @@ public class CommunicateWithPhp {
 //            connection.setDoInput(true);
             connection.setDoOutput(true);
             SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
-            Log.d("starttime",DateFormat.format(arrivaltime.getTime()));
-            Log.d("endtime",DateFormat.format(departuretime.getTime()));
-            String arrive=DateFormat.format(arrivaltime.getTime());
-            String end=DateFormat.format(departuretime.getTime());
+            Log.d("starttime", DateFormat.format(arrivaltime.getTime()));
+            Log.d("endtime", DateFormat.format(departuretime.getTime()));
+            String arrive = DateFormat.format(arrivaltime.getTime());
+            String end = DateFormat.format(departuretime.getTime());
             PrintStream ps = new PrintStream(connection.getOutputStream());
-            ps.print("&garageId="+garageid);
+            ps.print("&garageId=" + garageid);
             //ps.print("&start_time="+arrivaltime);
             //ps.print("&end_time="+departuretime);
-            ps.print("&start_time="+arrive);
-            ps.print("&end_time="+end);
+            ps.print("&start_time=" + arrive);
+            ps.print("&end_time=" + end);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -430,7 +439,7 @@ public class CommunicateWithPhp {
                 spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
                 spaceDetails.setPosition(dataobj.getString("position"));
                 SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
-                Calendar cal=Calendar.getInstance();
+                Calendar cal = Calendar.getInstance();
                 cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
                 spaceDetails.setStarttime1(cal);
                 cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
@@ -445,7 +454,8 @@ public class CommunicateWithPhp {
 
         return null;
     }
-    public void bookGarageSpace(Context context,int garageid,int spaceid, Calendar arrivaltime,Calendar departuretime,int licenseid) {
+
+    public void bookGarageSpace(Context context, int garageid, int spaceid, Calendar arrivaltime, Calendar departuretime, int licenseid) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -467,11 +477,11 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
-            Log.i("SharedmobileNo: ",mobNo);
-            ps.print("&customerMobNo="+mobNo);
+            Log.i("SharedmobileNo: ", mobNo);
+            ps.print("&customerMobNo=" + mobNo);
             ps.print("&garageId=" + garageid);
             ps.print("&spaceId=" + spaceid);
-            ps.print("&licenseID=" +licenseid);
+            ps.print("&licenseID=" + licenseid);
             //ps.print("&start_time="+arrivaltime);
             //ps.print("&end_time="+departuretime);
             ps.print("&start_time=" + arrive);
@@ -486,9 +496,7 @@ public class CommunicateWithPhp {
             }
             in.close();
             System.out.println(response.toString());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -508,7 +516,7 @@ public class CommunicateWithPhp {
 //            connection.setDoInput(true);
             connection.setDoOutput(true);
             PrintStream ps = new PrintStream(connection.getOutputStream());
-            ps.print("&garageId="+garageid);
+            ps.print("&garageId=" + garageid);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -533,7 +541,7 @@ public class CommunicateWithPhp {
                 spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
                 spaceDetails.setPosition(dataobj.getString("position"));
                 SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
-                Calendar cal=Calendar.getInstance();
+                Calendar cal = Calendar.getInstance();
                 cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
                 spaceDetails.setStarttime1(cal);
                 cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
@@ -568,8 +576,8 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
-            Log.i("SharedmobileNo: ",mobNo);
-            ps.print("&customerMobNo="+mobNo);
+            Log.i("SharedmobileNo: ", mobNo);
+            ps.print("&customerMobNo=" + mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -633,7 +641,7 @@ public class CommunicateWithPhp {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
             //Log.i("SharedmobileNo: ",mobNo);
-            ps.print("&mobileNo="+mobNo);
+            ps.print("&mobileNo=" + mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -653,25 +661,24 @@ public class CommunicateWithPhp {
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
                 JSONObject dataobj = (JSONObject) vehicleData.get("notification");
                 //Log.i("dataobj", dataobj.toString());
-                notificationDetails.setId((String)dataobj.getString("id"));
-                notificationDetails.setRentno((String)dataobj.getString("rent_no"));
-                notificationDetails.setStatus((String)dataobj.getString("seen"));
+                notificationDetails.setId((String) dataobj.getString("id"));
+                notificationDetails.setRentno((String) dataobj.getString("rent_no"));
+                notificationDetails.setStatus((String) dataobj.getString("seen"));
                 String timeStamp = dataobj.getString("cur_timestamp");
-                String time = timeStamp.substring(timeStamp.indexOf(" ")+1);
+                String time = timeStamp.substring(timeStamp.indexOf(" ") + 1);
                 String date = timeStamp.substring(0, timeStamp.indexOf(" "));
                 notificationDetails.setTime(time);
                 notificationDetails.setDate(date);
 
                 String renterMob = dataobj.getString("renter_mob_no");
                 String customerMob = dataobj.getString("customer_mob_no");
-                String notifMsg=null;
-                if(customerMob.equals(mobNo)) {
-                    notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
-                    notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob+"</font>");
-                }
-                else if(renterMob.equals(mobNo)){
-                    notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
-                    notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob+"</font>");
+                String notifMsg = null;
+                if (customerMob.equals(mobNo)) {
+                    notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
+                    notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob + "</font>");
+                } else if (renterMob.equals(mobNo)) {
+                    notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
+                    notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob + "</font>");
                 }
                 notificationDetails.setNotificationMessage(notifMsg);
                 notificationArrayList.add(notificationDetails);
@@ -684,6 +691,7 @@ public class CommunicateWithPhp {
 
         return null;
     }
+
     public ArrayList<Notification> getNotification2(String mobNo) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
@@ -703,7 +711,7 @@ public class CommunicateWithPhp {
             //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             //String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
             //Log.i("SharedmobileNo: ",mobNo);
-            ps.print("&mobileNo="+mobNo);
+            ps.print("&mobileNo=" + mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -723,25 +731,24 @@ public class CommunicateWithPhp {
                 JSONObject vehicleData = (JSONObject) jsonArray.get(i);
                 JSONObject dataobj = (JSONObject) vehicleData.get("notification");
                 //Log.i("dataobj", dataobj.toString());
-                notificationDetails.setId((String)dataobj.getString("id"));
-                notificationDetails.setRentno((String)dataobj.getString("rent_no"));
-                notificationDetails.setStatus((String)dataobj.getString("seen"));
+                notificationDetails.setId((String) dataobj.getString("id"));
+                notificationDetails.setRentno((String) dataobj.getString("rent_no"));
+                notificationDetails.setStatus((String) dataobj.getString("seen"));
                 String timeStamp = dataobj.getString("cur_timestamp");
-                String time = timeStamp.substring(timeStamp.indexOf(" ")+1);
+                String time = timeStamp.substring(timeStamp.indexOf(" ") + 1);
                 String date = timeStamp.substring(0, timeStamp.indexOf(" "));
                 notificationDetails.setTime(time);
                 notificationDetails.setDate(date);
 
                 String renterMob = dataobj.getString("renter_mob_no");
                 String customerMob = dataobj.getString("customer_mob_no");
-                String notifMsg=null;
-                if(customerMob.equals(mobNo)) {
-                    notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
-                    notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob+"</font>");
-                }
-                else if(renterMob.equals(mobNo)){
-                    notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no")+"</b></font>";
-                    notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob+"</font>");
+                String notifMsg = null;
+                if (customerMob.equals(mobNo)) {
+                    notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
+                    notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob + "</font>");
+                } else if (renterMob.equals(mobNo)) {
+                    notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
+                    notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob + "</font>");
                 }
                 notificationDetails.setNotificationMessage(notifMsg);
                 notificationArrayList.add(notificationDetails);
@@ -754,6 +761,7 @@ public class CommunicateWithPhp {
 
         return null;
     }
+
     public ArrayList<Rent> getRentInfo(String rentNo) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
@@ -771,7 +779,7 @@ public class CommunicateWithPhp {
 
             PrintStream ps = new PrintStream(connection.getOutputStream());
 
-            ps.print("&rentNo="+rentNo);
+            ps.print("&rentNo=" + rentNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -834,7 +842,7 @@ public class CommunicateWithPhp {
 
             PrintStream ps = new PrintStream(connection.getOutputStream());
 
-            ps.print("&rentNo="+rentNo);
+            ps.print("&rentNo=" + rentNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -845,8 +853,8 @@ public class CommunicateWithPhp {
             }
             in.close();
             System.out.println(response.toString());
-            if(response.toString().contains("success")){
-                Log.d("updating notification",response.toString());
+            if (response.toString().contains("success")) {
+                Log.d("updating notification", response.toString());
             }
 
         } catch (Exception e) {
@@ -871,7 +879,7 @@ public class CommunicateWithPhp {
 
             PrintStream ps = new PrintStream(connection.getOutputStream());
 
-            ps.print("&licenseNo="+licenseNo);
+            ps.print("&licenseNo=" + licenseNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -882,13 +890,156 @@ public class CommunicateWithPhp {
             }
             in.close();
             System.out.println(response.toString());
-            if(response.toString().contains("success")){
-                Log.d("updating notification",response.toString());
+            if (response.toString().contains("success")) {
+                Log.d("updating notification", response.toString());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean createAccount(String email, String mobileNo, String password, String name, String address, String birthdate) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_REGISTER);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&email=" + email);
+            ps.print("&mobileNo=" + mobileNo);
+            ps.print("&password=" + password);
+            ps.print("&name=" + name);
+            ps.print("&address=" + address);
+            ps.print("&birthdate=" + birthdate);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            if (response.toString().contains("success")) {
+                Log.d("Registration", response.toString());
+                return true;
+            } else if (response.toString().contains("failed")) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public boolean verifyUser(String mobileNo, String password) {
+        String mobileNoStr = mobileNo;
+        String passwordStr = password;
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_LOGIN);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&mobileNo=" + mobileNo);
+            ps.print("&password=" + password);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            if (response.toString().contains("true")) {
+                Log.d("Registration", response.toString());
+                return true;
+            } else if (response.toString().contains("false")) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+
+    public String getEmail(String mobileNo) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETEMAIL);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&mobileNo=" + mobileNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                //System.out.println(inputLine);
+            }
+            in.close();
+            //Log.d("getEmail" ,response.toString());
+
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            String email=null;
+
+            JSONObject emailObj = (JSONObject) jsonArray.get(0);
+            JSONObject dataobj = (JSONObject) emailObj.get("email_array");
+            //Log.i("dataobj", dataobj.toString());
+            email = dataobj.getString("email");
+
+
+            return email;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }
