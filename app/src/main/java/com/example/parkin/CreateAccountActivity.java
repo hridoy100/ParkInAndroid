@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -18,8 +20,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.Constants;
 import com.example.parkin.DB.RequestHandler;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +35,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class CreateAccountActivity extends AppCompatActivity {
 
@@ -40,10 +49,17 @@ public class CreateAccountActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     Calendar cldr;
 
+    FirebaseAuth registrationAuth;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
+
+        registrationAuth = FirebaseAuth.getInstance();
+
         mobileNo = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         name = (EditText) findViewById(R.id.name);
@@ -54,6 +70,25 @@ public class CreateAccountActivity extends AppCompatActivity {
         birthdate.setInputType(InputType.TYPE_NULL);
         progressDialog = new ProgressDialog(this);
         cldr = Calendar.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    // NOTE: this Activity should get onpen only when the user is not signed in, otherwise
+                    // the user will receive another verification email.
+                    sendVerificationEmail();
+                } else {
+                    // User is signed out
+
+                }
+                // ...
+            }
+        };
+
+
     }
 
 
@@ -73,17 +108,94 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     public void onSubmitButton(View view){
-        System.out.println("mobileNo: "+mobileNo.getText());
-        System.out.println("name: "+name.getText());
-        System.out.println("password: "+password.getText());
-        System.out.println("email: "+email.getText());
-        System.out.println("address: "+address.getText());
-        System.out.println("birthdate: "+birthdate.getText());
+//        System.out.println("mobileNo: "+mobileNo.getText());
+//        System.out.println("name: "+name.getText());
+//        System.out.println("password: "+password.getText());
+//        System.out.println("email: "+email.getText());
+//        System.out.println("address: "+address.getText());
+//        System.out.println("birthdate: "+birthdate.getText());
 
-        registerUser();
+        if(TextUtils.isEmpty(mobileNo.getText().toString())){
+            Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(name.getText().toString())){
+            Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(password.getText().toString())){
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(email.getText().toString())){
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(address.getText().toString())){
+            Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(birthdate.getText().toString())){
+            Toast.makeText(this, "Please enter birthdate", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            progressDialog.setTitle("Creating New Account");
+            progressDialog.setMessage("Please Wait while we are creating new account for you...");
+            progressDialog.setCanceledOnTouchOutside(true);
+            progressDialog.show();
+            registrationAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful() && registerUser()){
+                                /*
+                                sendUserToLoginActivity(view);
+                                */
+                                //sendVerificationEmail();
+                                Toast.makeText(CreateAccountActivity.this, "Account Created Successfully. Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+
+                            }
+                            else {
+                                String message = task.getException().toString();
+                                Toast.makeText(CreateAccountActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                                progressDialog.hide();
+                            }
+                        }
+                    });
+        }
+
+        //registerUser();
 
     }
-    private void registerUser() {
+
+    private void sendVerificationEmail()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email sent
+
+                            // after email is sent just logout the user and finish this activity
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            finish();
+                        }
+                        else
+                        {
+                            // email not sent, so display message and restart the activity or do whatever you wish to do
+
+                            //restart this activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
+
+                        }
+                    }
+                });
+    }
+
+    private boolean registerUser() {
         final String emailStr = email.getText().toString().trim();
         final String mobileNoStr = mobileNo.getText().toString().trim();
         final String passwordStr = password.getText().toString().trim();
@@ -91,66 +203,34 @@ public class CreateAccountActivity extends AppCompatActivity {
         final String nameStr = name.getText().toString().trim();
         final String birthdateStr = birthdate.getText().toString().trim();
 
-        progressDialog.setMessage("Registering user...");
-        progressDialog.show();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                Constants.URL_REGISTER,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if(response.contains("success")){
-                                Toast.makeText(getApplicationContext(),"Success" , Toast.LENGTH_SHORT).show();
-                                Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                                startActivity(homeIntent);
-                            }else {
-                                Toast.makeText(getApplicationContext(),"Failed" , Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressDialog.hide();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("mobileNo", mobileNoStr);
-                params.put("email", emailStr);
-                params.put("password", passwordStr);
-                params.put("name", nameStr);
-                params.put("address", addressStr);
-                params.put("birthdate", birthdateStr);
-                params.put("type", "customer");
-                return params;
-            }
-        };
-
-
-        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-
-
+        CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+        return communicateWithPhp.createAccount(emailStr, mobileNoStr, passwordStr, nameStr, addressStr, birthdateStr);
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        this.finish();
-//    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         moveTaskToBack(true);
     }
+
+    public void sendUserToLoginActivity(View view){
+        Intent loginIntent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        registrationAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            registrationAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
 }

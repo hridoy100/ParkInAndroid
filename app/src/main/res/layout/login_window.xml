@@ -79,7 +79,7 @@
                         android:drawableLeft="@drawable/ic_person"
                         android:drawablePadding="30dp"
                         android:hint="Mobile Number"
-                        android:inputType="phone"
+                        android:inputType="numberDecimal"
                         android:padding="10dp" />
 
                     <View
