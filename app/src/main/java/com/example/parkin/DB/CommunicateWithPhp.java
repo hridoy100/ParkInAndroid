@@ -1042,4 +1042,55 @@ public class CommunicateWithPhp {
         return null;
     }
 
+    public boolean updateUserPassAddress(String mobileNo, String password, String address) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_UPDATEUSERPASSADDRESS);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&mobileNo=" + mobileNo);
+            ps.print("&password=" + password);
+            ps.print("&address=" + address);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                //System.out.println(inputLine);
+            }
+            in.close();
+            //Log.d("getEmail" ,response.toString());
+
+            //JSONArray jsonArray = new JSONArray(response.toString());
+
+            /*
+            JSONObject emailObj = (JSONObject) jsonArray.get(0);
+            JSONObject dataobj = (JSONObject) emailObj.get("updateUserPassAddress");
+            //Log.i("dataobj", dataobj.toString());
+            email = dataobj.getString("status");
+            */
+            if(response.toString().contains("true"))
+                return true;
+            else if(response.toString().contains("false"))
+                return false;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }

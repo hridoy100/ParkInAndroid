@@ -35,6 +35,8 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CreateAccountActivity extends AppCompatActivity {
@@ -118,20 +120,29 @@ public class CreateAccountActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(mobileNo.getText().toString())){
             Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(name.getText().toString())){
+        else if(TextUtils.isEmpty(name.getText().toString())){
             Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(password.getText().toString())){
+        else if(TextUtils.isEmpty(password.getText().toString())){
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(email.getText().toString())){
+        else if(TextUtils.isEmpty(email.getText().toString())){
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(address.getText().toString())){
+        else if(TextUtils.isEmpty(address.getText().toString())){
             Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(birthdate.getText().toString())){
+        else if(TextUtils.isEmpty(birthdate.getText().toString())){
             Toast.makeText(this, "Please enter birthdate", Toast.LENGTH_SHORT).show();
+        }
+        else if(mobileNo.getText().toString().length()<11){
+            Toast.makeText(this, "Please enter 11 digit number", Toast.LENGTH_SHORT).show();
+        }
+        else if(password.getText().toString().length()<6){
+            Toast.makeText(this, "Please enter at least 6 digits of password", Toast.LENGTH_SHORT).show();
+        }
+        else if(!isEmailValid(email.getText().toString())){
+            Toast.makeText(this, "Please enter correct email address", Toast.LENGTH_SHORT).show();
         }
         else {
             progressDialog.setTitle("Creating New Account");
@@ -162,6 +173,13 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         //registerUser();
 
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     private void sendVerificationEmail()
