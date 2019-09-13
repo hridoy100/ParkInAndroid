@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhoneLoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id = "@+id/appbarlayout_tool_bar"
+                android:background = "@color/colorPrimary"
+                android:layout_width = "match_parent"
+                android:layout_height = "?attr/actionBarSize"
+                app:layout_scrollFlags = "scroll|snap|enterAlways"
+                app:theme = "@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme = "@style/ThemeOverlay.AppCompat.Light"
+                app:title="Phone Login Verification"
+                />
+
+        </android.support.design.widget.AppBarLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <android.support.v7.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/countryCode"
+                    android:background="@drawable/bg_rounded_edit_text"
+                    android:textColor="@android:color/black"
+                    android:text="+88"
+                    android:layout_weight="3"
+                    android:enabled="false"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:drawableLeft="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    android:clickable="false"
+                    />
+                <android.support.v7.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/mobileNo"
+                    android:background="@drawable/bg_rounded_edit_text"
+                    android:textColor="@android:color/black"
+                    android:hint="Enter Mobile Number"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:inputType="numberDecimal"
+                    android:fontFamily="@font/roboto"
+                    android:drawableLeft="@drawable/ic_phone_iphone"
+                    android:drawablePadding="20dp"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/verificationCode"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/bg_rounded_edit_text"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="20dp"
+                android:hint="Verification Code"
+                android:inputType="numberDecimal"
+                android:visibility="invisible" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send Verification Code"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_rounded_edit_text"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/sendVerificationCode"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Verify"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_rounded_edit_text"
+                android:layout_marginRight="100dp"
+                android:layout_marginLeft="100dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/verifyBtn"
+                android:visibility="invisible"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
