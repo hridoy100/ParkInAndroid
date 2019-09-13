@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_window);
+        //sendUserToHomeActivity();
+
         mainContext = this;
 
         mAuth = FirebaseAuth.getInstance();
@@ -86,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     private void sendUserToHomeActivity() {
         Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(homeIntent);
+        finish();
     }
 
     public boolean tryToLogin(String username, String password){

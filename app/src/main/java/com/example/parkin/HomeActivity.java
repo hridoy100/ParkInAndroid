@@ -14,17 +14,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.Stepper.MyStepperTest;
@@ -43,8 +49,11 @@ public class HomeActivity extends AppCompatActivity {
     LinearLayout textTopLayout, textParkIn, menus, garageLayout, nearbyLayout;
     TextView textTop;
     Context mContext;
+    Toolbar toolbar;
+    NavigationView navigationView;
     public ProgressDialog progressDialog;
     int notifcount=0;
+    private FloatingActionButton fab;
     boolean loggedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +73,16 @@ public class HomeActivity extends AppCompatActivity {
         textTop = (TextView) findViewById(R.id.textTop);
         parkingAppIcon = (ImageView) findViewById(R.id.parkingAppIcon);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.menu_drawer);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
         mToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         mToggle.syncState();
 
         mContext=this;
@@ -171,7 +187,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     void showHomePage(){
-        bgapp.animate().translationY(-2100).alpha((float) 0.8).setDuration(800).setStartDelay(700);
+        bgapp.animate().translationY(-2500).alpha((float) 0.8).setDuration(800).setStartDelay(700);
         clover.animate().translationX(-400).alpha(0).setDuration(800).setStartDelay(900);
         parkingAppIcon.animate().translationY(-300).alpha(0).setDuration(800).setStartDelay(700);
         textParkIn.animate().alpha(0).setDuration(800).setStartDelay(900);
@@ -181,7 +197,7 @@ public class HomeActivity extends AppCompatActivity {
         homeTextShow= AnimationUtils.loadAnimation(this, R.anim.hometextshow);
 
 
-        textTop.setText("Home");
+        //textTop.setText("Home");
         menus.setAlpha(1);
         menus.startAnimation(homeTextShow);
 //        nearbyLayout.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +213,7 @@ public class HomeActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),"Garage Button Under Implementation", Toast.LENGTH_LONG).show();
 //            }
 //        });
-        textTop.startAnimation(homeTextShow);
+        //textTop.startAnimation(homeTextShow);
         //menus.startAnimation(homeTextShow);
 
         //textHome.animate().alpha(1).setDuration(800).setStartDelay(1300);
@@ -235,11 +251,16 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(historyIntent);
     }
     public void notificationActivity(View view){
-            Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
-            startActivity(notificationIntent);
-        }
+        Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
+        startActivity(notificationIntent);
+    }
 
-//    void showLoginWindow(){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+    //    void showLoginWindow(){
 //        Intent showLoginScreen = new Intent(getApplicationContext(), CreateAccountActivity.class);
 //        startActivity(showLoginScreen);
 //        //System.out.println(showLoginScreen.getExtras());

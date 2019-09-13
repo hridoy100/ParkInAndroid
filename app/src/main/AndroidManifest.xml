@@ -65,7 +65,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".HomeActivity"
+            android:theme="@style/AppTheme2" />
         <activity android:name=".Garage" />
         <activity android:name=".Vehicle" />
         <activity android:name=".Add.AddVehicle" />
