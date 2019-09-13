@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -257,7 +258,19 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        if (item.getItemId() == android.R.id.home) {
+            if(drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                drawerLayout.closeDrawer(Gravity.LEFT);
+            }else{
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
 
+        }else if (item.getItemId()== R.id.action_settings) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
     //    void showLoginWindow(){
