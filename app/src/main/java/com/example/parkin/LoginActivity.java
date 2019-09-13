@@ -69,6 +69,10 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.dismiss();
             sendUserToHomeActivity();
         }
+        else {
+            progressDialog.hide();
+            Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
+        }
         /*tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
                 mySharedPreferences.getString(getString(R.string.password), ""));
 
@@ -92,6 +96,16 @@ public class LoginActivity extends AppCompatActivity {
 
         System.out.println("mobileNo: "+mobileNo);
         System.out.println("password: "+password);
+        if(mobileNo.length()<11 && mobileNo.length()>0){
+            progressDialog.hide();
+            Toast.makeText(getApplicationContext(),"Please enter 11 digits mobile number..", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(password.length()<6 && password.length()>0){
+            progressDialog.hide();
+            Toast.makeText(getApplicationContext(),"Password should be at least 6 digits..", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if(mobileNo.length()>0 && password.length()>0) {
 
@@ -109,9 +123,14 @@ public class LoginActivity extends AppCompatActivity {
             }
             return verified;
         }
-        else {
+        else if(mobileNo.length()<1) {
             progressDialog.hide();
-            Toast.makeText(getApplicationContext(), "Please enter correct details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Mobile number field cannot be empty", Toast.LENGTH_SHORT).show();
+            vibratePhone(250);
+        }
+        else if(password.length()<1) {
+            progressDialog.hide();
+            Toast.makeText(getApplicationContext(), "Password field cannot be empty", Toast.LENGTH_SHORT).show();
             vibratePhone(250);
         }
         return false;
@@ -157,6 +176,50 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setTitle("Log In");
         progressDialog.setMessage("Logging into account...");
         progressDialog.show();
+
+
+        if(username.getText().toString().length()<11 && username.getText().toString().length()>0){
+            progressDialog.hide();
+            //Toast.makeText(getApplicationContext(),"Please enter 11 digits mobile number..", Toast.LENGTH_SHORT).show();
+            vibratePhone(250);
+            username.setError("Please enter 11 digits mobile number");
+            username.setBackgroundResource(R.drawable.edit_text_error);
+            password.setBackgroundResource(R.color.transparentColor);
+            return;
+        }
+        else if(password.getText().toString().length()<6 && password.getText().toString().length()>0){
+            progressDialog.hide();
+            //Toast.makeText(getApplicationContext(),"Password should be at least 6 digits..", Toast.LENGTH_SHORT).show();
+            vibratePhone(250);
+            password.setError("Password should be at least 6 digits");
+            password.setBackgroundResource(R.drawable.edit_text_error);
+            username.setBackgroundResource(R.color.transparentColor);
+            return;
+        }
+        else if(username.getText().toString().length()<1) {
+            progressDialog.hide();
+            //Toast.makeText(getApplicationContext(), "Mobile number field cannot be empty", Toast.LENGTH_SHORT).show();
+            vibratePhone(250);
+            username.requestFocus();
+            username.setError("Mobile number field cannot be empty");
+            username.setBackgroundResource(R.drawable.edit_text_error);
+            password.setBackgroundResource(R.color.transparentColor);
+            return;
+        }
+        else if(password.getText().toString().length()<1) {
+            progressDialog.hide();
+            //Toast.makeText(getApplicationContext(), "Password field cannot be empty", Toast.LENGTH_SHORT).show();
+            vibratePhone(250);
+            password.requestFocus();
+            password.setError("Password field cannot be empty");
+            password.setBackgroundResource(R.drawable.edit_text_error);
+            username.setBackgroundResource(R.color.transparentColor);
+            return;
+        }
+        else {
+            password.setBackgroundResource(R.color.transparentColor);
+        }
+
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         String email = communicateWithPhp.getEmail(username.getText().toString());
 
@@ -172,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             //Log.w("TAG", "signInWithEmail:failed", task.getException());
                             progressDialog.hide();
-                            Toast.makeText(getApplicationContext(), "Please Verify your email address", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
 
                         } else {
                             checkIfEmailVerified();
