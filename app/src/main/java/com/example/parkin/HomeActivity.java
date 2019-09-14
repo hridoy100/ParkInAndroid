@@ -239,8 +239,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void cameraActivity(View view){
-        Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
-        startActivity(cameraIntent);
+        //Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
+        //startActivity(cameraIntent);
+        Intent AccountSettingsIntent=new Intent(getApplicationContext(),AccountSettingsActivity.class);
+        startActivity(AccountSettingsIntent);
     }
 
     /*public void historyActivity(View view){
