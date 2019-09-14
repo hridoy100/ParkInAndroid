@@ -1160,12 +1160,12 @@ public class CommunicateWithPhp {
             in.close();
             System.out.println(response.toString());
             JSONArray jsonArray = new JSONArray(response.toString());
-
+            System.out.println("Length: "+jsonArray.length());
             AccountDetails accountDetails=new AccountDetails();
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject accountData = (JSONObject) jsonArray.get(i);
-                JSONObject dataobj = (JSONObject) accountData.get("accountDescription");
+                JSONObject dataobj = (JSONObject) accountData.get("customerDetails");
                 Log.i("dataobj", dataobj.toString());
                 accountDetails.setMobileNo((String) dataobj.getString("mobileNo"));
                 accountDetails.setName((String) dataobj.getString("name"));
