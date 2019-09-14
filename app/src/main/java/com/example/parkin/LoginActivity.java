@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void checkSharedPreferences() {
+
         String userMob = mySharedPreferences.getString(getString(R.string.mobileNo), "");
         String userpassword = mySharedPreferences.getString(getString(R.string.password), "");
         if(userMob.length()>0){

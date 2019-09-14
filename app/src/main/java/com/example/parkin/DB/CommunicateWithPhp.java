@@ -1092,5 +1092,55 @@ public class CommunicateWithPhp {
 
         return false;
     }
+    public AccountDetails getAccountDetails(String MobileNo) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETCUSTOMERDETAILS);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&mobileNo=" + MobileNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            AccountDetails accountDetails=new AccountDetails();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject accountData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) accountData.get("accountDescription");
+                Log.i("dataobj", dataobj.toString());
+                accountDetails.setMobileNo((String) dataobj.getString("mobileNo"));
+                accountDetails.setName((String) dataobj.getString("name"));
+                accountDetails.setNID((String) dataobj.getString("NID"));
+                accountDetails.setEmail((String) dataobj.getString("email"));
+                accountDetails.setAddress((String) dataobj.getString("address"));
+                accountDetails.setBirthdate((String) dataobj.getString("birthdate"));
+                accountDetails.setCreationTime((String) dataobj.getString("creationTime"));
+            }
+            return accountDetails;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }
