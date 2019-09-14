@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.Space;
@@ -23,6 +24,12 @@ import com.example.parkin.Notification;
 import com.example.parkin.R;
 import com.example.parkin.Vehicle;
 import com.example.parkin.util.NotificationThread;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +53,7 @@ import java.util.Map;
 public class CommunicateWithPhp {
     private MainActivity mainActivity;
     private Context context;
+    String TAG = "CommunicateWithPHP";
 
     public void setMain(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -1042,10 +1050,41 @@ public class CommunicateWithPhp {
         return null;
     }
 
-    public boolean updateUserPassAddress(String mobileNo, String password, String address) {
+    public boolean updateUserPassAddress(String mobileNo, String oldPassword, String newPassword, String address, String name) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
+
+        String email = this.getEmail(mobileNo);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+// Get auth credentials from the user for re-authentication. The example below shows
+// email and password credentials but there are multiple possible providers,
+// such as GoogleAuthProvider or FacebookAuthProvider.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, oldPassword);
+
+// Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "Password updated: "+newPassword);
+                                    } else {
+                                        Log.d(TAG, "Error password not updated "+newPassword);
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d(TAG, "Error auth failed");
+                        }
+                    }
+                });
 
         try {
             URL website = new URL(Constants.URL_UPDATEUSERPASSADDRESS);
@@ -1060,8 +1099,9 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
 
             ps.print("&mobileNo=" + mobileNo);
-            ps.print("&password=" + password);
+            ps.print("&password=" + newPassword);
             ps.print("&address=" + address);
+            ps.print("&name=" + name);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
