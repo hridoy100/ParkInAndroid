@@ -59,6 +59,8 @@ dependencies {
     implementation files('libs/org-netbeans-modules-java-j2seproject-copylibstask.jar')
     implementation files('libs/gson/gson-2.2.4.jar')
 
+    implementation 'com.github.florent37:shapeofview:1.3.2'
+
     //stepper
     implementation 'com.stepstone.stepper:material-stepper:4.3.1'
     configurations {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".HomeActivity">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/curve"
+        android:id="@+id/toolbar"
+        app:buttonGravity="top"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:text="HOME"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_bold"
+            android:background="@color/transparentColor"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:theme="@style/AppTheme.PopupOverlay"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -11,6 +11,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_window);
+        //sendUserToHomeActivity();
+
         mainContext = this;
 
         mAuth = FirebaseAuth.getInstance();
@@ -64,14 +67,22 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Logging into account...");
         progressDialog.show();
         checkSharedPreferences();
-        if(currentUser != null && tryToLogin(username.getText().toString(),password.getText().toString())){
+
+        if(currentUser != null && tryToLogin(username.getText().toString(),password.getText().toString())){ //tryToLogin checks corner case..
             //setSharedPreferences(username.getText().toString(),password.getText().toString()));
             progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(),"Login Successful\n"+username.getText().toString()+
+                    "\n"+password.getText().toString(), Toast.LENGTH_LONG).show();
             sendUserToHomeActivity();
         }
+//        else if(username.getText().toString().length()<0,password.getText().toString())) {
+//            progressDialog.hide();
+//            Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
+//        }
         else {
             progressDialog.hide();
-            Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(getApplicationContext(), "Error logging in", Toast.LENGTH_SHORT).show();
         }
         /*tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
                 mySharedPreferences.getString(getString(R.string.password), ""));
@@ -86,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     private void sendUserToHomeActivity() {
         Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(homeIntent);
+        finish();
     }
 
     public boolean tryToLogin(String username, String password){
@@ -98,12 +110,12 @@ public class LoginActivity extends AppCompatActivity {
         System.out.println("password: "+password);
         if(mobileNo.length()<11 && mobileNo.length()>0){
             progressDialog.hide();
-            Toast.makeText(getApplicationContext(),"Please enter 11 digits mobile number..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Incorrect Mobile Number..", Toast.LENGTH_SHORT).show();
             return false;
         }
         else if(password.length()<6 && password.length()>0){
             progressDialog.hide();
-            Toast.makeText(getApplicationContext(),"Password should be at least 6 digits..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Incorrect Password..", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -182,7 +194,8 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.hide();
             //Toast.makeText(getApplicationContext(),"Please enter 11 digits mobile number..", Toast.LENGTH_SHORT).show();
             vibratePhone(250);
-            username.setError("Please enter 11 digits mobile number");
+//            username.setError("Please enter 11 digits mobile number");
+            username.setError("Incorrect Mobile Number");
             username.setBackgroundResource(R.drawable.edit_text_error);
             password.setBackgroundResource(R.color.transparentColor);
             return;
@@ -191,7 +204,8 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.hide();
             //Toast.makeText(getApplicationContext(),"Password should be at least 6 digits..", Toast.LENGTH_SHORT).show();
             vibratePhone(250);
-            password.setError("Password should be at least 6 digits");
+            password.setError("Invalid Password");
+//            password.setError("Password should be at least 6 digits");
             password.setBackgroundResource(R.drawable.edit_text_error);
             username.setBackgroundResource(R.color.transparentColor);
             return;
@@ -222,6 +236,15 @@ public class LoginActivity extends AppCompatActivity {
 
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         String email = communicateWithPhp.getEmail(username.getText().toString());
+        if(TextUtils.isEmpty(email)){
+            progressDialog.hide();
+            vibratePhone(250);
+            username.requestFocus();
+            username.setError("Incorrect Mobile Number");
+            username.setBackgroundResource(R.drawable.edit_text_error);
+            password.setBackgroundResource(R.color.transparentColor);
+            return;
+        }
 
         mAuth.signInWithEmailAndPassword(email, password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -235,7 +258,19 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             //Log.w("TAG", "signInWithEmail:failed", task.getException());
                             progressDialog.hide();
-                            Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            vibratePhone(250);
+                            if(task.getException().toString().contains("password is invalid")) {
+                                Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_SHORT).show();
+                                password.requestFocus();
+
+                                password.setError("Invalid Password");
+                                password.setBackgroundResource(R.drawable.edit_text_error);
+                                username.setBackgroundResource(R.color.transparentColor);
+                            }
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            }
 
                         } else {
                             checkIfEmailVerified();
@@ -255,8 +290,13 @@ public class LoginActivity extends AppCompatActivity {
             // user is verified, so you can finish this activity or send user to activity which you want.
             progressDialog.dismiss();
             setSharedPreferences(username.getText().toString(), password.getText().toString());
-            finish();
-            Toast.makeText(LoginActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+            ////finish();
+            Toast.makeText(LoginActivity.this, "Successfully logged in...", Toast.LENGTH_SHORT).show();
+            /*CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+
+            communicateWithPhp.updateUserPassAddress(username.getText().toString(),password.getText().toString(),"adminami",
+                    "hello dhaka","hridoy");
+            */
             sendUserToHomeActivity();
         }
         else
