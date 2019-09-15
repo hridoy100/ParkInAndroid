@@ -27,7 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".PhoneLoginActivity" />
         <activity android:name=".SingleNotificationActivity" />
         <activity android:name=".NotificationActivity" />
