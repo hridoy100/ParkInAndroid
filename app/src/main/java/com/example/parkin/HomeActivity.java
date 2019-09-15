@@ -37,6 +37,8 @@ import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.Stepper.MyStepperTest;
 import com.example.parkin.util.NotificationThread;
 import com.google.android.gms.common.util.AndroidUtilsLight;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -223,8 +225,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void garageActivity(View view){
-        //Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
-        Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
+        Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
+        //Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(garageIntent);
     }
 
@@ -256,6 +258,16 @@ public class HomeActivity extends AppCompatActivity {
     public void notificationActivity(View view){
         Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
         startActivity(notificationIntent);
+    }
+    public void settingsActivity(View view){
+        Intent settingsIntent = new Intent(getApplicationContext(),AccountSettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+    public void logOutActivity(View view){
+        Intent logOutIntent = new Intent(getApplicationContext(),LoginActivity.class);
+        logOutIntent.putExtra("from","home");
+        startActivity(logOutIntent);
+        finish();
     }
 
     @Override

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name = "com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PhoneLoginActivity"></activity>
+        <activity android:name=".PhoneLoginActivity" />
         <activity android:name=".SingleNotificationActivity" />
         <activity android:name=".NotificationActivity" />
         <activity
@@ -57,15 +57,18 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".LoginActivity"
-            android:configChanges = "keyboardHidden|orientation|screenSize">
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name = "android.intent.action.CREATE_SHORTCUT" />
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"
+        <activity
+            android:name=".HomeActivity"
             android:theme="@style/AppTheme2" />
         <activity android:name=".Garage" />
         <activity android:name=".Vehicle" />
