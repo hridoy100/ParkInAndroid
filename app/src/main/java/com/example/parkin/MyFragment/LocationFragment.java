@@ -74,6 +74,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     static Double latitude,longitude;
     static String addressTitle;
+    static String postalCode;
 
     GoogleMap mMap;
     LocationManager locationManager;
@@ -89,13 +90,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     TextView test;
 
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 }
             }
         }
@@ -110,10 +112,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         return fragment;
     }
 
-    public static void setLatLng(Double lat, Double lon, String title){
+    public static void setLatLng(Double lat, Double lon, String title, String postCode){
         latitude = lat;
         longitude = lon;
         addressTitle = title;
+        postalCode=postCode;
     }
 
     @Override
