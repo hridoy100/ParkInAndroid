@@ -70,14 +70,16 @@ public class LoginActivity extends AppCompatActivity {
         checkSharedPreferences();
 
         String whereFrom = getIntent().getStringExtra("from");
-        Toast.makeText(getApplicationContext(), "Where From: "+whereFrom,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Where From: "+whereFrom,Toast.LENGTH_SHORT).show();
 
         if(currentUser != null && tryToLogin(username.getText().toString(),password.getText().toString())){ //tryToLogin checks corner case..
             //setSharedPreferences(username.getText().toString(),password.getText().toString()));
             progressDialog.dismiss();
-            if(whereFrom.equals("home")){
+            if(whereFrom!=null && whereFrom.equals("home")){
                 //do nothing..
                 Log.d("LoginActivity","in side if");
+//                username.setText("");
+//                password.setText("");
             }
             else{
                 Toast.makeText(getApplicationContext(),"Login Successful\n"+username.getText().toString()+
@@ -342,4 +344,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     */
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
+    }
 }

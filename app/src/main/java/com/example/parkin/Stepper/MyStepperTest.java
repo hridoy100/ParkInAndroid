@@ -2,6 +2,7 @@ package com.example.parkin.Stepper;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.MyFragment.AddressFragment;
 import com.example.parkin.MyFragment.DetailsFragment;
 import com.example.parkin.MyFragment.LocationFragment;
@@ -37,6 +40,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
+
+import barikoi.barikoilocation.PlaceModels.GeoCodePlace;
 
 public class MyStepperTest extends AppCompatActivity implements AddressFragment.OnFragmentInteractionListener,
         LocationFragment.OnFragmentInteractionListener, DetailsFragment.OnFragmentInteractionListener{
@@ -60,7 +67,8 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
 
     Double latitude,longitude;
     String addressTitle;
-
+    String postalCode;
+    GeoCodePlace place;
 //    GoogleMap mMap;
 //    LocationManager locationManager;
 //    LocationListener locationListener;
@@ -79,6 +87,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
     DetailsFragment detailsFragment;
     SpaceFragment spaceFragment;
 
+    SharedPreferences mySharedPreferences;
     TextView test;
 
     @Override
@@ -324,10 +333,11 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
                 displayDetailsFragment();
                 break;
             case 4 :
-                displaySpaceFragment();
+                getDataFromDetailsFragment();
+                //displaySpaceFragment();
                 break;
             case 5 :
-                getDataFromDetailsFragment();
+                //getDataFromDetailsFragment();
                 break;
             default:
                 throw new IllegalStateException();
@@ -581,12 +591,14 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
     }
 
 
-    public void setLatLngFromAddressFragment(Double lat, Double lon, String addressTitle){
+    public void setLatLngFromAddressFragment(Double lat, Double lon, String addressTitle, String postalCode, GeoCodePlace place){
         latitude = lat;
         longitude = lon;
         this.addressTitle = addressTitle;
+        this.postalCode = postalCode;
+        this.place = place;
         //test.setText(Double.toString(latitude)+ " " +Double.toString(longitude)+" "+addressTitle);
-        locationFragment.setLatLng(lat,lon, addressTitle);
+        locationFragment.setLatLng(lat,lon, addressTitle, postalCode);
 
         //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(addressTitle));
     }
@@ -597,10 +609,96 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
     }
 
     void getDataFromDetailsFragment(){
+        HashMap<String, String> detailsFragData = detailsFragment.getFinalizedData();
+        CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+
+        String featureStr = detailsFragData.get("features");
+        char[] features = new char[7];
+
+        if(featureStr.contains("Covered parking"))  features[0] = '1';
+        else features[0] = '0';
+
+        if(featureStr.contains("CCTV"))
+            features[1] = '1';
+        else features[1] = '0';
+
+        if(featureStr.contains("Securely gated"))
+            features[2] = '1';
+        else features[2] = '0';
+
+        if(featureStr.contains("Disabled access"))
+            features[3] = '1';
+        else features[3] = '0';
+
+        if(featureStr.contains("Electric vehicle charging"))
+            features[4] = '1';
+        else features[4] = '0';
+
+        if(featureStr.contains("Lighting"))
+            features[5] = '1';
+        else features[5] = '0';
+
+        if(featureStr.contains("Oil buying facility"))
+            features[6] = '1';
+        else features[6] = '0';
+
+        String featureMap = String.valueOf(features);
+
+
+        Log.d("garage adding","address: "+addressTitle+" mobileNo: "+detailsFragData.get("mobileNo")+
+                " feature: "+ featureMap+ " sp count: "+ detailsFragData.get("space_count")+" long: "+longitude.toString()+" lat: "+
+                latitude.toString()+" postalCode: "+postalCode);
+        String garageId = "1";
+                //communicateWithPhp.addGarage(addressTitle,detailsFragData.get("mobileNo"),
+                //featureMap,detailsFragData.get("space_count"),longitude.toString(), latitude.toString());
+        Toast.makeText(getApplicationContext(), "Garage ID: "+garageId,Toast.LENGTH_SHORT).show();
+
+        mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String spaceNoTxt;
+        for(int i=1; i<=Integer.parseInt(detailsFragData.get("space_count")); i++) {
+            spaceNoTxt = "Space #";
+            spaceNoTxt+=Integer.toString(i);
+            String space_no = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"space_no", "");
+            String position_txt = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"position", "");
+            String open_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"open", "");
+            String close_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"close", "");
+            String cctv_ip = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"cctvIP", "");
+            String vehicle_type = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"vehicleType", "");
+
+            String spaceSize= "";
+
+            if(vehicle_type.equals("Small Car")) {
+                spaceSize= "12";
+            }
+            else if(vehicle_type.equals("Medium Car")) {
+                spaceSize= "15";
+            }
+            else if(vehicle_type.equals("4x4 or Large Car")) {
+                spaceSize= "20";
+            }
+            else if(vehicle_type.equals("Mini Van")) {
+                spaceSize= "25";
+            }
+            else if(vehicle_type.equals("Large Van or Minibus")) {
+                spaceSize= "28";
+            }
+            else if(vehicle_type.equals("Motor Bike")) {
+                spaceSize= "10";
+            }
+
+            position_txt+=space_no;
+            Log.d("space adding: "+spaceNoTxt," spCount: "+detailsFragData.get("space_count")+" gar id: "+garageId+ " sp_size: "+
+                    spaceSize+ " open: "+ open_time+ " close: "+ close_time+" position: "+position_txt+ " cctv: "+cctv_ip);
+            //communicateWithPhp.addSpace(garageId,spaceSize,open_time, close_time,position_txt,cctv_ip);
+        }
 
     }
 
     public String getAddressTitle() {
         return addressTitle;
+    }
+
+    public GeoCodePlace getPlace() {
+        return place;
     }
 }

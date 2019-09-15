@@ -15,6 +15,7 @@ import com.example.parkin.Add.AddGarage;
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterGarage;
+import com.example.parkin.Stepper.MyStepperTest;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,8 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
         startActivity(showPopUpIntent);
     }
     public void addGarageActivity(View view){
-        Intent addGarageIntent = new Intent(getApplicationContext(), AddGarage.class);
+        //Intent addGarageIntent = new Intent(getApplicationContext(), AddGarage.class);
+        Intent addGarageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(addGarageIntent);
     }
 
@@ -69,12 +71,13 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
         */
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getMyGaragesDB(this);
-
+        if(garageDetailsArrayList==null){
+            return;
+        }
         for (int i=0; i<garageDetailsArrayList.size(); i++){
             locationName.add(garageDetailsArrayList.get(i).getAddressName());
             garageId.add("GarageID: "+garageDetailsArrayList.get(i).getGarageId());
-            mImageUrls.add("https://png.pngtree.com/element_our/png_detail/20181229/vector-garage-icon-png_302706.jpg");
-
+            mImageUrls.add("http://www.regencygarages.com/images/garage-img/picture_3.jpg");
         }
 
 
