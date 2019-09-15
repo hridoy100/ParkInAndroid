@@ -31,4 +31,5 @@ public class Constants {
     public static int Large_Car=35;
     public static int Mini_Van=40;
     public static int Large_Van=50;
+    public static long per_hour_cost=10;
 }
