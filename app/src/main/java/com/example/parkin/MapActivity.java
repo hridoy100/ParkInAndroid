@@ -58,6 +58,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.example.parkin.DB.Constants.Large_Car;
+import static com.example.parkin.DB.Constants.Large_Van;
+import static com.example.parkin.DB.Constants.Mini_Van;
+import static com.example.parkin.DB.Constants.Motor_Bike;
+import static com.example.parkin.DB.Constants.Small_Car;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "MapActivity";
     private GoogleMap mMap;
@@ -115,11 +121,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         vehicle_spinner=(Spinner)findViewById(R.id.vehicle_spinner);
         List<String>spinneritem=new ArrayList<String>();
         spinneritem.add("Any Vehicle");
-        spinneritem.add("Car");
+        spinneritem.add("Medium Car");
         spinneritem.add("Motor Bike");
-        spinneritem.add("Auto Rickshaw");
-        spinneritem.add("Bus");
-        spinneritem.add("Truck");
+        spinneritem.add("Small Car");
+        spinneritem.add("Large Car");
+        spinneritem.add("Mini Van");
+        spinneritem.add("Large Van");
         vehicle_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -130,23 +137,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         break;
                     case 1:
                         vehicle_size=25;
-                        vehicle_type="Car";
+                        vehicle_type="Medium Car";
                         break;
                     case 2:
-                        vehicle_size=10;
-                        vehicle_type="Motor Bike";
+                        vehicle_size=Motor_Bike;
+                        vehicle_type="Motor_Bike";
                         break;
                     case 3:
-                        vehicle_size=15;
-                        vehicle_type="Auto Rickshaw";
+                        vehicle_size=Small_Car;
+                        vehicle_type="Small Car";
                         break;
                     case 4:
-                        vehicle_size=45;
-                        vehicle_type="Bus";
+                        vehicle_size=Large_Car;
+                        vehicle_type="Large Car";
                         break;
                     case 5:
-                        vehicle_size=50;
-                        vehicle_type="Truck";
+                        vehicle_size=Mini_Van;
+                        vehicle_type="Mini Van";
+                        break;
+                    case 6:
+                        vehicle_size=Large_Van;
+                        vehicle_type="Large Van";
                         break;
                 }
             }
@@ -164,6 +175,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         init = 0;
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
         for (int i=0; i<garageDetailsArrayList.size(); i++){
+            System.out.println("From up:"+garageDetailsArrayList.get(i).getGarageId());
             garages.add(new GarageObject(i+1, new LatLng(Double.parseDouble(garageDetailsArrayList.get(i).getLatitude()),
                     Double.parseDouble(garageDetailsArrayList.get(i).getLongitude())),garageDetailsArrayList.get(i)));
         }
@@ -452,10 +464,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         for(int i=0;i<spaceDetails.size();i++)
         {
             System.out.println(spaceDetails.get(i).getAvailability());
-            if(spaceDetails.get(i).getSpacesize()>=vehicle_size && spaceDetails.get(i).getAvailability().equals("yes"))
+            if(spaceDetails.get(i).getSpacesize()>=vehicle_size)
                 return true;
         }
         return false;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 //    public void setDepatureTime(View view){
 //        Calendar mcurrentTime = Calendar.getInstance();
@@ -527,10 +544,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             avatar,
                             garage.getGarage()
                     );
-                    mClusterManager.addItem(newClusterMarker);
+                    System.out.println("Garage id:"+garage.getGarage().getGarageId());
+                    ArrayList<SpaceDetails>spaceDetails=new CommunicateWithPhp().getAvailableSpaces(Integer.parseInt(garage.getGarage().
+                                    getGarageId()),
+                            arrivaltime,departuretime);
+                    System.out.println("Arraylist size:"+spaceDetails.size());
+                    if(spaceDetails!=null) {
+                        if (is_eligible(spaceDetails)) {
+                            mClusterManager.addItem(newClusterMarker);
+                            marker_flag.add(1);
+                            System.out.println("Dhuke");
+                        }
+                        else
+                            marker_flag.add(0);
+                    }
+                    else
+                        marker_flag.add(0);
+                    //mClusterManager.addItem(newClusterMarker);
+                    //marker_flag.add(1);
                     //mClusterManager.removeItem(newClusterMarker);
                     mClusterMarkers.add(newClusterMarker);
-                    marker_flag.add(1);
+
 
                 }catch (NullPointerException e){
                     Log.e(TAG, "addMapMarkers: NullPointerException: " + e.getMessage() );
