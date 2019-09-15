@@ -217,7 +217,11 @@ public class VehicleEditActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
 
     public void submitEditedVehicle(View view) {

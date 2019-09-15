@@ -36,10 +36,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.parkin.DB.Constants.Large_Car;
+import static com.example.parkin.DB.Constants.Large_Van;
+import static com.example.parkin.DB.Constants.Medium_Car;
+import static com.example.parkin.DB.Constants.Mini_Van;
+import static com.example.parkin.DB.Constants.Motor_Bike;
+import static com.example.parkin.DB.Constants.Small_Car;
+
 public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, RecyclerViewAdapter.OnItemLongClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
     int selectedItem;
+    int selected_space_size;
     ArrayList<String> spacenolist = new ArrayList<>();
     ArrayList<String> spacesizelist= new ArrayList<>();
     ArrayList<String> minimumcostlist = new ArrayList<>();
@@ -105,6 +113,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
 //        startActivity(editIntent);
         final int gid=garageid;
         final int sid=spaceDetails.get(i).getSpaceid();
+        selected_space_size=spaceDetails.get(i).getSpacesize();
         final String glocation=garageaddress;
         final Calendar arrive=arrivaltime;
         final Calendar depart=departuretime;
@@ -124,7 +133,31 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         TextView space_location=(TextView)layout.findViewById(R.id.Space_location);
         start_time.setText("Arrival Time : "+myDateFormat.format(arrivaltime.getTime()));
         end_time.setText("Departure Time : "+myDateFormat.format(departuretime.getTime()));
-        space_size.setText("Space Size : "+spaceDetails.get(i).getSpacesize());
+        int tmp_space_size=spaceDetails.get(i).getSpacesize();
+        String tmp_string=null;
+        if(tmp_space_size==Large_Van)
+        {
+            tmp_string="Large_Van";
+        }
+        else if(tmp_space_size==Mini_Van)
+        {
+            tmp_string="Mini_Van";
+        }
+        else if(tmp_space_size==Large_Car)
+        {
+            tmp_string="Large_Car";
+        }
+        else if(tmp_space_size==Medium_Car)
+        {
+            tmp_string="Medium_Car";
+        }
+        else if(tmp_space_size==Small_Car)
+        {
+            tmp_string="Small_Car";
+        }
+        else if(tmp_space_size==Motor_Bike)
+            tmp_string="Motor_Bike";
+        space_size.setText("Space Size : "+tmp_string);
         space_location.setText("Space No : "+spaceDetails.get(i).getPosition());
         Spinner spinner = (Spinner) layout.findViewById(R.id.vehicle_list);
         CommunicateWithPhp com=new CommunicateWithPhp();
@@ -136,14 +169,15 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         int idxj=0;
         while(true)
         {
+            if(idxj==spinnerlist.size())
+                break;
             if(!spinnerlist.get(idxj).getType().equals(vehicle_type) && vehicle_type!=null)
             {
                 spinnerlist.remove(idxj);
             }
             else
                 idxj++;
-            if(idxj==spinnerlist.size())
-                break;
+
         }
         for(int j=0;j<vehcilelist.size();j++)
         {
@@ -217,6 +251,10 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                         TextView text = (TextView) layout.findViewById(R.id.text);
                         if(flag==0)
                             text.setText("Please select a vehicle");
+                        else if(selected_space_size<spinnerlist.get(selectedItem-1).getSpaceSize()) {
+                            flag = 0;
+                            text.setText("This space is smaller than your selected vehicle");
+                        }
                         else
                             text.setText("Space Allocatin Successful");
                         Toast toast=new Toast(getApplicationContext());
@@ -237,6 +275,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                             spaceintent.putExtra("departuretime", departuretime.getTimeInMillis());
                             spaceintent.putExtra("garagelocation", garageaddress);
                             spaceintent.putExtra("garageid", garageid);
+                            finish();
                             startActivity(spaceintent);
                         }
                     }});
@@ -278,10 +317,14 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     }
 
     public void goBackActivity(View view){
-        Intent mapIntent = new Intent(getApplicationContext(),MapActivity.class);
-        startActivity(mapIntent);
+        super.onBackPressed();
+        finish();
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     void initImageBitmaps() {
         //mImageUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLCINLcwcG0xWtc73CfeEjnOM0oi_yRG9BTmMjQf60DljywHYD");

@@ -402,7 +402,7 @@ public class CommunicateWithPhp {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
-
+        ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
         try {
             URL website = new URL(Constants.URL_AVAILABLESPACES);
             //URLConnection connection = website.openConnection();
@@ -432,10 +432,9 @@ public class CommunicateWithPhp {
                 System.out.println(inputLine);
             }
             in.close();
-            System.out.println(response.toString());
+            System.out.println("available space: "+response.toString());
             JSONArray jsonArray = new JSONArray(response.toString());
-
-            ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
+            System.out.println("jsonArrayLength:"+jsonArray.length());
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 SpaceDetails spaceDetails = new SpaceDetails();
@@ -454,18 +453,21 @@ public class CommunicateWithPhp {
                 spaceDetails.setGetStarttime2(cal);
                 spaceDetails.setAvailability(dataobj.getString("availability"));
                 spaceDetailsArrayList.add(spaceDetails);
+                String cctv=dataobj.getString("cctvIp");
+                System.out.println("Dhuke ekhane");
             }
+            System.out.println("spacearraysize:"+spaceDetailsArrayList.size());
             return spaceDetailsArrayList;
         } catch (Exception e) {
+            System.out.println("Exception hoitese:");
             e.printStackTrace();
         }
 
-        return null;
+        return spaceDetailsArrayList;
     }
 
     public void bookGarageSpace(Context context, int garageid, int spaceid, Calendar arrivaltime, Calendar departuretime, int licenseid) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
         StrictMode.setThreadPolicy(policy);
 
         try {
@@ -513,7 +515,7 @@ public class CommunicateWithPhp {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
-
+        ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
         try {
             URL website = new URL(Constants.URL_GARAGESPACE);
             //URLConnection connection = website.openConnection();
@@ -537,7 +539,7 @@ public class CommunicateWithPhp {
             System.out.println(response.toString());
             JSONArray jsonArray = new JSONArray(response.toString());
 
-            ArrayList<SpaceDetails> spaceDetailsArrayList = new ArrayList<>();
+
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 SpaceDetails spaceDetails = new SpaceDetails();
@@ -562,7 +564,7 @@ public class CommunicateWithPhp {
             e.printStackTrace();
         }
 
-        return null;
+        return spaceDetailsArrayList;
     }
 
 

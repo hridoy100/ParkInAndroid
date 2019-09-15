@@ -22,4 +22,11 @@ public class Constants {
     public static final String URL_GETEMAIL = ROOT_URL+"parkin.php/getEmail";
     public static final String URL_UPDATEUSERPASSADDRESS = ROOT_URL+"parkin.php/updateUserPassAddress";
     public static final String URL_GETCUSTOMERDETAILS = ROOT_URL+"parkin.php/getCustomerDetails";
+    public static int Motor_Bike=10;
+    public static int Small_Car=15;
+    public static int Medium_Car=25;
+    public static int Large_Car=35;
+    public static int Mini_Van=40;
+    public static int Large_Van=50;
+
 }
