@@ -72,6 +72,8 @@ public class AddressFragment extends Fragment{
     AppCompatSpinner citySpinner;
     Double latitude,longitude;
     String addressTitle;
+    String postalCode;
+    GeoCodePlace selectedPlace;
 
     GoogleMap mMap;
     LocationManager locationManager;
@@ -145,8 +147,11 @@ public class AddressFragment extends Fragment{
                 latitude=Double.parseDouble(place.getLatitude());
                 longitude=Double.parseDouble(place.getLongitude());
                 addressTitle = place.getAddress();
+                postalCode = place.getPostalcode();
+                selectedPlace = place;
                 MyStepperTest myStepperTest = (MyStepperTest) getActivity();
-                myStepperTest.setLatLngFromAddressFragment(latitude,longitude,addressTitle);
+                //myStepperTest.setLatLngFromAddressFragment(latitude,longitude,addressTitle);
+                myStepperTest.setLatLngFromAddressFragment(latitude,longitude,addressTitle,postalCode,place);
                 //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(place.getAddress()));
 
             }
