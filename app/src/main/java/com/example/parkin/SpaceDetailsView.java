@@ -30,11 +30,14 @@ import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapter;
 import org.checkerframework.checker.units.qual.C;
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.parkin.DB.Constants.Large_Car;
 import static com.example.parkin.DB.Constants.Large_Van;
@@ -42,6 +45,7 @@ import static com.example.parkin.DB.Constants.Medium_Car;
 import static com.example.parkin.DB.Constants.Mini_Van;
 import static com.example.parkin.DB.Constants.Motor_Bike;
 import static com.example.parkin.DB.Constants.Small_Car;
+import static com.example.parkin.DB.Constants.per_hour_cost;
 
 public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, RecyclerViewAdapter.OnItemLongClickListener {
     ListView vehicleList;
@@ -60,6 +64,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
     int licenseid;
     private String vehicle_type;
     Context context;
+    long cost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         //vehicleList = findViewById(R.id.vehicleList);
         progressDialog.setMessage("Loading Available Space Details");
         progressDialog.show();
+        cost=0;
         Intent myintent=getIntent();
         SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
         long arrtime=myintent.getLongExtra("arrivaltime", Calendar.getInstance().getTimeInMillis());
@@ -80,6 +86,19 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         System.out.println("Garage id: "+garageid);
         arrivaltime=gettime(arrtime);
         departuretime=gettime(dtime);
+        String start=myDateFormat.format(arrivaltime.getTime());
+        String end=myDateFormat.format(departuretime.getTime());
+        StringTokenizer tokenizer1=new StringTokenizer(start);
+        String s_date=tokenizer1.nextToken(" ");
+        String s_time=tokenizer1.nextToken(" ");
+        StringTokenizer tokenizer2=new StringTokenizer(end);
+        String e_date=tokenizer2.nextToken(" ");
+        String e_time=tokenizer2.nextToken(" ");
+        System.out.println("s_date:"+s_date);
+        System.out.println("e_date:"+e_date);
+        System.out.println("s_time:"+s_time);
+        System.out.println("e_time:"+e_time);
+        CalculateInitCost(s_date,e_date,s_time,e_time);
         initImageBitmaps();
 /*
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
@@ -92,6 +111,33 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         vehicleList.setAdapter(myAdapter);
         */
         progressDialog.dismiss();
+    }
+    void CalculateInitCost(String s_date,String e_date,String s_time,String e_time)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date sdate = sdf.parse(s_date);
+            Date edate=sdf.parse(e_date);
+            long diff = edate.getTime() - sdate.getTime();
+            long diff_day=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            System.out.println("diff day:"+diff_day);
+            sdf=new SimpleDateFormat("HH:mm:ss");
+            Date stime=sdf.parse(s_time);
+            Date etime=sdf.parse(e_time);
+            diff=etime.getTime()-stime.getTime();
+            long diff_time=TimeUnit.MINUTES.convert(diff,TimeUnit.MILLISECONDS);
+            System.out.println("diff time:"+diff_time);
+            long tmp=60;
+            long diff_hour=diff_time/tmp;
+            System.out.println("diff hour:"+diff_hour);
+            cost=(diff_day+1)*(diff_hour+1)*per_hour_cost;
+            System.out.println("init cost:"+cost);
+
+        } catch (ParseException e) {
+            System.out.println("Cost exception");
+            e.printStackTrace();
+        }
+
     }
     Calendar gettime(long val)
     {
@@ -341,10 +387,35 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         spaceDetails = communicateWithPhp.getAvailableSpaces(garageid, arrivaltime, departuretime);
         //ArrayList<VehicleDetails> vehicleDetailsArrayList = communicateWithPhp.getVehicleDetailsDB(getApplicationContext());
         Log.d("size",String.valueOf(spaceDetails.size()));
+        String tmp_string=null;
         for (int i=0; i<spaceDetails.size(); i++){
+            int tmp_space_size=spaceDetails.get(i).getSpacesize();
+            if(tmp_space_size==Large_Van)
+            {
+                tmp_string="Large_Van";
+            }
+            else if(tmp_space_size==Mini_Van)
+            {
+                tmp_string="Mini_Van";
+            }
+            else if(tmp_space_size==Large_Car)
+            {
+                tmp_string="Large_Car";
+            }
+            else if(tmp_space_size==Medium_Car)
+            {
+                tmp_string="Medium_Car";
+            }
+            else if(tmp_space_size==Small_Car)
+            {
+                tmp_string="Small_Car";
+            }
+            else if(tmp_space_size==Motor_Bike)
+                tmp_string="Motor_Bike";
+            long show_cost=cost+tmp_space_size;
             spacenolist.add("Space No: "+ i);
-            spacesizelist.add("Space Size: "+spaceDetails.get(i).getSpacesize());
-            minimumcostlist.add("Minimum Cost: "+"10 taka");
+            spacesizelist.add("Space Size: "+tmp_string);
+            minimumcostlist.add("Minimum Cost: "+String.valueOf(show_cost));
             mImageUrls.add("https://banner2.kisspng.com/20180211/kgq/kisspng-car-icon-driving-car-5a804313d86b14.6905057915183552198865.jpg");
         }
 
