@@ -2,8 +2,10 @@ package com.example.parkin.MyFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,18 +13,21 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.parkin.R;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSingleSpace;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSpace;
@@ -100,6 +105,8 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
     AppCompatEditText mobileNo;
     //..........
 
+    ImageView mapView;
+
     String featuresStr ="";
 
     ArrayList<String> spaceNo;
@@ -140,7 +147,16 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_details, container, false);
+/*
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.Theme_SwitchDateTime);
 
+        // clone the inflater using the ContextThemeWrapper
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+
+        // inflate the layout using the cloned inflater, not default inflater
+        return localInflater.inflate(R.layout.fragment_details, container, false);
+
+*/
         //plus.setOnClickListener(this);
         return v;
     }
@@ -154,6 +170,12 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         //EditText init..
         spaceCount = (AppCompatEditText) view.findViewById(R.id.spaceCount);
         mobileNo = (AppCompatEditText) view.findViewById(R.id.mobileNo);
+
+        mapView = (ImageView) view.findViewById(R.id.mapViewImage);
+
+        SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mobileNo.setText(mySharedPreferences.getString(getString(R.string.mobileNo), ""));
+
         ////aboutSpace = (AppCompatEditText) view.findViewById(R.id.aboutSpace);
         ////accessInstruction = (AppCompatEditText) view.findViewById(R.id.accessInstruction);
         //RadioGroup
@@ -224,7 +246,6 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         feature5 = (CheckBox) view.findViewById(R.id.feature5);
         feature6 = (CheckBox) view.findViewById(R.id.feature6);
         feature7 = (CheckBox) view.findViewById(R.id.feature7);
-
 
         feature1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -340,6 +361,11 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         MyStepperTest myStepperTest = (MyStepperTest) getActivity();
         selectedLocationShow.setText(myStepperTest.getAddressTitle());
 
+        Glide.with(myStepperTest)
+                .asBitmap()
+                .load(myStepperTest.getPlace().getImglink())
+                .into(mapView);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -386,13 +412,13 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         void onFragmentInteraction(Uri uri);
     }
 
-    public void getFinalizedData(){
+    public HashMap<String, String> getFinalizedData(){
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("space_count", spaceCount.getText().toString());
-        hashMap.put("vehicle_type",vehilceTypeRadio.getText().toString());
         hashMap.put("features", featuresStr);
-        String mob = "880"+mobileNo.getText().toString();
+        String mob = "0"+mobileNo.getText().toString();
         hashMap.put("mobileNo", mob);
+        return hashMap;
     }
     void initRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycleView_space);
