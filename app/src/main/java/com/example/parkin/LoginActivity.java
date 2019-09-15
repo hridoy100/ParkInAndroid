@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -68,12 +69,24 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         checkSharedPreferences();
 
+        String whereFrom = getIntent().getStringExtra("from");
+        //Toast.makeText(getApplicationContext(), "Where From: "+whereFrom,Toast.LENGTH_SHORT).show();
+
         if(currentUser != null && tryToLogin(username.getText().toString(),password.getText().toString())){ //tryToLogin checks corner case..
             //setSharedPreferences(username.getText().toString(),password.getText().toString()));
             progressDialog.dismiss();
-            Toast.makeText(getApplicationContext(),"Login Successful\n"+username.getText().toString()+
-                    "\n"+password.getText().toString(), Toast.LENGTH_LONG).show();
-            sendUserToHomeActivity();
+            if(whereFrom!=null && whereFrom.equals("home")){
+                //do nothing..
+                Log.d("LoginActivity","in side if");
+//                username.setText("");
+//                password.setText("");
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Login Successful\n"+username.getText().toString()+
+                        "\n"+password.getText().toString(), Toast.LENGTH_LONG).show();
+                sendUserToHomeActivity();
+            }
+
         }
 //        else if(username.getText().toString().length()<0,password.getText().toString())) {
 //            progressDialog.hide();
@@ -331,4 +344,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     */
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
+    }
 }
