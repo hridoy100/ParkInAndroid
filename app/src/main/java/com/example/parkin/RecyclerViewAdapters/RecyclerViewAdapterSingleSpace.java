@@ -1,10 +1,15 @@
 package com.example.parkin.RecyclerViewAdapters;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -24,11 +29,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.appeaser.sublimepickerlibrary.SublimePicker;
 import com.example.parkin.DB.SpaceDetails;
+import com.example.parkin.MyFragment.DetailsFragment;
 import com.example.parkin.R;
+import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import static android.support.v4.content.res.TypedArrayUtils.getString;
 
 public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<RecyclerViewAdapterSingleSpace.ViewHolder> {
 
@@ -79,6 +93,15 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
         AppCompatEditText cctvIp;
         RadioGroup vehicleType;
         RadioButton vehicleTypeSelected;
+
+        private Button current;
+        Calendar arrivaltime;
+        Calendar departuretime;
+        private SwitchDateTimeDialogFragment dateTimeFragment;
+        private SwitchDateTimeDialogFragment dateTimeFragment2;
+
+        private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
+
         public ViewHolder(View itemView, RecyclerViewAdapterSingleSpace.OnItemClickListener onItemClickListener) {
             super(itemView);
             spaceNoTxt = (TextView) itemView.findViewById(R.id.spaceNo);
@@ -89,54 +112,151 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
             vehicleType = (RadioGroup) itemView.findViewById(R.id.vehicleType);
 
 
+            if (dateTimeFragment == null) {
+                dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
+                        "DateTime",
+                        "OK",
+                        "Cancel"
+                        // Optional
+                );
+            }
+            if (dateTimeFragment2 == null) {
+                dateTimeFragment2 = SwitchDateTimeDialogFragment.newInstance(
+                        "DateTime",
+                        "OK",
+                        "Cancel"
+                        // Optional
+                );
+            }
+            // Optionally define a timezone
+            dateTimeFragment.setTimeZone(TimeZone.getDefault());
+            dateTimeFragment2.setTimeZone(TimeZone.getDefault());
+            // Init format
+            final SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            // Assign unmodifiable values
+            //arrivaltime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            //departuretime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+            arrivaltime=Calendar.getInstance();
+            departuretime=Calendar.getInstance();
+            departuretime.add(Calendar.MINUTE,30);
+            Calendar calendar = Calendar.getInstance();
+            dateTimeFragment.set24HoursMode(false);
+            dateTimeFragment.setHighlightAMPMSelection(false);
+            dateTimeFragment.setMinimumDateTime(calendar.getTime());
+            dateTimeFragment.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
+            dateTimeFragment2.set24HoursMode(false);
+            dateTimeFragment2.setHighlightAMPMSelection(false);
+            dateTimeFragment2.setMinimumDateTime(departuretime.getTime());
+            dateTimeFragment2.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
+            dateTimeFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
+                @Override
+                public void onPositiveButtonClick(Date date) {
+                    arrivaltime.setTime(date);
+                    current.setText(myDateFormat.format(date));
+
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"open", current.getText().toString());
+                    myEditor.commit();
+                    //dateTimeFragment2.setMinimumDateTime(cal.getTime());
+                }
+
+                @Override
+                public void onNegativeButtonClick(Date date) {
+                    // Do nothing
+                }
+
+                @Override
+                public void onNeutralButtonClick(Date date) {
+                    // Optional if neutral button does'nt exists
+                }
+            });
+            dateTimeFragment2.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonWithNeutralClickListener() {
+                @Override
+                public void onPositiveButtonClick(Date date) {
+                    departuretime.setTime(date);
+                    current.setText(myDateFormat.format(date));
+
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"close", current.getText().toString());
+                    myEditor.commit();
+                }
+
+                @Override
+                public void onNegativeButtonClick(Date date) {
+                    // Do nothing
+                }
+
+                @Override
+                public void onNeutralButtonClick(Date date) {
+                    // Optional if neutral button does'nt exists
+                }
+            });
+
+
+
             openTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Calendar mcurrentTime = Calendar.getInstance();
-                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                    int minute = mcurrentTime.get(Calendar.MINUTE);
-                    TimePickerDialog mTimePicker;
-                    mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                            Log.i("hr", String.valueOf(selectedHour));
-                            Log.i("min", String.valueOf(selectedMinute));
-                            if(selectedMinute<10)
-                                openTime.setText( selectedHour + ":0" + selectedMinute);
-                            else
-                                openTime.setText( selectedHour + ":" + selectedMinute);
+//                    Calendar mcurrentTime = Calendar.getInstance();
+//                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//                    int minute = mcurrentTime.get(Calendar.MINUTE);
+//
+//                    TimePickerDialog mTimePicker;
+//                    mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+//                        @Override
+//                        public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                            Log.i("hr", String.valueOf(selectedHour));
+//                            Log.i("min", String.valueOf(selectedMinute));
+//                            if(selectedMinute<10)
+//                                openTime.setText( selectedHour + ":0" + selectedMinute);
+//                            else
+//                                openTime.setText( selectedHour + ":" + selectedMinute);
+//
+//                            myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"open", openTime.getText().toString());
+//                            myEditor.commit();
+//                        }
+//                    }, hour, minute, false);//No 24 hour time
+//                    mTimePicker.setTitle("Select Time");
+//                    mTimePicker.show();
+                    current=openTime;
+                    Calendar calendar=Calendar.getInstance();
+                    dateTimeFragment.startAtCalendarView();
+                    dateTimeFragment.setDefaultDateTime(arrivaltime.getTime());
+                    FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                    dateTimeFragment.show(fragmentManager, TAG_DATETIME_FRAGMENT);
 
-                            myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"open", openTime.getText().toString());
-                            myEditor.commit();
-                        }
-                    }, hour, minute, false);//No 24 hour time
-                    mTimePicker.setTitle("Select Time");
-                    mTimePicker.show();
+
                 }
             });
 
             closeTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Calendar mcurrentTime = Calendar.getInstance();
-                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                    int minute = mcurrentTime.get(Calendar.MINUTE);
-                    TimePickerDialog mTimePicker;
-                    mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                            Log.i("hr", String.valueOf(selectedHour));
-                            Log.i("min", String.valueOf(selectedMinute));
-                            if(selectedMinute<10)
-                                closeTime.setText( selectedHour + ":0" + selectedMinute);
-                            else
-                                closeTime.setText( selectedHour + ":" + selectedMinute);
-                            myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"close", closeTime.getText().toString());
-                            myEditor.commit();
-                        }
-                    }, hour, minute, false);//No 24 hour time
-                    mTimePicker.setTitle("Select Time");
-                    mTimePicker.show();
+//                    Calendar mcurrentTime = Calendar.getInstance();
+//                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//                    int minute = mcurrentTime.get(Calendar.MINUTE);
+//                    TimePickerDialog mTimePicker;
+//                    mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+//                        @Override
+//                        public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                            Log.i("hr", String.valueOf(selectedHour));
+//                            Log.i("min", String.valueOf(selectedMinute));
+//                            if(selectedMinute<10)
+//                                closeTime.setText( selectedHour + ":0" + selectedMinute);
+//                            else
+//                                closeTime.setText( selectedHour + ":" + selectedMinute);
+//                            myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"close", closeTime.getText().toString());
+//                            myEditor.commit();
+//                        }
+//                    }, hour, minute, false);//No 24 hour time
+//                    mTimePicker.setTitle("Select Time");
+//                    mTimePicker.show();
+                    current=closeTime;
+                    Calendar calendar=Calendar.getInstance();
+                    dateTimeFragment2.startAtCalendarView();
+                    dateTimeFragment2.setDefaultDateTime(departuretime.getTime());
+                    Activity activity = (Activity) context;
+                    FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                    dateTimeFragment2.show(fragmentManager, TAG_DATETIME_FRAGMENT);
+
 
                 }
             });
@@ -177,7 +297,7 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
                     myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"cctvIP", cctvIp.getText().toString());
                     myEditor.commit();
                     //Toast.makeText(context, cctvIp.getText().toString(), Toast.LENGTH_SHORT).show();
-                    //Log.d("cctvIP recy","com.example.parkin."+spaceNoTxt.getText().toString()+cctvIp.getId() + " Text:  "+ cctvIp.getText().toString());
+                    Log.d("cctvIP recy","com.example.parkin."+spaceNoTxt.getText().toString()+"cctvIP" + " Text:  "+ cctvIp.getText().toString());
                 }
             });
 
@@ -187,7 +307,7 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
                     myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"position", position.getText().toString());
                     myEditor.commit();
                     //Toast.makeText(context, position.getText().toString(), Toast.LENGTH_SHORT).show();
-                    //Log.d("cctvIP recy","com.example.parkin."+spaceNoTxt.getText().toString()+position.getId() + " Text:  "+ position.getText().toString());
+                    Log.d("position recy","com.example.parkin."+spaceNoTxt.getText().toString()+"position" + " pos:  "+ position.getText().toString());
                 }
             });
 

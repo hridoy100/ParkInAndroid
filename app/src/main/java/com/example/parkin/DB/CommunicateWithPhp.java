@@ -1183,4 +1183,91 @@ public class CommunicateWithPhp {
         return null;
     }
 
+    public String addGarage(String address, String mobileNo, String facilityStr, String spaceCount, String longitude, String latitude) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_ADDGARAGE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&addressName=" + address);
+            ps.print("&renterMobNo=" + mobileNo);
+            ps.print("&facilityId=" + facilityStr);
+            ps.print("&rentingSpace=" + spaceCount);
+            ps.print("&longitude=" + longitude);
+            ps.print("&latitude=" + latitude);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            if (response.toString().contains("failed")) {
+                Log.d("Registration", response.toString());
+                return "";
+            } else if (response.toString().contains("garageId")) {
+                String sub = response.toString().substring(response.toString().indexOf(":")+1);
+                return sub;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void addSpace(String garageId, String spaceSize, String startTime, String endTime, String position, String cctvIp) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_ADDSPACE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&garage_id=" + garageId);
+            ps.print("&space_size=" + spaceSize);
+            ps.print("&start_time=" + startTime);
+            ps.print("&end_time=" + endTime);
+            ps.print("&position=" + position);
+            ps.print("&cctv_ip=" + cctvIp);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            Log.d("Add space: " ,response.toString());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

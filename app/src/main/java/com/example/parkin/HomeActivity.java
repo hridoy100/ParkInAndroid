@@ -225,8 +225,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void garageActivity(View view){
-        //Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
-        Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
+        Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
+        //Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(garageIntent);
     }
 
@@ -260,7 +260,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(notificationIntent);
     }
     public void settingsActivity(View view){
-        Intent settingsIntent = new Intent(getApplicationContext(),SettingsActivity.class);
+        Intent settingsIntent = new Intent(getApplicationContext(),AccountSettingsActivity.class);
         startActivity(settingsIntent);
     }
     public void logOutActivity(View view){
