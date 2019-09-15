@@ -104,7 +104,11 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
         startActivity(addVehicleIntent);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
     void initImageBitmaps() {
         //mImageUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLCINLcwcG0xWtc73CfeEjnOM0oi_yRG9BTmMjQf60DljywHYD");
         /*mImageUrls.add("https://img7.androidappsapk.co/300/4/6/4/namaa.com.jobsbank.png");
