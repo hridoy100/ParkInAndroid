@@ -3,11 +3,13 @@ package com.example.parkin.MyFragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +34,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 
 /**
@@ -88,8 +93,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     View mapView;
     TextView locationText;
     TextView test;
+    File file;
 
-
+    String filePath=null;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -184,7 +190,18 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
 //        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    0);
+        }
+        if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            // Show rationale and request permission.
+        }
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -275,6 +292,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }
 
+
+//        mMap.setOnMapLoadedCallback (new GoogleMap.OnMapLoadedCallback () {
+//            @Override
+//            public void onMapLoaded() {
+//                snapShot();
+//            }
+//        });
+
     }
 
     private void configureCameraIdle() {
@@ -313,4 +338,42 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    public void snapShot(){
+        int result = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            //do nothing..
+        }
+        else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+        }
+
+        GoogleMap.SnapshotReadyCallback callback=new GoogleMap.SnapshotReadyCallback () {
+            Bitmap bitmap;
+            @Override
+            public void onSnapshotReady(Bitmap snapshot) {
+                bitmap=snapshot;
+
+                try{
+                    filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/map.png";
+                    file=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"map.png");
+                    System.out.println("sout: "+filePath);
+                    FileOutputStream fout=new FileOutputStream (file);
+
+                    bitmap.compress (Bitmap.CompressFormat.PNG,90,fout);
+                    Toast.makeText (getContext(), "Map Captured", Toast.LENGTH_SHORT).show ();
+
+                }catch (Exception e){
+                    e.printStackTrace ();
+                    Toast.makeText (getContext(), "Not Capture", Toast.LENGTH_SHORT).show ();
+                }
+
+
+            }
+        };
+        mMap.snapshot (callback);
+    }
+
 }

@@ -27,34 +27,40 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
 
     ProgressDialog progressDialog;
 
-    ArrayList<String> garageId = new ArrayList<>();
-    ArrayList<String> locationName = new ArrayList<>();
-    ArrayList<String> mImageUrls = new ArrayList<>();
+    ArrayList<String> garageId;
+    ArrayList<String> locationName;
+    ArrayList<String> mImageUrls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.garage_list_layout);
         progressDialog = new ProgressDialog(this);
+        garageId = new ArrayList<>();
+        locationName = new ArrayList<>();
+        mImageUrls = new ArrayList<>();
 
         garageView = findViewById(R.id.recycleView_garage);
-        progressDialog.setMessage("Loading Garage Details");
+        progressDialog.setMessage("Loading Garage Details..");
         progressDialog.show();
 
         initImageBitmaps();
-
-        progressDialog.dismiss();
-
     }
 
     @Override
     public void onItemClick(int i) {
         Toast.makeText(getApplicationContext(), locationName.get(i),Toast.LENGTH_SHORT).show();
-        Intent showPopUpIntent = new Intent(getApplicationContext(), PopGarageDetails.class);
-        showPopUpIntent.putExtra("location", locationName.get(i));
-        showPopUpIntent.putExtra("garageId", garageId.get(i));
+//        Intent showPopUpIntent = new Intent(getApplicationContext(), PopGarageDetails.class);
+//        showPopUpIntent.putExtra("location", locationName.get(i));
+//        showPopUpIntent.putExtra("garageId", garageId.get(i));
         Log.d("garageID",garageId.get(i));
-        startActivity(showPopUpIntent);
+        Intent singleGarageIntent = new Intent(getApplicationContext(), SingleGarageActivity.class);
+        String garId = garageId.get(i).substring(garageId.get(i).indexOf(" ")+1);
+        Log.d("garageID",garId);
+        singleGarageIntent.putExtra("garageId",garId);
+        singleGarageIntent.putExtra("location",locationName.get(i));
+        startActivity(singleGarageIntent);
+//        startActivity(showPopUpIntent);
     }
     public void addGarageActivity(View view){
         //Intent addGarageIntent = new Intent(getApplicationContext(), AddGarage.class);
@@ -71,6 +77,7 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
         */
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getMyGaragesDB(this);
+        progressDialog.dismiss();
         if(garageDetailsArrayList==null){
             return;
         }
@@ -78,6 +85,7 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
             locationName.add(garageDetailsArrayList.get(i).getAddressName());
             garageId.add("GarageID: "+garageDetailsArrayList.get(i).getGarageId());
             mImageUrls.add("http://www.regencygarages.com/images/garage-img/picture_3.jpg");
+            //mImageUrls.add("http://www.regencygarages.com/images/garage-img/picture_3.jpg");
         }
 
 
@@ -89,6 +97,16 @@ public class Garage extends AppCompatActivity implements RecyclerViewAdapterGara
         RecyclerViewAdapterGarage adapter = new RecyclerViewAdapterGarage(this, locationName, garageId, mImageUrls, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationName = new ArrayList<>();
+        garageId = new ArrayList<>();
+        mImageUrls = new ArrayList<>();
+        initImageBitmaps();
 
     }
 }
