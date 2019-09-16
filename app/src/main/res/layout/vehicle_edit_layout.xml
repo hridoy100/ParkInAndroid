@@ -15,26 +15,30 @@
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vehicle Editing"
-            android:textSize="24sp"
+            android:layout_height="70dp"
+            android:text="VEHICLE EDITING"
+
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="20sp"
             android:gravity="center"
-            android:layout_marginTop="20sp"/>
+            android:textColor="@color/white"
+            android:background="@drawable/curve"
+            android:textStyle="bold"
+            />
         <TextView
             android:id="@+id/licenseId"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
             android:text="License ID : "
             android:gravity="center"
             android:textSize="20sp"
             android:fontFamily="@font/roboto_bold"
-            android:background="@android:color/holo_orange_light"/>
+            android:padding="5dp"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="40dp">
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -75,12 +79,12 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="50dp"
             android:paddingTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -209,7 +213,8 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -226,7 +231,8 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
