@@ -240,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
         //textHome.animate().alpha(1).setDuration(800).setStartDelay(1300);
 
         Glide.with(this)
-                .load(R.drawable.ongoing_icon)
+                .load(R.drawable.ongoing_icon_cropped)
                 .override(70,70)
                 .into(onGoingImg);
         Glide.with(this)
