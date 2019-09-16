@@ -51,7 +51,13 @@ public class NotificationThread  extends FragmentActivity implements Runnable {
             int notif_size=0;
             for(int i=0;i<notifications.size();i++)
             {
-                if(notifications.get(i).getStatus().equals("no"))
+                if(notifications.get(i).getStatus().equals("no,no"))
+                    notif_size++;
+                if(notifications.get(i).getStatus().equals("yes,no")
+                && notifications.get(i).getCustomerNo().equals(mobNo))
+                    notif_size++;
+                if(notifications.get(i).getStatus().equals("no,yes")
+                        && notifications.get(i).getRenterNo().equals(mobNo))
                     notif_size++;
             }
             if(notif_size>min_count)

@@ -761,6 +761,8 @@ public class CommunicateWithPhp {
                 String renterMob = dataobj.getString("renter_mob_no");
                 String customerMob = dataobj.getString("customer_mob_no");
                 String notifMsg = null;
+                notificationDetails.setCustomerNo(customerMob);
+                notificationDetails.setRenterNo(renterMob);
                 if (customerMob.equals(mobNo)) {
                     notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
                     notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob + "</font>");
