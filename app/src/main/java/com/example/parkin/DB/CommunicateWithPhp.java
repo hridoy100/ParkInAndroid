@@ -8,6 +8,7 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Space;
 import android.widget.Toast;
@@ -451,8 +452,10 @@ public class CommunicateWithPhp {
                 cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
                 spaceDetails.setStarttime1(cal);
                 cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
-                spaceDetails.setGetStarttime2(cal);
+                spaceDetails.setStarttime2(cal);
                 spaceDetails.setAvailability(dataobj.getString("availability"));
+                spaceDetails.setCctvIp(dataobj.getString("cctvIp"));
+
                 spaceDetailsArrayList.add(spaceDetails);
             }
             return spaceDetailsArrayList;
@@ -553,8 +556,9 @@ public class CommunicateWithPhp {
                 cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
                 spaceDetails.setStarttime1(cal);
                 cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
-                spaceDetails.setGetStarttime2(cal);
+                spaceDetails.setStarttime2(cal);
                 spaceDetails.setAvailability(dataobj.getString("availability"));
+                spaceDetails.setCctvIp(dataobj.getString("cctvIp"));
                 spaceDetailsArrayList.add(spaceDetails);
             }
             return spaceDetailsArrayList;
@@ -1183,7 +1187,7 @@ public class CommunicateWithPhp {
         return null;
     }
 
-    public String addGarage(String address, String mobileNo, String facilityStr, String spaceCount, String longitude, String latitude) {
+    public String addGarage(String address, String mobileNo, String facilityStr, String spaceCount, String longitude, String latitude, String postalId) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -1206,6 +1210,7 @@ public class CommunicateWithPhp {
             ps.print("&rentingSpace=" + spaceCount);
             ps.print("&longitude=" + longitude);
             ps.print("&latitude=" + latitude);
+            ps.print("&postalId=" + postalId);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -1216,12 +1221,11 @@ public class CommunicateWithPhp {
             }
             in.close();
             System.out.println(response.toString());
-            if (response.toString().contains("failed")) {
-                Log.d("Registration", response.toString());
+            if(TextUtils.isEmpty(response.toString())){
                 return "";
-            } else if (response.toString().contains("garageId")) {
-                String sub = response.toString().substring(response.toString().indexOf(":")+1);
-                return sub;
+            }
+            else {
+                return response.toString();
             }
 
         } catch (Exception e) {
@@ -1263,6 +1267,44 @@ public class CommunicateWithPhp {
             }
             in.close();
             Log.d("Add space: " ,response.toString());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void toggleSpaceAvailability(String spaceId, String availability) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+        Log.d("spaceid",spaceId);
+        Log.d("availableid",availability);
+
+        try {
+            URL website = new URL(Constants.URL_TOGGLEAVAILABILITY);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&spaceId=" + spaceId);
+            ps.print("&availability=" + availability);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            Log.d("toggled: " ,response.toString());
 
 
         } catch (Exception e) {

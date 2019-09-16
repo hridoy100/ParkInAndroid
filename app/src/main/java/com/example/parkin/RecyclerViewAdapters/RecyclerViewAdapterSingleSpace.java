@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -317,6 +318,13 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
                     vehicleTypeSelected = (RadioButton) itemView.findViewById(checkedId);
                     //Toast.makeText(context, "Selected v: "+ vehicleTypeSelected.getText().toString(), Toast.LENGTH_SHORT).show();
                     myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"vehicleType", vehicleTypeSelected.getText().toString());
+                    myEditor.commit();
+
+
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"cctvIP", cctvIp.getText().toString());
+                    myEditor.commit();
+
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"position", position.getText().toString());
                     myEditor.commit();
                     //Log.d("vehicleType recy","com.example.parkin."+spaceNoTxt.getText().toString()+vehicleType.getId() + "  " + String.valueOf(vehicleTypeSelected.getId()));
                 }

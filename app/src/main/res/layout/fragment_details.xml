@@ -58,20 +58,21 @@
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="200dp"
                         android:src="@android:drawable/sym_def_app_icon"
                         android:id="@+id/mapViewImage"
-                        android:background="@drawable/bg_rounded_edit_text"
                         android:layout_weight="1"
-                        android:layout_margin="5dp"/>
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/sym_def_app_icon"
-                        android:id="@+id/streetViewImage"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_edit_text"
-                        android:layout_margin="5dp"/>
+                        android:layout_margin="5dp"
+                        android:scaleType="centerCrop"
+                        />
+                    <!--<ImageView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="100dp"-->
+                        <!--android:src="@android:drawable/sym_def_app_icon"-->
+                        <!--android:id="@+id/streetViewImage"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@drawable/bg_rounded_edit_text"-->
+                        <!--android:layout_margin="5dp"/>-->
 
                 </LinearLayout>
                 <TextView
@@ -617,7 +618,7 @@
                             android:paddingLeft="20dp"
                             android:paddingRight="20dp"
                             android:textColor="@android:color/black"
-                            android:text="+880"
+                            android:text="+88"
                             android:layout_weight="3"
                             android:enabled="false"
                             android:fontFamily="@font/roboto"

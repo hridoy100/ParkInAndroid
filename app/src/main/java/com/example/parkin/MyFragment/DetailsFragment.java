@@ -1,11 +1,16 @@
 package com.example.parkin.MyFragment;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +18,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +41,7 @@ import com.example.parkin.Stepper.MyStepperTest;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -158,6 +165,20 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
 
 */
         //plus.setOnClickListener(this);
+
+        mapView = (ImageView) v.findViewById(R.id.mapViewImage);
+        String file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/map.png";
+        File file = new File(file_path);
+
+        if(!file_path.equals("")) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(file.getPath());
+
+            mapView.setImageBitmap(myBitmap);
+
+        }
+        else {
+            System.out.println("File Not Found");
+        }
         return v;
     }
 
@@ -171,7 +192,6 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         spaceCount = (AppCompatEditText) view.findViewById(R.id.spaceCount);
         mobileNo = (AppCompatEditText) view.findViewById(R.id.mobileNo);
 
-        mapView = (ImageView) view.findViewById(R.id.mapViewImage);
 
         SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mobileNo.setText(mySharedPreferences.getString(getString(R.string.mobileNo), ""));
@@ -361,10 +381,23 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         MyStepperTest myStepperTest = (MyStepperTest) getActivity();
         selectedLocationShow.setText(myStepperTest.getAddressTitle());
 
-        Glide.with(myStepperTest)
-                .asBitmap()
-                .load(myStepperTest.getPlace().getImglink())
-                .into(mapView);
+        String file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/map.png";
+        File file = new File(file_path);
+
+        if(!file_path.equals("")) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(file.getPath());
+
+            mapView.setImageBitmap(myBitmap);
+
+        }
+        else {
+            System.out.println("File Not Found");
+        }
+
+//        Glide.with(myStepperTest)
+//                .asBitmap()
+//                .load(myStepperTest.getPlace().getImglink())
+//                .into(mapView);
 
     }
 
@@ -376,10 +409,35 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        String file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/map.png";
+        File file = new File(file_path);
+
+        if(!file_path.equals("")) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(file.getPath());
+
+            mapView.setImageBitmap(myBitmap);
+
+        }
+        else {
+            System.out.println("File Not Found");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -416,7 +474,7 @@ public class DetailsFragment extends Fragment implements RecyclerViewAdapterSing
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("space_count", spaceCount.getText().toString());
         hashMap.put("features", featuresStr);
-        String mob = "0"+mobileNo.getText().toString();
+        String mob = mobileNo.getText().toString();
         hashMap.put("mobileNo", mob);
         return hashMap;
     }

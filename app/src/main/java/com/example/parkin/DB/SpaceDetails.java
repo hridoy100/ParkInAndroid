@@ -10,17 +10,19 @@ public class SpaceDetails {
     int spacesize;
     String position;
     Calendar starttime1;
-    Calendar getStarttime2;
+    Calendar starttime2;
     String availability;
+    String cctvIp;
 
-    public SpaceDetails(int spaceid, int garageid, int spacesize, String position, Calendar starttime1, Calendar getStarttime2, String availability) {
+    public SpaceDetails(int spaceid, int garageid, int spacesize, String position, Calendar starttime1, Calendar starttime2, String availability, String cctvIp) {
         this.spaceid = spaceid;
         this.garageid = garageid;
         this.spacesize = spacesize;
         this.position = position;
         this.starttime1 = starttime1;
-        this.getStarttime2 = getStarttime2;
+        this.starttime2 = starttime2;
         this.availability = availability;
+        this.cctvIp = cctvIp;
     }
 
     public SpaceDetails() {
@@ -66,12 +68,12 @@ public class SpaceDetails {
         this.starttime1 = starttime1;
     }
 
-    public Calendar getGetStarttime2() {
-        return getStarttime2;
+    public Calendar getStarttime2() {
+        return starttime2;
     }
 
-    public void setGetStarttime2(Calendar getStarttime2) {
-        this.getStarttime2 = getStarttime2;
+    public void setStarttime2(Calendar getStarttime2) {
+        this.starttime2 = getStarttime2;
     }
 
     public String getAvailability() {
@@ -80,5 +82,13 @@ public class SpaceDetails {
 
     public void setAvailability(String availability) {
         this.availability = availability;
+    }
+
+    public String getCctvIp() {
+        return cctvIp;
+    }
+
+    public void setCctvIp(String cctvIp) {
+        this.cctvIp = cctvIp;
     }
 }
