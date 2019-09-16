@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,10 +117,10 @@ public class AddressFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        citySpinner = (AppCompatSpinner) view.findViewById(R.id.sp_city);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.city));
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        citySpinner.setAdapter(arrayAdapter);
+//        citySpinner = (AppCompatSpinner) view.findViewById(R.id.sp_city);
+//        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.city));
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        citySpinner.setAdapter(arrayAdapter);
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.googleMapBarikoi);
 //        mapFragment.getMapAsync(this);
@@ -149,6 +150,7 @@ public class AddressFragment extends Fragment{
                 addressTitle = place.getAddress();
                 postalCode = place.getPostalcode();
                 selectedPlace = place;
+                //System.out.println("sout: "+place.getImglink());
                 MyStepperTest myStepperTest = (MyStepperTest) getActivity();
                 //myStepperTest.setLatLngFromAddressFragment(latitude,longitude,addressTitle);
                 myStepperTest.setLatLngFromAddressFragment(latitude,longitude,addressTitle,postalCode,place);

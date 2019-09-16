@@ -228,6 +228,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
         //Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(garageIntent);
+
     }
 
     public void vehicleActivity(View view){

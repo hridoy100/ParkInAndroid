@@ -2,18 +2,23 @@ package com.example.parkin.Stepper;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
@@ -41,6 +46,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 import barikoi.barikoilocation.PlaceModels.GeoCodePlace;
@@ -145,8 +152,8 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
             @Override
             public void onClick(View v) {
                 currentStep++;
-                if(currentStep>5)
-                    currentStep=5;
+                if(currentStep>4)
+                    currentStep=4;
                 onNextOrBackPressed();
 
                 /*mapView.setVisibility(View.VISIBLE);
@@ -327,6 +334,13 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
                 displayLocationFragment();
                 break;
             case 3 :
+
+                locationFragment.snapShot();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 step3text.setTextColor(Color.parseColor("#000000"));
                 step3roundedView.setTextColor(Color.parseColor("#FFFFFF"));
                 step3roundedView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
@@ -334,10 +348,21 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
                 break;
             case 4 :
                 getDataFromDetailsFragment();
+                //startActivity(getParentActivityIntent());
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Garage Addition");
+                builder.setMessage("Garage Successfully added..");
+                builder.setCancelable(true);
+                builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Neutral button clicked", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+                builder.show();
+
                 //displaySpaceFragment();
-                break;
-            case 5 :
-                //getDataFromDetailsFragment();
                 break;
             default:
                 throw new IllegalStateException();
@@ -648,9 +673,8 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
         Log.d("garage adding","address: "+addressTitle+" mobileNo: "+detailsFragData.get("mobileNo")+
                 " feature: "+ featureMap+ " sp count: "+ detailsFragData.get("space_count")+" long: "+longitude.toString()+" lat: "+
                 latitude.toString()+" postalCode: "+postalCode);
-        String garageId = "1";
-                //communicateWithPhp.addGarage(addressTitle,detailsFragData.get("mobileNo"),
-                //featureMap,detailsFragData.get("space_count"),longitude.toString(), latitude.toString());
+        String garageId = communicateWithPhp.addGarage(addressTitle,detailsFragData.get("mobileNo"),
+                featureMap,detailsFragData.get("space_count"),longitude.toString(), latitude.toString(), postalCode);
         Toast.makeText(getApplicationContext(), "Garage ID: "+garageId,Toast.LENGTH_SHORT).show();
 
         mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -689,7 +713,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
             position_txt+=space_no;
             Log.d("space adding: "+spaceNoTxt," spCount: "+detailsFragData.get("space_count")+" gar id: "+garageId+ " sp_size: "+
                     spaceSize+ " open: "+ open_time+ " close: "+ close_time+" position: "+position_txt+ " cctv: "+cctv_ip);
-            //communicateWithPhp.addSpace(garageId,spaceSize,open_time, close_time,position_txt,cctv_ip);
+            communicateWithPhp.addSpace(garageId,spaceSize,open_time, close_time,position_txt,cctv_ip);
         }
 
     }
@@ -701,4 +725,7 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
     public GeoCodePlace getPlace() {
         return place;
     }
+
+
+
 }
