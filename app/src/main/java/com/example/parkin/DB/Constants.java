@@ -1,7 +1,7 @@
 package com.example.parkin.DB;
 
 public class Constants {
-    private static final String ROOT_URL = "http://formulabd.com/parkin/v1/";
+    public static final String ROOT_URL = "http://formulabd.com/parkin/v1/";
 
     public static final String URL_REGISTER = ROOT_URL+"parkin.php/registerUser";
     public static final String URL_LOGIN = ROOT_URL+"parkin.php/verifyAdmin";
@@ -26,6 +26,8 @@ public class Constants {
     public static final String URL_ADDSPACE = ROOT_URL+"parkin.php/addSpace";
     //public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/toggleSpaceAvailability";
     public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/updateSpaceAvailability";
+    public static final String URL_GETSINGLESPACE = ROOT_URL+"parkin.php/getSpaceInfo";
+    public static final String URL_UPDATESPACE = ROOT_URL+"parkin.php/updateSpaceInfo";
     public static int Motor_Bike=10;
     public static int Small_Car=15;
     public static int Medium_Car=25;
@@ -33,4 +35,13 @@ public class Constants {
     public static int Mini_Van=40;
     public static int Large_Van=50;
     public static long per_hour_cost=10;
+
+    public static String booked = "booked";
+    public static String starting_maybe="ongoing:online?";
+    public static String started="ongoing:online";
+    public static String stopping_maybe="ongoing:offline?";
+    public static String stopped="ongoing:offline";
+    public static String finishing="ongoing:completed?";
+    public static String completed="completed";
+
 }

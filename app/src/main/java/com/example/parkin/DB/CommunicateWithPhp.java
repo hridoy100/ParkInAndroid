@@ -654,7 +654,7 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
-            //Log.i("SharedmobileNo: ",mobNo);
+            Log.i("mobileNoForNotif: ",mobNo);
             ps.print("&mobileNo=" + mobNo);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -686,6 +686,10 @@ public class CommunicateWithPhp {
 
                 String renterMob = dataobj.getString("renter_mob_no");
                 String customerMob = dataobj.getString("customer_mob_no");
+
+                notificationDetails.setCustomerMobileNo(customerMob);
+                notificationDetails.setRenterMobileNo(renterMob);
+
                 String notifMsg = null;
                 if (customerMob.equals(mobNo)) {
                     notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
@@ -841,7 +845,7 @@ public class CommunicateWithPhp {
     }
 
 
-    public void updateNotification(String rentNo) {
+    public void updateNotification(String rentNo, String newStatus) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -859,6 +863,7 @@ public class CommunicateWithPhp {
             PrintStream ps = new PrintStream(connection.getOutputStream());
 
             ps.print("&rentNo=" + rentNo);
+            ps.print("&seen=" + newStatus);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -1309,6 +1314,104 @@ public class CommunicateWithPhp {
             }
             in.close();
             Log.d("toggled: " ,response.toString());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public SpaceDetails getSingleSpace(String spaceId) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        SpaceDetails spaceDetails = new SpaceDetails();
+        try {
+            URL website = new URL(Constants.URL_GETSINGLESPACE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            ps.print("&spaceId=" + spaceId);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("spaceInfo");
+                Log.i("dataobj", dataobj.toString());
+                spaceDetails.setSpaceid(dataobj.getInt("spaceId"));
+                spaceDetails.setGarageid(dataobj.getInt("garageId"));
+                spaceDetails.setSpacesize(dataobj.getInt("spaceSize"));
+                spaceDetails.setPosition(dataobj.getString("position"));
+                SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(myDateFormat.parse(dataobj.getString("start_time")));
+                spaceDetails.setStarttime1(cal);
+                cal.setTime(myDateFormat.parse(dataobj.getString("end_time")));
+                spaceDetails.setStarttime2(cal);
+                spaceDetails.setAvailability(dataobj.getString("availability"));
+                spaceDetails.setCctvIp(dataobj.getString("cctvIp"));
+                break;
+            }
+            return spaceDetails;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public void updateSpace(int spaceId, int garageId, int spaceSize, String startTime, String endTime, String position, String cctvIp) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_UPDATESPACE);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&spaceId=" + spaceId);
+//            ps.print("&garage_id=" + garageId);
+            ps.print("&spaceSize=" + spaceSize);
+            ps.print("&start_time=" + startTime);
+            ps.print("&end_time=" + endTime);
+            ps.print("&position=" + position);
+            ps.print("&cctv_ip=" + cctvIp);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            Log.d("Update space: " ,response.toString());
 
 
         } catch (Exception e) {
