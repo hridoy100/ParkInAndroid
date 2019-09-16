@@ -26,4 +26,11 @@ public class Constants {
     public static final String URL_ADDSPACE = ROOT_URL+"parkin.php/addSpace";
     //public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/toggleSpaceAvailability";
     public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/updateSpaceAvailability";
+    public static int Motor_Bike=10;
+    public static int Small_Car=15;
+    public static int Medium_Car=25;
+    public static int Large_Car=35;
+    public static int Mini_Van=40;
+    public static int Large_Van=50;
+    public static long per_hour_cost=10;
 }
