@@ -9,6 +9,24 @@ public class Notification {
     String date;
     String mobileNo;
 
+    public String getCustomerNo() {
+        return customerNo;
+    }
+
+    public void setCustomerNo(String customerNo) {
+        this.customerNo = customerNo;
+    }
+
+    public String getRenterNo() {
+        return renterNo;
+    }
+
+    public void setRenterNo(String renterNo) {
+        this.renterNo = renterNo;
+    }
+
+    String customerNo;
+    String renterNo;
     public Notification(String id, String status, String notificationMessage, String rentno, String time, String date, String mobileNo) {
         this.id = id;
         this.status = status;
