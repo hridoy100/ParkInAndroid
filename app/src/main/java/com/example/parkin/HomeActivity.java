@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -20,8 +21,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +34,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.Stepper.MyStepperTest;
 import com.example.parkin.util.NotificationThread;
@@ -58,6 +63,9 @@ public class HomeActivity extends AppCompatActivity {
     int notifcount=0;
     private FloatingActionButton fab;
     boolean loggedIn;
+
+    ImageView garageImg, notificationImg, parkingImg, vehicleImg, onGoingImg, historyImg, settingsImg, logoutImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +89,15 @@ public class HomeActivity extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.menu_drawer);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        garageImg = (ImageView) findViewById(R.id.garageImage);
+        notificationImg = (ImageView) findViewById(R.id.notificationImage);
+        parkingImg = (ImageView) findViewById(R.id.parkingLocationImage);
+        vehicleImg = (ImageView) findViewById(R.id.vehicleImage);
+        onGoingImg = (ImageView) findViewById(R.id.onGoingImage);
+        historyImg = (ImageView) findViewById(R.id.historyImage);
+        settingsImg = (ImageView) findViewById(R.id.settingImage);
+        logoutImg = (ImageView) findViewById(R.id.logoutImage);
 
         mToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
@@ -186,6 +203,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //FirebaseAuth.getInstance().signOut();
         moveTaskToBack(true);
     }
 
@@ -220,6 +238,23 @@ public class HomeActivity extends AppCompatActivity {
         //menus.startAnimation(homeTextShow);
 
         //textHome.animate().alpha(1).setDuration(800).setStartDelay(1300);
+
+        Glide.with(this)
+                .load(R.drawable.ongoing_icon)
+                .override(70,70)
+                .into(onGoingImg);
+        Glide.with(this)
+                 .load(R.drawable.settings_1_cropped)
+                .override(70,70)
+                 .into(settingsImg);
+        Glide.with(this)
+                 .load(R.drawable.notification_animated_cropped)
+                .override(70,70)
+                 .into(notificationImg);
+        Glide.with(this)
+                .load(R.drawable.parking_car_1)
+                .override(70,70)
+                .into(parkingImg);
 
     }
 
@@ -265,10 +300,29 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(settingsIntent);
     }
     public void logOutActivity(View view){
-        Intent logOutIntent = new Intent(getApplicationContext(),LoginActivity.class);
-        logOutIntent.putExtra("from","home");
-        startActivity(logOutIntent);
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logging Out");
+        builder.setMessage("Are you sure you want to log out?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent logOutIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                logOutIntent.putExtra("from","home");
+                startActivity(logOutIntent);
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing..
+            }
+        });
+        builder.show();
+
     }
 
     @Override

@@ -44,14 +44,12 @@
 
     <string-array name="vehicleType">
         <item>Select Vehicle Type</item>
-        <item>Car</item>
         <item>Motor Bike</item>
-        <item>Cycle</item>
-        <item>Bus</item>
-        <item>CNG</item>
-        <item>Auto Rickshaw</item>
-        <item>Van</item>
-        <item>Truck</item>
+        <item>Small Car</item>
+        <item>Medium Car</item>
+        <item>4x4 or Large Car</item>
+        <item>Mini Van</item>
+        <item>Large Van or Minibus</item>
     </string-array>
 
     <string-array name="hourCost">

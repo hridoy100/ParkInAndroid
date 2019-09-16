@@ -6,12 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.SpaceDetails;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSingleGarage;
+import com.example.parkin.Stepper.MyStepperTest;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,9 +81,7 @@ public class SingleGarageActivity extends AppCompatActivity implements RecyclerV
             cctvIp.add(spaceDetailsArrayList.get(i).getCctvIp());
 
             mImageUrls.add("http://www.regencygarages.com/images/garage-img/picture_3.jpg");
-
         }
-
 
         initRecyclerView();
     }
@@ -95,8 +95,34 @@ public class SingleGarageActivity extends AppCompatActivity implements RecyclerV
 
     }
 
+    public void addNewSpace(View view){
+        Intent addNewSpaceIntent = new Intent(getApplicationContext(), AddNewSpaceActivity.class);
+        addNewSpaceIntent.putExtra("garageId",garageIdStr);
+        startActivity(addNewSpaceIntent);
+    }
+
     @Override
     public void onItemClick(int i) {
         Toast.makeText(getApplicationContext(), spaceId.get(i),Toast.LENGTH_SHORT).show();
+        Intent singleSpaceIntent = new Intent(getApplicationContext(),SingleSpaceActivity.class);
+        singleSpaceIntent.putExtra("spaceId",spaceId.get(i));
+        startActivity(singleSpaceIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        spaceId = new ArrayList<>();
+        spaceSize = new ArrayList<>();
+        position = new ArrayList<>();
+        startTime = new ArrayList<>();
+        endTime = new ArrayList<>();
+        availability = new ArrayList<>();
+        cctvIp = new ArrayList<>();
+
+        mImageUrls = new ArrayList<>();
+        initImageBitmaps();
+
     }
 }
