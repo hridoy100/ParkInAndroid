@@ -1,6 +1,7 @@
 package com.example.parkin.RecyclerViewAdapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,9 +50,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder viewHolder,final int i) {
         Glide.with(context)
-                .asBitmap()
                 .load(mImages.get(i))
+                .override(75,75)
                 .into(viewHolder.circleImageView);
+        //viewHolder.circleImageView.setImageResource(Integer.parseInt(mImages.get(i)));
         viewHolder.licenseNo.setText(licenseNumber.get(i));
         viewHolder.compName.setText(companyName.get(i));
         viewHolder.regCode.setText(regNo.get(i));

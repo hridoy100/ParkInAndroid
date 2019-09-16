@@ -82,15 +82,12 @@ public class RecyclerViewAdapterSingleGarage extends RecyclerView.Adapter<Recycl
         return spaceID.size();
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int i);
-    }
-
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView position,spaceId;
         Switch available;
         CircleImageView circleImageView;
+        RecyclerViewAdapterSingleGarage.OnItemClickListener onItemClickListener;
+
         public ViewHolder(View itemView, RecyclerViewAdapterSingleGarage.OnItemClickListener onItemClickListener) {
             super(itemView);
             position = (TextView) itemView.findViewById(R.id.spaceNo);
@@ -123,11 +120,17 @@ public class RecyclerViewAdapterSingleGarage extends RecyclerView.Adapter<Recycl
                     }
                 }
             });
+            this.onItemClickListener = onItemClickListener;
+            itemView.setOnClickListener(this);
 
         }
         @Override
         public void onClick(View v) {
             onItemClickListener.onItemClick(getAdapterPosition());
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int i);
     }
 }

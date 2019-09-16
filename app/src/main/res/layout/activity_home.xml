@@ -103,7 +103,7 @@
                     android:textColor="@color/white"
                     android:fontFamily="@font/roboto_bold"
                     android:background="@color/transparentColor"
-                    android:paddingRight="80dp"
+                    android:paddingRight="70dp"
                     android:paddingBottom="20dp"
                     android:theme="@style/AppTheme.PopupOverlay"
                     />
@@ -128,14 +128,16 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:padding="30dp"
-                    android:onClick="garageActivity">
+                    android:padding="30dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/garage" />
+                        android:src="@drawable/garage"
+                        android:id="@+id/garageImage"
+                        android:onClick="garageActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -154,7 +156,6 @@
                     android:orientation="vertical"
                     android:padding="30dp"
                     android:layout_weight="1"
-                    android:onClick="notificationActivity"
                     >
 
                     <ImageView
@@ -162,6 +163,8 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:src="@drawable/bellcon"
+                        android:id="@+id/notificationImage"
+                        android:onClick="notificationActivity"
                         />
 
                     <TextView
@@ -185,7 +188,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:onClick="mapActivity"
                     android:orientation="vertical"
                     android:padding="30dp">
 
@@ -193,7 +195,10 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/parking_location" />
+                        android:src="@drawable/parking_location"
+                        android:id="@+id/parkingLocationImage"
+                        android:onClick="mapActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -210,14 +215,16 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:onClick="vehicleActivity"
                     android:padding="30dp">
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/car" />
+                        android:src="@drawable/car"
+                        android:id="@+id/carImage"
+                        android:onClick="vehicleActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -236,12 +243,11 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/camera"
+                    android:id="@+id/onGoing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:onClick="cameraActivity"
                     android:orientation="vertical"
                     android:padding="30dp">
 
@@ -249,14 +255,17 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_linked_camera_black_24dp" />
+                        android:src="@drawable/ongoing_icon_cropped"
+                        android:id="@+id/onGoingImage"
+                        android:onClick="cameraActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="Camera"
+                        android:text="On Going Parking"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -266,7 +275,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:onClick="historyActivity"
                     android:orientation="vertical"
                     android:padding="30dp">
 
@@ -274,7 +282,10 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_history_black_24dp" />
+                        android:src="@drawable/ic_history_black_24dp"
+                        android:id="@+id/historyImage"
+                        android:onClick="historyActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -298,7 +309,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:onClick="settingsActivity"
                     android:orientation="vertical"
                     android:padding="30dp">
 
@@ -306,7 +316,10 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/service" />
+                        android:src="@drawable/service"
+                        android:id="@+id/settingImage"
+                        android:onClick="settingsActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -323,7 +336,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:onClick="logOutActivity"
                     android:orientation="vertical"
                     android:padding="30dp">
 
@@ -331,7 +343,10 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_keyboard_return_black_24dp" />
+                        android:src="@drawable/ic_keyboard_return_black_24dp"
+                        android:id="@+id/logoutImage"
+                        android:onClick="logOutActivity"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
