@@ -10,8 +10,27 @@ public class Notification {
     String mobileNo;
     String renterMobileNo;
     String customerMobileNo;
+    String customerNo;
+    String renterNo;
+  
+    public String getCustomerNo() {
+        return customerNo;
+    }
+
+    public void setCustomerNo(String customerNo) {
+        this.customerNo = customerNo;
+    }
+
+    public String getRenterNo() {
+        return renterNo;
+    }
+
+    public void setRenterNo(String renterNo) {
+        this.renterNo = renterNo;
+    }
 
     public Notification(String id, String status, String notificationMessage, String rentno, String time, String date, String mobileNo, String renterMobileNo, String customerMobileNo) {
+
         this.id = id;
         this.status = status;
         this.notificationMessage = notificationMessage;
