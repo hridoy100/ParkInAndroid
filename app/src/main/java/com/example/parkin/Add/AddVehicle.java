@@ -2,7 +2,9 @@ package com.example.parkin.Add;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -178,6 +180,9 @@ public class AddVehicle extends AppCompatActivity {
         final String fitnessStr = fitness.getText().toString();
         final String taxStr = tax.getText().toString();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+
         final String type = vehicleType.getSelectedItem().toString();
 
         final String registrationNo = vehicleCode1Str+vehicleCode2Str+vehicleCode3Str+vehicleCode4Str+vehicleCode5Str;
@@ -196,6 +201,7 @@ public class AddVehicle extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             if(response.contains("success")){
                                 Toast.makeText(getApplicationContext(),"Success" , Toast.LENGTH_SHORT).show();
+                                finish();
 
                             }else {
                                 Toast.makeText(getApplicationContext(),"Failed" , Toast.LENGTH_SHORT).show();
@@ -224,6 +230,7 @@ public class AddVehicle extends AppCompatActivity {
                 params.put("fitnessCertificate", fitnessStr);
                 params.put("taxToken", taxStr);
                 params.put("type", type);
+                params.put("customerMobNo", mobNo);
                 return params;
             }
         };

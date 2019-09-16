@@ -24,14 +24,15 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_height="70dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Vehicle List"
+                android:text="VEHICLE LIST"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@drawable/curve"
+                android:textColor="@color/white"/>
 
             <!--<ListView-->
                 <!--android:id="@+id/vehicleList"-->
