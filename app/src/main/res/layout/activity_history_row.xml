@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +16,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:background="@android:color/holo_blue_bright">
+            android:padding="10dp"
+            android:background="@color/colorPrimary">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,6 +29,7 @@
                     android:text="Your Mobile No"
                     android:textStyle="bold"
                     android:layout_margin="5dp"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <TextView
@@ -38,8 +39,15 @@
                     android:gravity="center"
                     android:id="@+id/customerMob"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#71d2d2d2"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Renter Mobile No"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_margin="5dp"
                     android:textSize="20sp"
@@ -61,16 +70,22 @@
                     android:gravity="center"
                     android:id="@+id/renterMob"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
 
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#71d2d2d2"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:background="@color/colorPrimary"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,7 +99,8 @@
                     android:textStyle="bold"
                     android:layout_margin="5dp"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -92,9 +108,15 @@
                     android:gravity="center"
                     android:id="@+id/start_time"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
-
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#71d2d2d2"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +129,8 @@
                     android:textStyle="bold"
                     android:layout_margin="5dp"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,18 +138,23 @@
                     android:gravity="center"
                     android:id="@+id/end_time"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
 
         </LinearLayout>
-
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#71d2d2d2"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@android:color/holo_orange_light"
-            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:padding="10dp"
+
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -140,7 +168,8 @@
                     android:textStyle="bold"
                     android:layout_margin="5dp"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,9 +177,15 @@
                     android:gravity="center"
                     android:id="@+id/spaceSize"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
-
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#71d2d2d2"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +198,8 @@
                     android:textStyle="bold"
                     android:layout_margin="5dp"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -171,9 +207,15 @@
                     android:gravity="center"
                     android:id="@+id/cost"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
-
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#71d2d2d2"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -187,7 +229,8 @@
                     android:textStyle="bold"
                     android:layout_margin="5dp"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -195,10 +238,18 @@
                     android:gravity="center"
                     android:id="@+id/status"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#71d2d2d2"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
