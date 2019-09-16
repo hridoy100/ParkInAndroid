@@ -24,4 +24,6 @@ public class Constants {
     public static final String URL_GETCUSTOMERDETAILS = ROOT_URL+"parkin.php/getCustomerDetails";
     public static final String URL_ADDGARAGE = ROOT_URL+"parkin.php/addGarage";
     public static final String URL_ADDSPACE = ROOT_URL+"parkin.php/addSpace";
+    //public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/toggleSpaceAvailability";
+    public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/updateSpaceAvailability";
 }
