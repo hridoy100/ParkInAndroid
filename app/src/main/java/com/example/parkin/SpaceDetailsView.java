@@ -97,7 +97,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         long arrtime=myintent.getLongExtra("arrivaltime", Calendar.getInstance().getTimeInMillis());
         long dtime=myintent.getLongExtra("departuretime", Calendar.getInstance().getTimeInMillis());
         garageaddress=myintent.getStringExtra("garagelocation");
-        garageid=myintent.getIntExtra("garageid",1);//Integer.parseInt(myintent.getExtras().get("garageid").toString());
+        garageid=Integer.parseInt(myintent.getExtras().get("garageid").toString());
         vehicle_type= myintent.getStringExtra("vehicleType");
         facility=myintent.getStringExtra("facility");
         System.out.println("Garage id: "+garageid);

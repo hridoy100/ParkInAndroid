@@ -1287,7 +1287,9 @@ public class CommunicateWithPhp {
             }
             in.close();
             //Log.d("getEmail" ,response.toString());
-
+//            int len=facility.length();
+//            int expected_len=7;
+//            int add_zero
 
             return facility;
 
