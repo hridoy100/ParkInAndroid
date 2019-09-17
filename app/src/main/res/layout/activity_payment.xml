@@ -98,7 +98,7 @@
                             android:text="Start"
                             android:gravity="center"
                             android:textColor="@color/ms_black"
-                            android:fontFamily="@font/montserrat"
+                            android:fontFamily="@font/roboto_bold"
                             android:layout_weight="1"
                             android:id="@+id/totalDays"
                             />
@@ -108,9 +108,10 @@
                             android:text="End"
                             android:gravity="center"
                             android:textColor="@color/ms_black"
-                            android:fontFamily="@font/montserrat"
+                            android:fontFamily="@font/roboto_bold"
                             android:layout_weight="1"
                             android:id="@+id/totalTime"
+
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -377,7 +378,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="@drawable/bg_rounded_edit_text"
-                        android:id="@+id/vehicleType"
+                        android:id="@+id/paymentMethodGroup"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
                         >
@@ -385,7 +386,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:text="Bkash"
-                            android:id="@+id/bike"
+                            android:id="@+id/bkash"
                             android:drawableRight="@drawable/bkash"
                             android:fontFamily="@font/roboto"/>
                         <View
@@ -398,7 +399,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:text="Rocket"
-                            android:id="@+id/smallCar"
+                            android:id="@+id/rocket"
                             android:drawableRight="@drawable/rocket"
                             android:fontFamily="@font/roboto"/>
                         <View
@@ -411,7 +412,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:text="Cash"
-                            android:id="@+id/mediumCar"
+                            android:id="@+id/cash"
                             android:drawableRight="@drawable/cash_money"
                             android:fontFamily="@font/roboto"/>
 
