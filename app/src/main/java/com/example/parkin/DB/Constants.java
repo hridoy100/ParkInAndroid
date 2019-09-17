@@ -28,6 +28,7 @@ public class Constants {
     public static final String URL_TOGGLEAVAILABILITY = ROOT_URL+"parkin.php/updateSpaceAvailability";
     public static final String URL_GETSINGLESPACE = ROOT_URL+"parkin.php/getSpaceInfo";
     public static final String URL_UPDATESPACE = ROOT_URL+"parkin.php/updateSpaceInfo";
+    public static final String URL_UPDATECCTVIP= ROOT_URL+"parkin.php/updateCctvIp";
     public static int Motor_Bike=10;
     public static int Small_Car=15;
     public static int Medium_Car=25;
