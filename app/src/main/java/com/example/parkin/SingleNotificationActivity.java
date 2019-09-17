@@ -43,7 +43,7 @@ public class SingleNotificationActivity extends AppCompatActivity {
 
     Button confirmation;
 
-
+    String rentNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class SingleNotificationActivity extends AppCompatActivity {
 
         init();
         Intent callerIntent = getIntent();
-        String rentNumber = callerIntent.getStringExtra("rentNo");
+        rentNumber = callerIntent.getStringExtra("rentNo");
         fetchFromDB(rentNumber);
 
     }
@@ -81,7 +81,7 @@ public class SingleNotificationActivity extends AppCompatActivity {
             customerMob.setText(rentArrayList.get(i).getCustomerMobNo());
             start.setText(rentArrayList.get(i).getStart_time());
             end.setText(rentArrayList.get(i).getEnd_time());
-            cost.setText(rentArrayList.get(i).getCost());
+            cost.setText(Constants.taka+rentArrayList.get(i).getCost());
             status.setText(rentArrayList.get(i).getStatus());
             if(status.getText().toString().contains(Constants.booked) ){
                 Glide.with(this)
@@ -210,14 +210,15 @@ public class SingleNotificationActivity extends AppCompatActivity {
     public void onCCTVClicked(View view) {
         if(cameraAccessible) {
             Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
-            cameraIntent.putExtra("spaceId",rentArrayList.get(rentArrayList.indexOf(rentNo.getText().toString())).getSpaceId());
+
+            cameraIntent.putExtra("spaceId",rentArrayList.get(0).getSpaceId());
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
 
-            if(mobNo.equals(rentArrayList.get(rentArrayList.indexOf(rentNo.getText().toString())).getCustomerMobNo())){
+            if(mobNo.equals(rentArrayList.get(0).getCustomerMobNo())){
                 cameraIntent.putExtra("user","customer");
             }
-            else if(mobNo.equals(rentArrayList.get(rentArrayList.indexOf(rentNo.getText().toString())).getRenterMobNo())){
+            else if(mobNo.equals(rentArrayList.get(0).getRenterMobNo())){
                 cameraIntent.putExtra("user","renter");
             }
             startActivity(cameraIntent);
@@ -280,6 +281,13 @@ public class SingleNotificationActivity extends AppCompatActivity {
             builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+                    communicateWithPhp.updateRentStatus(rentNumber,Constants.stopped);
+                    btn.setVisibility(View.INVISIBLE);
+                    Intent myIntent = getIntent();
+                    finish();
+                    startActivity(myIntent);
+
                     //do nothing..
                 }
             });
@@ -303,7 +311,9 @@ public class SingleNotificationActivity extends AppCompatActivity {
             builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //do nothing..
+                    CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+                    communicateWithPhp.updateRentStatus(rentNumber,Constants.stopped);
+
                 }
             });
 
@@ -326,7 +336,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
             builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //do nothing..
+                    CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+                    communicateWithPhp.updateRentStatus(rentNumber,Constants.started);
                 }
             });
 

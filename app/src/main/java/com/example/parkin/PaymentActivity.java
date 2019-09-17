@@ -6,9 +6,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.parkin.DB.CommunicateWithPhp;
+import com.example.parkin.DB.Constants;
 import com.example.parkin.DB.Rent;
 import com.example.parkin.DB.SpaceDetails;
 
@@ -44,6 +47,8 @@ public class PaymentActivity extends AppCompatActivity {
     long minutes;
     long cost;
     long per_day_cost;
+    RadioGroup paymentMethodGroup;
+    RadioButton paymentMethod;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,15 @@ public class PaymentActivity extends AppCompatActivity {
         penalty= (TextView) findViewById(R.id.penalty);
         discount= (TextView) findViewById(R.id.discount);
 
+        paymentMethodGroup = (RadioGroup) findViewById(R.id.paymentMethodGroup);
+
+        paymentMethodGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                paymentMethod = (RadioButton) findViewById(checkedId);
+            }
+        });
+
         rentNo.setText(rent_no);
         fetchDataFromDatabase();
 
@@ -69,8 +83,8 @@ public class PaymentActivity extends AppCompatActivity {
     private void fetchDataFromDatabase() {
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
         ArrayList<Rent> rentArrayList = communicateWithPhp.getRentInfo(rent_no);
-        penalty.setText("\u09F3"+"0");
-        discount.setText("\u09F3"+"0");
+        penalty.setText(Constants.taka+"0");
+        discount.setText(Constants.taka+"0");
         String startDate = rentArrayList.get(0).getStart_time();
         String endDate = rentArrayList.get(0).getEnd_time();
         StringTokenizer tokenizer1=new StringTokenizer(startDate);
@@ -89,12 +103,17 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         cost+=Long.parseLong(String.valueOf(spaceDetails.getSpacesize()));
-        totalCostBig.setText(String.valueOf(cost));
-        totalCost.setText(String.valueOf(cost));
-        totalTime.setText(String.valueOf(minutes)+"M");
+        totalCostBig.setText(Constants.taka+String.valueOf(cost));
+        totalCost.setText(Constants.taka+String.valueOf(cost));
+        int hour,minute;
+        minute = Integer.valueOf(String.valueOf(minutes));
+        hour = minute/60;
+        minute=minute%60;
+        //totalTime.setText(String.valueOf(minutes)+"M");
+        totalTime.setText(String.valueOf(hour)+"H "+String.valueOf(minute)+"M ");
         totalDays.setText(String.valueOf(days));
         per_day_cost=cost/days;
-        perdayCost.setText(String.valueOf(per_day_cost));
+        perdayCost.setText(Constants.taka+String.valueOf(per_day_cost));
 
     }
     void CalculateInitCost(String s_date,String e_date,String s_time,String e_time)
@@ -148,14 +167,48 @@ public class PaymentActivity extends AppCompatActivity {
         builder.setMessage("By pressing confirm you state that you have paid the fee.");
         builder.setCancelable(true);
 
+        if(paymentMethod==null){
+//            paymentMethod = findViewById(R.id.cash);
+//            paymentMethod.setChecked(true);
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setTitle("Select Payment Method");
+            builder1.setMessage("Please Select one payment method");
+            builder1.setCancelable(true);
+            builder1.setNeutralButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                }
+            });
+            builder1.show();
+            return;
+        }
+
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //do nothing..
-                Intent reviewIntent = new Intent(getApplicationContext(),ReviewActivity.class);
-                reviewIntent.putExtra("rentNo",rentNo.getText().toString());
-                startActivity(reviewIntent);
-                finish();
+
+                CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+                communicateWithPhp.updateRentStatus(rent_no, Constants.completed);
+                communicateWithPhp.updatePayment(rent_no,String.valueOf(cost),paymentMethod.getText().toString());
+
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(getApplicationContext());
+
+                builder2.setMessage("Payment Completed");
+                builder2.setCancelable(true);
+
+                builder2.setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                //Intent reviewIntent = new Intent(getApplicationContext(),ReviewActivity.class);
+                //reviewIntent.putExtra("rentNo",rentNo.getText().toString());
+                //startActivity(reviewIntent);
+//                finish();
             }
         });
 
@@ -170,5 +223,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void onBackClicked(View view){
         finish();
+        Intent singleNotificationIntent = new Intent(getApplicationContext(), SingleNotificationActivity.class);
+        singleNotificationIntent.putExtra("rentNo",rent_no);
+        startActivity(singleNotificationIntent);
     }
 }
