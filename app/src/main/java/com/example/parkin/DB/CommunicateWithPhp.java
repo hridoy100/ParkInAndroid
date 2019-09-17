@@ -1062,6 +1062,86 @@ public class CommunicateWithPhp {
 
         return null;
     }
+    public String getRenterMobNo(String garageId) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETRENTERMOB);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&garageId=" + garageId);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            String rentermob=null;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                rentermob=inputLine;
+                System.out.println("inputline:"+inputLine);
+            }
+            in.close();
+            //Log.d("getEmail" ,response.toString());
+
+            rentermob=rentermob.substring(1,rentermob.length()-1);
+            return rentermob;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public String getFacility(String garageId) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETFACILITY);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&garageId=" + garageId);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            String facility=null;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                facility=inputLine;
+                System.out.println("inputline:"+inputLine);
+            }
+            in.close();
+            //Log.d("getEmail" ,response.toString());
+
+
+            return facility;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public boolean updateUserPassAddress(String mobileNo, String oldPassword, String newPassword, String address, String name) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

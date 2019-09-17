@@ -1,5 +1,4 @@
 package com.example.parkin.DB;
-
 public class AccountDetails {
     private String mobileNo;
     private String name;
