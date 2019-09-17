@@ -409,6 +409,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
                 spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getAddressName());
                 spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarageId());
+                System.out.println("From MapActivity Garage Id:"+ClusterItem.getGarage().getGarageId());
                 spaceintent.putExtra("vehicleType",send_vehicle_type);
                 String facility=new CommunicateWithPhp().getFacility(ClusterItem.getGarage().getGarageId());
                 System.out.println(facility);
