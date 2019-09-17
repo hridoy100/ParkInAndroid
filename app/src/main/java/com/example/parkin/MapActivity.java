@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -11,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -408,6 +410,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getAddressName());
                 spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarageId());
                 spaceintent.putExtra("vehicleType",send_vehicle_type);
+                String facility=new CommunicateWithPhp().getFacility(ClusterItem.getGarage().getGarageId());
+                System.out.println(facility);
+                spaceintent.putExtra("facility",facility);
                 startActivity(spaceintent);
                 return true;
             }
@@ -431,6 +436,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
     public void customiseMarkers(View view)
     {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
         show_button_flag=1;
         CommunicateWithPhp com=new CommunicateWithPhp();
         for(int i=0;i<garages.size();i++)
@@ -441,7 +448,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             System.out.println("Iterating garagaes: "+garages.get(i).getGarage_id());
             boolean flag=is_eligible(spaceDetails);
             System.out.println(flag);
-            if(flag==true)
+            String renter_mob=new CommunicateWithPhp().getRenterMobNo(garages.get(i).getGarage().getGarageId());
+            if(flag==true && !renter_mob.equals(mobNo))
             {
                 if(marker_flag.get(i)==0)
                 {
@@ -514,7 +522,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 //        mTimePicker.show();
 //    }
     private void addMapMarkers(){
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+        System.out.println("mobNos:"+mobNo);
         if(mMap != null){
 
             if(mClusterManager == null){
@@ -532,7 +542,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
             for(GarageObject garage: garages){
                 try{
-
+                    String renter_mob=new CommunicateWithPhp().getRenterMobNo(garage.getGarage().getGarageId());
+                    System.out.println(renter_mob);
+                    System.out.println("equality:"+renter_mob.equals(mobNo));
                     String snippet = "This is garage no : " + garage.getGarage().getGarageId();
 
 
@@ -549,8 +561,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                     getGarageId()),
                             arrivaltime,departuretime);
                     System.out.println("Arraylist size:"+spaceDetails.size());
+
                     if(spaceDetails!=null) {
-                        if (is_eligible(spaceDetails)) {
+                        if (is_eligible(spaceDetails) && !(renter_mob.equals(mobNo))) {
                             mClusterManager.addItem(newClusterMarker);
                             marker_flag.add(1);
                             System.out.println("Dhuke");
