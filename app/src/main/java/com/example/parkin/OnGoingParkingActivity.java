@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterSimpleCardView;
@@ -45,9 +46,12 @@ public class OnGoingParkingActivity extends AppCompatActivity implements Recycle
     }
 
     void init() {
+        notificationArrayList = new ArrayList<>();
+        progressDialog.setMessage("Fetching data..");
+        progressDialog.show();
         notificationArrayList = communicateWithPhp.getOnGoingParking(this);
         Log.d("notification list size", Integer.toString(notificationArrayList.size()));
-
+        progressDialog.dismiss();
         initRecyclerView();
     }
 
@@ -94,7 +98,9 @@ public class OnGoingParkingActivity extends AppCompatActivity implements Recycle
             String newStatus = "yes"+","+customerStatus;
             communicateWithPhp.updateNotification(notificationArrayList.get(i).getRentno(), newStatus);
         }
-        Intent singleNotification = new Intent(this,SingleNotificationActivity.class);
+        //Toast.makeText(getApplicationContext(),"rentNo: "+notificationArrayList.get(i).getRentno(),Toast.LENGTH_SHORT).show();
+
+        Intent singleNotification = new Intent(getApplicationContext(),SingleNotificationActivity.class);
         singleNotification.putExtra("rentNo",notificationArrayList.get(i).getRentno());
         startActivity(singleNotification);
         if(isActivityRunning(SingleNotificationActivity.class)){

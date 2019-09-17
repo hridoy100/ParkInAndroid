@@ -31,6 +31,8 @@ public class Constants {
     public static final String URL_UPDATECCTVIP= ROOT_URL+"parkin.php/updateCctvIp";
     public static final String URL_GETFACILITY = ROOT_URL+"parkin.php/getFacility";
     public static final String URL_GETRENTERMOB = ROOT_URL+"parkin.php/getRenterMobNoUsingGarageId";
+    public static final String URL_UPDATEPAYMENT = ROOT_URL+"parkin.php/confirmPayment";
+    public static final String URL_UPDATERENTSTATUS = ROOT_URL+"parkin.php/updateRentStatus";
 
     public static int Motor_Bike=10;
     public static int Small_Car=15;
@@ -61,5 +63,9 @@ public class Constants {
     public static long electric_vehicle_cost=10;
     public static long lighting_cost=5;
     public static long oil_buying_cost=10;
+
+
+    public static String taka="\u09F3";
+
 
 }

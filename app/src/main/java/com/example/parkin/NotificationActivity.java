@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapterHistory;
@@ -38,6 +39,7 @@ public class NotificationActivity extends AppCompatActivity implements RecyclerV
     }
 
     void init() {
+        notificationArrayList = new ArrayList<>();
         notificationArrayList = communicateWithPhp.getNotification(this);
         Log.d("notification list size", Integer.toString(notificationArrayList.size()));
 
@@ -71,7 +73,10 @@ public class NotificationActivity extends AppCompatActivity implements RecyclerV
             String newStatus = "yes"+","+customerStatus;
             communicateWithPhp.updateNotification(notificationArrayList.get(i).getRentno(), newStatus);
         }
-        Intent singleNotification = new Intent(this,SingleNotificationActivity.class);
+
+        Toast.makeText(getApplicationContext(),"rentNo: "+notificationArrayList.get(i).getRentno(),Toast.LENGTH_SHORT).show();
+
+        Intent singleNotification = new Intent(getApplicationContext(),SingleNotificationActivity.class);
         singleNotification.putExtra("rentNo",notificationArrayList.get(i).getRentno());
         startActivity(singleNotification);
     }
