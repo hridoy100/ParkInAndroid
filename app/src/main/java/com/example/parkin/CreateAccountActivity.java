@@ -3,7 +3,9 @@ package com.example.parkin;
 import android.app.ProgressDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -54,6 +56,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     FirebaseAuth registrationAuth;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private SharedPreferences mySharedPreferences;
+    public SharedPreferences.Editor myEditor; // for storing data into local storage.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         birthdate.setInputType(InputType.TYPE_NULL);
         progressDialog = new ProgressDialog(this);
         cldr = Calendar.getInstance();
+
+        mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        myEditor = mySharedPreferences.edit();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -120,14 +127,23 @@ public class CreateAccountActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(mobileNo.getText().toString())){
             Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
         }
-        else if(TextUtils.isEmpty(name.getText().toString())){
-            Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show();
+        else if(mobileNo.getText().toString().length()<11){
+            Toast.makeText(this, "Please enter 11 digit number", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(password.getText().toString())){
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
         }
+        else if(password.getText().toString().length()<6){
+            Toast.makeText(this, "Please enter at least 6 digits of password", Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(name.getText().toString())){
+            Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT).show();
+        }
         else if(TextUtils.isEmpty(email.getText().toString())){
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+        }
+        else if(!isEmailValid(email.getText().toString())){
+            Toast.makeText(this, "Please enter correct email address", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(address.getText().toString())){
             Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show();
@@ -135,15 +151,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         else if(TextUtils.isEmpty(birthdate.getText().toString())){
             Toast.makeText(this, "Please enter birthdate", Toast.LENGTH_SHORT).show();
         }
-        else if(mobileNo.getText().toString().length()<11){
-            Toast.makeText(this, "Please enter 11 digit number", Toast.LENGTH_SHORT).show();
-        }
-        else if(password.getText().toString().length()<6){
-            Toast.makeText(this, "Please enter at least 6 digits of password", Toast.LENGTH_SHORT).show();
-        }
-        else if(!isEmailValid(email.getText().toString())){
-            Toast.makeText(this, "Please enter correct email address", Toast.LENGTH_SHORT).show();
-        }
+
         else {
             progressDialog.setTitle("Creating New Account");
             progressDialog.setMessage("Please Wait while we are creating new account for you...");
@@ -164,7 +172,11 @@ public class CreateAccountActivity extends AppCompatActivity {
                             }
                             else {
                                 String message = task.getException().toString();
-                                Toast.makeText(CreateAccountActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                                if(message.contains("email address is already in use")){
+                                    Toast.makeText(CreateAccountActivity.this, "Error: Email address already in use", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                    Toast.makeText(CreateAccountActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
                                 progressDialog.hide();
                             }
                         }
@@ -222,6 +234,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         final String birthdateStr = birthdate.getText().toString().trim();
 
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+        setSharedPreferences(mobileNoStr,passwordStr);
         return communicateWithPhp.createAccount(emailStr, mobileNoStr, passwordStr, nameStr, addressStr, birthdateStr);
     }
 
@@ -248,6 +261,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             registrationAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    public void setSharedPreferences(String userMob, String userPass) {
+        myEditor.putString(getString(R.string.mobileNo), userMob);
+        myEditor.commit();
+        myEditor.putString(getString(R.string.password), userPass);
+        myEditor.commit();
     }
 
 }

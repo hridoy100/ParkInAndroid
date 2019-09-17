@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
+import com.example.parkin.DB.Constants;
 import com.example.parkin.MyFragment.AddressFragment;
 import com.example.parkin.MyFragment.DetailsFragment;
 import com.example.parkin.MyFragment.LocationFragment;
@@ -692,22 +693,22 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
             String spaceSize= "";
 
             if(vehicle_type.equals("Small Car")) {
-                spaceSize= "12";
+                spaceSize= String.valueOf(Constants.Small_Car);
             }
             else if(vehicle_type.equals("Medium Car")) {
-                spaceSize= "15";
+                spaceSize= String.valueOf(Constants.Medium_Car);
             }
             else if(vehicle_type.equals("4x4 or Large Car")) {
-                spaceSize= "20";
+                spaceSize= String.valueOf(Constants.Large_Car);
             }
             else if(vehicle_type.equals("Mini Van")) {
-                spaceSize= "25";
+                spaceSize= String.valueOf(Constants.Mini_Van);
             }
             else if(vehicle_type.equals("Large Van or Minibus")) {
-                spaceSize= "28";
+                spaceSize= String.valueOf(Constants.Large_Van);
             }
             else if(vehicle_type.equals("Motor Bike")) {
-                spaceSize= "10";
+                spaceSize= String.valueOf(Constants.Motor_Bike);
             }
 
             position_txt+=space_no;
