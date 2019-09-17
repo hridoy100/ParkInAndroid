@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,13 +46,28 @@ import static com.example.parkin.DB.Constants.Medium_Car;
 import static com.example.parkin.DB.Constants.Mini_Van;
 import static com.example.parkin.DB.Constants.Motor_Bike;
 import static com.example.parkin.DB.Constants.Small_Car;
+import static com.example.parkin.DB.Constants.cctv_cost;
+import static com.example.parkin.DB.Constants.cctv_index;
+import static com.example.parkin.DB.Constants.covered_parking_cost;
+import static com.example.parkin.DB.Constants.covered_parking_index;
+import static com.example.parkin.DB.Constants.disabled_access_cost;
+import static com.example.parkin.DB.Constants.disabled_access_index;
+import static com.example.parkin.DB.Constants.electric_vehicle_charging_index;
+import static com.example.parkin.DB.Constants.electric_vehicle_cost;
+import static com.example.parkin.DB.Constants.lighting_cost;
+import static com.example.parkin.DB.Constants.lighting_index;
+import static com.example.parkin.DB.Constants.oil_buying_cost;
+import static com.example.parkin.DB.Constants.oil_buying_index;
 import static com.example.parkin.DB.Constants.per_hour_cost;
+import static com.example.parkin.DB.Constants.securely_gated_cost;
+import static com.example.parkin.DB.Constants.securely_gated_index;
 
 public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, RecyclerViewAdapter.OnItemLongClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
     int selectedItem;
     int selected_space_size;
+    private String facility;
     ArrayList<String> spacenolist = new ArrayList<>();
     ArrayList<String> spacesizelist= new ArrayList<>();
     ArrayList<String> minimumcostlist = new ArrayList<>();
@@ -83,6 +99,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         garageaddress=myintent.getStringExtra("garagelocation");
         garageid=myintent.getIntExtra("garageid",1);//Integer.parseInt(myintent.getExtras().get("garageid").toString());
         vehicle_type= myintent.getStringExtra("vehicleType");
+        facility=myintent.getStringExtra("facility");
         System.out.println("Garage id: "+garageid);
         arrivaltime=gettime(arrtime);
         departuretime=gettime(dtime);
@@ -99,6 +116,8 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         System.out.println("s_time:"+s_time);
         System.out.println("e_time:"+e_time);
         CalculateInitCost(s_date,e_date,s_time,e_time);
+
+        System.out.println("Again init cost: "+cost);
         initImageBitmaps();
 /*
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
@@ -132,7 +151,23 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
             System.out.println("diff hour:"+diff_hour);
             cost=(diff_day+1)*(diff_hour+1)*per_hour_cost;
             System.out.println("init cost:"+cost);
-
+            //facility cost adding
+            if(facility.length()>=7) {
+                if (facility.charAt(covered_parking_index) == '1')
+                    cost += covered_parking_cost;
+                if (facility.charAt(cctv_index) == '1')
+                    cost += cctv_cost;
+                if (facility.charAt(securely_gated_index) == '1')
+                    cost += securely_gated_cost;
+                if (facility.charAt(disabled_access_index) == '1')
+                    cost += disabled_access_cost;
+                if (facility.charAt(electric_vehicle_charging_index) == '1')
+                    cost += electric_vehicle_cost;
+                if (facility.charAt(lighting_index) == '1')
+                    cost += lighting_cost;
+                if (facility.charAt(oil_buying_index) == '1')
+                    cost += oil_buying_cost;
+            }
         } catch (ParseException e) {
             System.out.println("Cost exception");
             e.printStackTrace();
@@ -177,6 +212,30 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
         TextView end_time=(TextView)layout.findViewById(R.id.End_time);
         TextView space_size=(TextView)layout.findViewById(R.id.Space_size);
         TextView space_location=(TextView)layout.findViewById(R.id.Space_location);
+        CheckBox covered_parking=(CheckBox)layout.findViewById(R.id.covered_parking);
+        CheckBox cctv=(CheckBox)layout.findViewById(R.id.cctv);
+        CheckBox securely_gated=(CheckBox)layout.findViewById(R.id.securely_gated);
+        CheckBox disabled_access=(CheckBox)layout.findViewById(R.id.disabled_access);
+        CheckBox electric_vehicle_charging=(CheckBox)layout.findViewById(R.id.electric_vehicle);
+        CheckBox lighting=(CheckBox)layout.findViewById(R.id.lighting);
+        CheckBox oil_buying=(CheckBox)layout.findViewById(R.id.oil_buying);
+        ////set the checkbox facilitites//////////////
+        if(facility.length()>=7) {
+            if (facility.charAt(covered_parking_index) == '1')
+                covered_parking.setChecked(true);
+            if (facility.charAt(cctv_index) == '1')
+                cctv.setChecked(true);
+            if (facility.charAt(securely_gated_index) == '1')
+                securely_gated.setChecked(true);
+            if (facility.charAt(disabled_access_index) == '1')
+                disabled_access.setChecked(true);
+            if (facility.charAt(electric_vehicle_charging_index) == '1')
+                electric_vehicle_charging.setChecked(true);
+            if (facility.charAt(lighting_index) == '1')
+                lighting.setChecked(true);
+            if (facility.charAt(oil_buying_index) == '1')
+                oil_buying.setChecked(true);
+        }
         start_time.setText("Arrival Time : "+myDateFormat.format(arrivaltime.getTime()));
         end_time.setText("Departure Time : "+myDateFormat.format(departuretime.getTime()));
         int tmp_space_size=spaceDetails.get(i).getSpacesize();
