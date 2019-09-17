@@ -1,5 +1,7 @@
 package com.example.parkin;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ import com.example.parkin.DB.Constants;
 import com.example.parkin.DB.Rent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SingleNotificationActivity extends AppCompatActivity {
 
@@ -31,9 +35,15 @@ public class SingleNotificationActivity extends AppCompatActivity {
     TextView status;
     ImageView statusImage;
 
+    ArrayList<Rent> rentArrayList;
+
     SharedPreferences sharedPreferences;
 
     boolean cameraAccessible;
+
+    Button confirmation;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +68,13 @@ public class SingleNotificationActivity extends AppCompatActivity {
         cost = (TextView) findViewById(R.id.cost);
         status = (TextView) findViewById(R.id.currentStatus);
         statusImage = (ImageView) findViewById(R.id.statusImage);
+        confirmation = (Button) findViewById(R.id.arrivedConfirmationBtn);
         cameraAccessible = false;
     }
 
     void fetchFromDB(String rentNumber) {
         CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
-        ArrayList<Rent> rentArrayList = communicateWithPhp.getRentInfo(rentNumber);
+        rentArrayList = communicateWithPhp.getRentInfo(rentNumber);
         for (int i=0; i<rentArrayList.size(); i++){
             rentNo.setText(rentArrayList.get(i).getRentNo());
             renterMob.setText(rentArrayList.get(i).getRenterMobNo());
@@ -87,6 +98,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     status.setText("You have booked the space. Please arrive on time.");
                     cameraAccessible = false;
+                    confirmation.setVisibility(View.INVISIBLE);
+                    confirmation.setText("");
                 }
 
             }
@@ -105,6 +118,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     cameraAccessible = true;
                     status.setText("Your time counting has started. Please park your vehicle in the garage and confirm for arrival.");
+                    confirmation.setVisibility(View.VISIBLE);
+                    confirmation.setText("Confirm Arrival");
                 }
             }
             else if(status.getText().toString().contains(Constants.started)){
@@ -120,6 +135,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     cameraAccessible = true;
                     status.setText("Your vehicle is parked in the garage.");
+                    confirmation.setVisibility(View.VISIBLE);
+                    confirmation.setText("Leave Garage");
                 }
             }
             else if(status.getText().toString().contains(Constants.stopping_maybe)){
@@ -134,6 +151,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     cameraAccessible = true;
                     status.setText("Your time has ended. Please leave or additional fine will be applied.");
+                    confirmation.setVisibility(View.VISIBLE);
+                    confirmation.setText("Confirm Leave");
                 }
             }
             else if(status.getText().toString().contains(Constants.stopped)){
@@ -148,6 +167,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     cameraAccessible = false;
                     status.setText("You have left the garage. Please arrive in time on the next day.");
+                    confirmation.setVisibility(View.INVISIBLE);
+                    confirmation.setText("");
                 }
             }
             else if(status.getText().toString().contains(Constants.finishing)){
@@ -162,6 +183,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     cameraAccessible = false;
                     status.setText("Rent for this garage has completed. Please leave before additional charge is applied and complete the payment.");
+                    confirmation.setVisibility(View.VISIBLE);
+                    confirmation.setText("Go To Payment");
                 }
             }
             else if(status.getText().toString().contains(Constants.completed)){
@@ -176,6 +199,8 @@ public class SingleNotificationActivity extends AppCompatActivity {
                 else if(mobNo.equals(rentArrayList.get(i).getCustomerMobNo())) {
                     cameraAccessible = false;
                     status.setText("You have left the garage. Your rent for this garage has completed.");
+                    confirmation.setVisibility(View.INVISIBLE);
+                    confirmation.setText("");
                 }
             }
 
@@ -185,6 +210,16 @@ public class SingleNotificationActivity extends AppCompatActivity {
     public void onCCTVClicked(View view) {
         if(cameraAccessible) {
             Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
+            cameraIntent.putExtra("spaceId",rentArrayList.get(rentArrayList.indexOf(rentNo.getText().toString())).getSpaceId());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+
+            if(mobNo.equals(rentArrayList.get(rentArrayList.indexOf(rentNo.getText().toString())).getCustomerMobNo())){
+                cameraIntent.putExtra("user","customer");
+            }
+            else if(mobNo.equals(rentArrayList.get(rentArrayList.indexOf(rentNo.getText().toString())).getRenterMobNo())){
+                cameraIntent.putExtra("user","renter");
+            }
             startActivity(cameraIntent);
         }
         else {
@@ -193,6 +228,109 @@ public class SingleNotificationActivity extends AppCompatActivity {
             builder.setMessage("You can access camera only between your parking time period");
             builder.setCancelable(true);
             builder.setNeutralButton("Dismiss", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+            builder.show();
+        }
+    }
+
+    public void onConfirmationButtonClicked(View view){
+        Button btn = (Button) view;
+        System.out.println("button "+btn.getText().toString());
+        if(btn.getText().toString().contains("Go To Payment")){
+            Toast.makeText(getApplicationContext(),"GOTO PAYMENT", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm Leave");
+            builder.setMessage("By pressing confirm you state that you have confirmed your leave.");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                    btn.setVisibility(View.INVISIBLE);
+                    Intent paymentIntent = new Intent(getApplicationContext(),PaymentActivity.class);
+                    paymentIntent.putExtra("rentNo",rentNo.getText().toString());
+                    startActivity(paymentIntent);
+                    finish();
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+            builder.show();
+
+        }
+        else if(btn.getText().toString().contains("Confirm Leave")){
+            Toast.makeText(getApplicationContext(),"Confirm Leave", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm Leave");
+            builder.setMessage("By pressing confirm you state that you have confirmed your leave.");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+            builder.show();
+        }
+        else if(btn.getText().toString().contains("Leave Garage")){
+            Toast.makeText(getApplicationContext(),"Leave Garage", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm Leave");
+            builder.setMessage("By pressing confirm you state that you have confirmed your leave.");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+            builder.show();
+        }
+        else if(btn.getText().toString().contains("Confirm Arrival")){
+            Toast.makeText(getApplicationContext(),"Confirm Arrival", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm Leave");
+            builder.setMessage("By pressing confirm you state that you have confirmed your leave.");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //do nothing..
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //do nothing..
@@ -211,5 +349,19 @@ public class SingleNotificationActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+
+    protected Boolean isActivityRunning(Class activityClass)
+    {
+        ActivityManager activityManager = (ActivityManager) getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningTaskInfo task : tasks) {
+            if (activityClass.getCanonicalName().equalsIgnoreCase(task.baseActivity.getClassName()))
+                return true;
+        }
+
+        return false;
     }
 }

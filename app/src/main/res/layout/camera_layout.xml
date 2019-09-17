@@ -13,20 +13,23 @@
         <TextView
             android:id="@+id/licenseId"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="CCTV GARAGE"
+            android:layout_height="70dp"
+            android:text="GARAGE CCTV VIEW"
             android:textColor="@color/white"
             android:gravity="center"
             android:textSize="20sp"
             android:layout_gravity="top"
-            android:fontFamily="@font/roboto_bold"
-            android:background="@android:color/holo_red_light"
-            android:layout_marginBottom="20dp"/>
+            android:fontFamily="@font/montserrat_bold"
+            android:background="@drawable/curve"
+
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            >
             <EditText
                 android:layout_width="match_parent"
                 android:id="@+id/ipaddress"

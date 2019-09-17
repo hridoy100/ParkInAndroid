@@ -1,5 +1,6 @@
 package com.example.parkin;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -46,6 +47,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     NotificationThread thread;
@@ -260,27 +262,47 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void garageActivity(View view){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Intent garageIntent = new Intent(getApplicationContext(), Garage.class);
         //Intent garageIntent = new Intent(getApplicationContext(), MyStepperTest.class);
         startActivity(garageIntent);
+        if(isActivityRunning(Garage.class)){
+            progressDialog.dismiss();
+        }
 
     }
 
     public void vehicleActivity(View view){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Intent vehicleIntent = new Intent(getApplicationContext(), Vehicle.class);
         startActivity(vehicleIntent);
+        if(isActivityRunning(Vehicle.class)){
+            progressDialog.dismiss();
+        }
     }
 
     public void mapActivity(View view){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
         startActivity(mapIntent);
+        if(isActivityRunning(MapActivity.class)){
+            progressDialog.dismiss();
+        }
     }
 
-    public void cameraActivity(View view){
+    public void onGoingParkingActivity(View view){
         //Intent cameraIntent = new Intent(getApplicationContext(), Camera.class);
         //startActivity(cameraIntent);
-        Intent AccountSettingsIntent=new Intent(getApplicationContext(),AccountSettingsActivity.class);
-        startActivity(AccountSettingsIntent);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        Intent onGoingParkingIntent=new Intent(getApplicationContext(),OnGoingParkingActivity.class);
+        startActivity(onGoingParkingIntent);
+        if(isActivityRunning(OnGoingParkingActivity.class)){
+            progressDialog.dismiss();
+        }
     }
 
     /*public void historyActivity(View view){
@@ -288,16 +310,31 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(historyIntent);
     }*/
     public void historyActivity(View view){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
         startActivity(historyIntent);
+        if(isActivityRunning(HistoryActivity.class)){
+            progressDialog.dismiss();
+        }
     }
     public void notificationActivity(View view){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Intent notificationIntent = new Intent(getApplicationContext(), NotificationActivity.class);
         startActivity(notificationIntent);
+        if(isActivityRunning(NotificationActivity.class)){
+            progressDialog.dismiss();
+        }
     }
     public void settingsActivity(View view){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Intent settingsIntent = new Intent(getApplicationContext(),AccountSettingsActivity.class);
         startActivity(settingsIntent);
+        if(isActivityRunning(AccountSettingsActivity.class)){
+            progressDialog.dismiss();
+        }
     }
     public void logOutActivity(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -341,6 +378,31 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected Boolean isActivityRunning(Class activityClass)
+    {
+        ActivityManager activityManager = (ActivityManager) getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningTaskInfo task : tasks) {
+            if (activityClass.getCanonicalName().equalsIgnoreCase(task.baseActivity.getClassName()))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressDialog.dismiss();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        progressDialog.dismiss();
     }
     //    void showLoginWindow(){
 //        Intent showLoginScreen = new Intent(getApplicationContext(), CreateAccountActivity.class);

@@ -782,6 +782,85 @@ public class CommunicateWithPhp {
         return null;
     }
 
+
+    public ArrayList<Notification> getOnGoingParking(Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_GETNOTIFICATION);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+            //Log.i("SharedmobileNo: ",mobNo);
+            ps.print("&mobileNo=" + mobNo);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                //System.out.println(inputLine);
+            }
+            in.close();
+            //System.out.println(response.toString());
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+
+            ArrayList<Notification> notificationArrayList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Notification notificationDetails = new Notification();
+                JSONObject vehicleData = (JSONObject) jsonArray.get(i);
+                JSONObject dataobj = (JSONObject) vehicleData.get("notification");
+                //Log.i("dataobj", dataobj.toString());
+
+                ArrayList<Rent> rentArrayList = getRentInfo(dataobj.getString("rent_no"));
+                for (int j=0; j<rentArrayList.size(); j++) {
+                    if(rentArrayList.get(j).getStatus().contains("ongoing")){
+                        notificationDetails.setId((String) dataobj.getString("id"));
+                        notificationDetails.setRentno((String) dataobj.getString("rent_no"));
+                        notificationDetails.setStatus((String) dataobj.getString("seen"));
+                        String timeStamp = dataobj.getString("cur_timestamp");
+                        String time = timeStamp.substring(timeStamp.indexOf(" ") + 1);
+                        String date = timeStamp.substring(0, timeStamp.indexOf(" "));
+                        notificationDetails.setTime(time);
+                        notificationDetails.setDate(date);
+
+                        String renterMob = dataobj.getString("renter_mob_no");
+                        String customerMob = dataobj.getString("customer_mob_no");
+                        String notifMsg = null;
+                        notificationDetails.setCustomerNo(customerMob);
+                        notificationDetails.setRenterNo(renterMob);
+                        if (customerMob.equals(mobNo)) {
+                            notifMsg = "You have rented a space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
+                            notificationDetails.setMobileNo("Renter Mobile No: <font color=#3e9c64>" + renterMob + "</font>");
+                        } else if (renterMob.equals(mobNo)) {
+                            notifMsg = "A Customer have rented your space with Rent No: <font color=#3e9c64><b>" + dataobj.getString("rent_no") + "</b></font>";
+                            notificationDetails.setMobileNo("Customer Mobile No: <font color=#3e9c64>" + customerMob + "</font>");
+                        }
+                        notificationDetails.setNotificationMessage(notifMsg);
+                        notificationArrayList.add(notificationDetails);
+                    }
+                }
+            }
+            return notificationArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     public ArrayList<Rent> getRentInfo(String rentNo) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
@@ -1401,6 +1480,43 @@ public class CommunicateWithPhp {
             ps.print("&start_time=" + startTime);
             ps.print("&end_time=" + endTime);
             ps.print("&position=" + position);
+            ps.print("&cctv_ip=" + cctvIp);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                System.out.println(inputLine);
+            }
+            in.close();
+            Log.d("Update space: " ,response.toString());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCctvIp(String spaceId, String cctvIp) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            URL website = new URL(Constants.URL_UPDATECCTVIP);
+            //URLConnection connection = website.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) website.openConnection();
+//            connection.setReadTimeout(15000);
+//            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("POST");
+//            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            PrintStream ps = new PrintStream(connection.getOutputStream());
+
+            ps.print("&spaceId=" + spaceId);
+//            ps.print("&garage_id=" + garageId);
             ps.print("&cctv_ip=" + cctvIp);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));

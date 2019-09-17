@@ -257,7 +257,7 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ongoing_icon_cropped"
                         android:id="@+id/onGoingImage"
-                        android:onClick="cameraActivity"
+                        android:onClick="onGoingParkingActivity"
                         />
 
                     <TextView
