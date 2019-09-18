@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
@@ -30,6 +31,7 @@ public class OnGoingParkingActivity extends AppCompatActivity implements Recycle
     SharedPreferences sharedPreferences;
 
     ProgressDialog progressDialog;
+    TextView topBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class OnGoingParkingActivity extends AppCompatActivity implements Recycle
         recyclerView = findViewById(R.id.notificationList);
         notificationList = (RecyclerView) findViewById(R.id.notificationList);
         communicateWithPhp = new CommunicateWithPhp();
+        topBar = (TextView) findViewById(R.id.topbar);
+
         progressDialog = new ProgressDialog(this);
         init();
 
@@ -49,6 +53,7 @@ public class OnGoingParkingActivity extends AppCompatActivity implements Recycle
         notificationArrayList = new ArrayList<>();
         progressDialog.setMessage("Fetching data..");
         progressDialog.show();
+        topBar.setText("ON GOING");
         notificationArrayList = communicateWithPhp.getOnGoingParking(this);
         Log.d("notification list size", Integer.toString(notificationArrayList.size()));
         progressDialog.dismiss();

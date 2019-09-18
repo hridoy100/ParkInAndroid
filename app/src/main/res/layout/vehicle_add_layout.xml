@@ -24,6 +24,7 @@
             android:textColor="@color/white"
             android:background="@drawable/curve"
             android:textStyle="bold"
+            android:id="@+id/topbar"
             />
 
         <LinearLayout

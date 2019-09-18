@@ -376,4 +376,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         mMap.snapshot (callback);
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+    }
 }
