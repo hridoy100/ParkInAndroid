@@ -37,11 +37,12 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:paddingRight="40dp"
-                android:text="Notifications"
+                android:text="NOTIFICATIONS"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_bold"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:id="@+id/topbar"/>
 
         </LinearLayout>
         <LinearLayout

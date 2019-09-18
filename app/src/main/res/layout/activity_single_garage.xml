@@ -28,7 +28,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Space List"
+                android:text="SPACE LIST"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:background="@drawable/curve"

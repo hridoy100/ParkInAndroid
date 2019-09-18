@@ -640,8 +640,12 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
 
         String featureStr = detailsFragData.get("features");
         char[] features = new char[7];
+        for (int i=0; i<7; i++){
+            features[i]='0';
+        }
 
-        if(featureStr.contains("Covered parking"))  features[0] = '1';
+        if(featureStr.contains("Covered parking"))
+            features[0] = '1';
         else features[0] = '0';
 
         if(featureStr.contains("CCTV"))
@@ -670,25 +674,30 @@ public class MyStepperTest extends AppCompatActivity implements AddressFragment.
 
         String featureMap = String.valueOf(features);
 
+        mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
 
         Log.d("garage adding","address: "+addressTitle+" mobileNo: "+detailsFragData.get("mobileNo")+
                 " feature: "+ featureMap+ " sp count: "+ detailsFragData.get("space_count")+" long: "+longitude.toString()+" lat: "+
                 latitude.toString()+" postalCode: "+postalCode);
-        String garageId = communicateWithPhp.addGarage(addressTitle,detailsFragData.get("mobileNo"),
+        String garageId = communicateWithPhp.addGarage(addressTitle,mySharedPreferences.getString(getString(R.string.mobileNo),""),
                 featureMap,detailsFragData.get("space_count"),longitude.toString(), latitude.toString(), postalCode);
         Toast.makeText(getApplicationContext(), "Garage ID: "+garageId,Toast.LENGTH_SHORT).show();
 
-        mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String spaceNoTxt;
         for(int i=1; i<=Integer.parseInt(detailsFragData.get("space_count")); i++) {
             spaceNoTxt = "Space #";
             spaceNoTxt+=Integer.toString(i);
+            System.out.println("(garage adding) SpaceNoText: "+spaceNoTxt);
             String space_no = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"space_no", "");
             String position_txt = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"position", "");
             String open_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"open", "");
             String close_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"close", "");
             String cctv_ip = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"cctvIP", "");
             String vehicle_type = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt+"vehicleType", "");
+
+            System.out.println("(garage adding) space_no: "+space_no+" position: "+position_txt +
+                    " open: "+open_time+ " cctv: "+cctv_ip + " vheicle: "+ vehicle_type);
 
             String spaceSize= "";
 
