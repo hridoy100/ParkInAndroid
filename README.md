@@ -6,44 +6,13 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT
 ### ParkIn:A Smart Parking App
 
 ### Made by:
+---
+### Md.Rajibul Islam Student ID: 1505001
 
-### Md.Rajibul Islam
+### Ahnaf Faisal Student ID: 1505005
 
-### ID:
-
-### Ahnaf Faisal
-
-### ID: 1505005
-
-### Raihanul Alam Hridoy
-
-### ID:
-
-
-## Contents
-
-- 1 Abstract
-- 2 Introduction
-- 3 Architectural Design
-   - 3.1 Class Diagram
-   - 3.2 Sequence Diagram
-- 4 User Guide/Implementation
-   - 4.1 Client Side
-      - 4.1.1 Starting the Application
-      - 4.1.2 Registration
-      - 4.1.3 LogIn
-   - 4.2 Home
-      - 4.2.1 Vehicle Details
-      - 4.2.2 Adding Garage as Renter
-      - 4.2.3 Location Selection for Parking
-      - 4.2.4 Notification Details
-      - 4.2.5 Confirmation and Payment
-   - 4.3 Confirmation and Payment
-   - 4.4 Server Side
-- 5 Future Scope
-- 6 Conclusion
-
-
+### Raihanul Alam Hridoy Student ID: 1505010
+---
 ## 1 Abstract
 
 The number of personal vehicles usage is increasing manifold. People prefer personal vehicles to
