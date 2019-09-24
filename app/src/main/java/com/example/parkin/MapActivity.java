@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.DB.SpaceDetails;
+import com.example.parkin.Stepper.MyStepperTest;
 import com.example.parkin.util.MyClusterManagerRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +46,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -59,6 +61,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+
+import barikoi.barikoilocation.BarikoiAPI;
+import barikoi.barikoilocation.PlaceModels.GeoCodePlace;
+import barikoi.barikoilocation.SearchAutoComplete.SearchAutocompleteFragment;
 
 import static com.example.parkin.DB.Constants.Large_Car;
 import static com.example.parkin.DB.Constants.Large_Van;
@@ -91,6 +97,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Calendar arrivaltime;
     Calendar departuretime;
     View mapView;
+
+    Double latitude,longitude;
+    String addressTitle;
+    String postalCode;
+    GeoCodePlace selectedPlace;
+
     private SwitchDateTimeDialogFragment dateTimeFragment;
     private SwitchDateTimeDialogFragment dateTimeFragment2;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -129,6 +141,39 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         spinneritem.add("Large Car");
         spinneritem.add("Mini Van");
         spinneritem.add("Large Van");
+
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyAK9AJgEjjqpjbQ-dd5NjNT9Q9CTKrkvbQ");
+        }
+
+        //barikoi..
+
+        BarikoiAPI.getINSTANCE(getApplicationContext(), "MTQ0NjpWUTg2SldKWTRL");
+
+
+        SearchAutocompleteFragment searchAutocompleteFragment;
+        searchAutocompleteFragment=(SearchAutocompleteFragment)getSupportFragmentManager().findFragmentById(R.id.barikoiSearchAutocompleteFragment);
+        searchAutocompleteFragment.setPlaceSelectionListener(new SearchAutocompleteFragment.PlaceSelectionListener() {
+
+            @Override
+            public void onPlaceSelected(GeoCodePlace place) {
+                Toast.makeText(getApplicationContext(), "Place Selected: "+place.getAddress(), Toast.LENGTH_SHORT).show();
+                latitude=Double.parseDouble(place.getLatitude());
+                longitude=Double.parseDouble(place.getLongitude());
+                addressTitle = place.getAddress();
+                postalCode = place.getPostalcode();
+                selectedPlace = place;
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(getApplicationContext(), "Error Message"+error, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+
         vehicle_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -257,8 +302,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void onMapSearch(View view) {
-        EditText locationSearch = (EditText) findViewById(R.id.editText);
-        String location = locationSearch.getText().toString();
+//        EditText locationSearch = (EditText) findViewById(R.id.editText);
+//        String location = locationSearch.getText().toString();
+        String location = addressTitle;
         List<Address> addressList = null;
         if (search_loc != null)
             search_loc.remove();
@@ -270,11 +316,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            search_loc = mMap.addMarker(new MarkerOptions().position(latLng).title("location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            //Address address = addressList.get(0);
+            LatLng latLng = new LatLng(latitude, longitude);
+            search_loc = mMap.addMarker(new MarkerOptions().position(latLng).title(addressTitle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(address.getLatitude(), address.getLongitude()))      // Sets the center of the map to Mountain View
+                    .target(new LatLng(latitude, longitude))      // Sets the center of the map to Mountain View
                     .zoom(17)                   // Sets the zoom
                     .bearing(90)                // Sets the orientation of the camera to east
                     .tilt(30)                   // Sets the tilt of the camera to 30 degrees

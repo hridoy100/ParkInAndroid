@@ -202,6 +202,8 @@ public class PaymentActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
+                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(homeIntent);
                     }
                 });
 
@@ -227,4 +229,11 @@ public class PaymentActivity extends AppCompatActivity {
         singleNotificationIntent.putExtra("rentNo",rent_no);
         startActivity(singleNotificationIntent);
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+    }
+
 }

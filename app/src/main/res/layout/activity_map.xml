@@ -18,22 +18,33 @@
         android:layout_margin="5dp"
 
         android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
+        <fragment
+            android:id="@+id/barikoiSearchAutocompleteFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:hint="Search Location Here" />
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:name="barikoi.barikoilocation.SearchAutoComplete.SearchAutocompleteFragment"/>
+
+
+        <!--<EditText-->
+            <!--android:id="@+id/editText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="4"-->
+            <!--android:hint="Search Location Here" />-->
 
 
         <Button
             android:id="@+id/search_button"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="0.7"
             android:onClick="onMapSearch"
-            android:text="Search" />
+            android:text="Search"
+            android:background="@drawable/btn_ui_full_green_rectangle"
+            android:textColor="@color/white"
+            />
 
     </LinearLayout>
     <LinearLayout

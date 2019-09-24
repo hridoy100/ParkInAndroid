@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -26,6 +27,7 @@ import com.example.parkin.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.BreakIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +56,7 @@ public class AddVehicle extends AppCompatActivity {
     EditText tax;
 
     private ProgressDialog progressDialog;
+    private TextView topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class AddVehicle extends AppCompatActivity {
         manufacturer = (Spinner) findViewById(R.id.manufacturer);
         localCode = (Spinner) findViewById(R.id.areaCode);
         vehicleType = (Spinner) findViewById(R.id.type);
+        topBar = (TextView) findViewById(R.id.topbar);
 
         license = (EditText) findViewById(R.id.vehicleLicenseNo);
 
@@ -71,6 +75,8 @@ public class AddVehicle extends AppCompatActivity {
         vehicleCode3 = (EditText) findViewById(R.id.vehicleCode3);
         vehicleCode4 = (EditText) findViewById(R.id.vehicleCode4);
         vehicleCode5 = (EditText) findViewById(R.id.vehicleCode5);
+
+        topBar.setText("VEHICLE ADD");
 
 
         vehicleCode1.addTextChangedListener(new TextWatcher() {

@@ -380,6 +380,7 @@ public class SpaceDetailsView extends AppCompatActivity implements RecyclerViewA
                             spaceintent.putExtra("departuretime", departuretime.getTimeInMillis());
                             spaceintent.putExtra("garagelocation", garageaddress);
                             spaceintent.putExtra("garageid", garageid);
+                            spaceintent.putExtra("facility",facility);
                             finish();
                             startActivity(spaceintent);
                         }
