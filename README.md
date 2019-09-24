@@ -7,11 +7,9 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT
 
 ### Made by:
 ---
-### Md.Rajibul Islam Student ID: 1505001
-
-### Ahnaf Faisal Student ID: 1505005
-
-### Raihanul Alam Hridoy Student ID: 1505010
+### Md.Rajibul Islam | Student ID: 1505001
+### Ahnaf Faisal | Student ID: 1505005
+### Raihanul Alam Hridoy | Student ID: 1505010
 ---
 ## 1 Abstract
 
