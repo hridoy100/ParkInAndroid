@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.Add.AddVehicle;
@@ -28,6 +29,7 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
     ArrayList<String> company ;
     ArrayList<String> reg ;
     ArrayList<String> mImageUrls ;
+    TextView topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,10 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
         company = new ArrayList<>();
         reg = new ArrayList<>();
         mImageUrls = new ArrayList<>();
+        topBar = (TextView) findViewById(R.id.topbar);
 
         progressDialog = new ProgressDialog(this);
+
 
         //vehicleList = findViewById(R.id.vehicleList);
         progressDialog.setMessage("Loading Vehicle Details");

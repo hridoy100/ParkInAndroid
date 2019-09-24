@@ -155,7 +155,7 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
                     arrivaltime.setTime(date);
                     current.setText(myDateFormat.format(date));
 
-                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"open", current.getText().toString());
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText().toString()+"open", current.getText().toString());
                     myEditor.commit();
                     //dateTimeFragment2.setMinimumDateTime(cal.getTime());
                 }
@@ -295,7 +295,7 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
             cctvIp.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"cctvIP", cctvIp.getText().toString());
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText().toString()+"cctvIP", cctvIp.getText().toString());
                     myEditor.commit();
                     //Toast.makeText(context, cctvIp.getText().toString(), Toast.LENGTH_SHORT).show();
                     Log.d("cctvIP recy","com.example.parkin."+spaceNoTxt.getText().toString()+"cctvIP" + " Text:  "+ cctvIp.getText().toString());
@@ -305,7 +305,7 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
             position.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"position", position.getText().toString());
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText().toString()+"position", position.getText().toString());
                     myEditor.commit();
                     //Toast.makeText(context, position.getText().toString(), Toast.LENGTH_SHORT).show();
                     Log.d("position recy","com.example.parkin."+spaceNoTxt.getText().toString()+"position" + " pos:  "+ position.getText().toString());
@@ -317,14 +317,14 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     vehicleTypeSelected = (RadioButton) itemView.findViewById(checkedId);
                     //Toast.makeText(context, "Selected v: "+ vehicleTypeSelected.getText().toString(), Toast.LENGTH_SHORT).show();
-                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"vehicleType", vehicleTypeSelected.getText().toString());
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText().toString()+"vehicleType", vehicleTypeSelected.getText().toString());
                     myEditor.commit();
 
 
-                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"cctvIP", cctvIp.getText().toString());
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText().toString()+"cctvIP", cctvIp.getText().toString());
                     myEditor.commit();
 
-                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText()+"position", position.getText().toString());
+                    myEditor.putString("com.example.parkin."+spaceNoTxt.getText().toString()+"position", position.getText().toString());
                     myEditor.commit();
                     //Log.d("vehicleType recy","com.example.parkin."+spaceNoTxt.getText().toString()+vehicleType.getId() + "  " + String.valueOf(vehicleTypeSelected.getId()));
                 }
@@ -335,12 +335,12 @@ public class RecyclerViewAdapterSingleSpace extends RecyclerView.Adapter<Recycle
         int count=0;
         public void checkSharedPreferences() {
             Log.d("check Shared Pref", "called"+spaceNoTxt.getText());
-            String space_no = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText()+"space_no", "");
-            String position_txt = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText()+"position", "");
-            String open_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText()+"open", "");
-            String close_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText()+"close", "");
-            String cctv_ip = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText()+"cctvIP", "");
-            String vehicle_type = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText()+"vehicleType", "");
+            String space_no = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText().toString()+"space_no", "");
+            String position_txt = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText().toString()+"position", "");
+            String open_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText().toString()+"open", "");
+            String close_time = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText().toString()+"close", "");
+            String cctv_ip = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText().toString()+"cctvIP", "");
+            String vehicle_type = mySharedPreferences.getString("com.example.parkin."+spaceNoTxt.getText().toString()+"vehicleType", "");
             if(space_no.length()>0){
                 spaceNoTxt.setText(space_no);
                 Log.d("check Shared Pref", "spaceno "+space_no);
