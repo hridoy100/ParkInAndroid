@@ -1,7 +1,7 @@
 ```
 Software Development - CSE 408
 ```
-COMPUTER SCIENCE AND ENGINEERING DEPARTMENT
+### Department: Computer Science and Engineering
 
 ### ParkIn:A Smart Parking App
 
@@ -124,8 +124,7 @@ the user.After login he can see his profile,history,available garages,vehicles i
 
 
 ```
-(a) Account Creation Window (b) Account Creation Window with de-
-tails
+(a) Account Creation Window (b) Account Creation Window with details
 ```
 ### 4.2 Home
 
