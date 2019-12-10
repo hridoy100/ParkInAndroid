@@ -164,6 +164,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 addressTitle = place.getAddress();
                 postalCode = place.getPostalcode();
                 selectedPlace = place;
+//                Log.d("place",place.getCity());
+
+//                Toast.makeText(getApplicationContext(), "city: "+place.getCity(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -1,0 +1,264 @@
+\documentclass[11pt, english]{article}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage[english]{babel}
+\selectlanguage{english}
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames]{xcolor}
+
+
+
+\usepackage{listings}
+\usepackage{afterpage}
+\pagestyle{plain}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+%\lstset{language=R,
+%    basicstyle=\small\ttfamily,
+%   stringstyle=\color{DarkGreen},
+%    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+%    morekeywords={TRUE,FALSE},
+%    deletekeywords={data,frame,length,as,character},
+%    keywordstyle=\color{blue},
+%    commentstyle=\color{DarkGreen},
+%}
+
+\lstset{frame=tb,
+language=R,
+aboveskip=3mm,
+belowskip=3mm,
+showstringspaces=false,
+columns=flexible,
+numbers=none,
+keywordstyle=\color{blue},
+numberstyle=\tiny\color{gray},
+commentstyle=\color{dkgreen},
+stringstyle=\color{mauve},
+breaklines=true,
+breakatwhitespace=true,
+tabsize=3
+}
+
+\usepackage{here}
+
+
+\textheight=21cm
+\textwidth=17cm
+%\topmargin=-1cm
+\oddsidemargin=0cm
+\parindent=0mm
+\pagestyle{plain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% La siguiente instrucciÃ³n pone el curso automÃ¡ticamente%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{color}
+\usepackage{ragged2e}
+
+\global\let\date\relax
+\newcounter{unomenos}
+\setcounter{unomenos}{\number\year}
+\addtocounter{unomenos}{-1}
+\stepcounter{unomenos}
+\gdef\@date{ Course \arabic{unomenos}/ 2019}
+
+\begin{document}
+
+\begin{titlepage}
+
+\begin{center}
+\vspace*{-1in}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=8cm]{logo}
+\end{center}
+\end{figure}
+
+Computer Security -  CSE 406\\
+\vspace*{0.15in}
+COMPUTER SCIENCE AND ENGINEERING DEPARTMENT \\
+\vspace*{0.4in}
+\begin{large}
+DICTIONARY ATTACK\\
+\end{large}
+\vspace*{0.2in}
+%\begin{Large}
+% \textbf{Max-Diversity} \\
+% \end{Large}
+% \vspace*{0.3in}
+% \begin{large}
+% Rafael Martí Cunquero \\
+% \end{large}
+% \vspace*{0.3in}
+\rule{80mm}{0.1mm}\\
+\vspace*{0.1in}
+\begin{large}
+Made by: \\
+Ahnaf Faisal \\
+ID: 1505005 \\
+\end{large}
+%\includegraphics[width=10cm]{LogoFac.jpg}
+\end{center}
+\end{titlepage}
+
+\newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+
+\tableofcontents
+\newpage
+\section{Definition}
+A dictionary attack is a technique or method used to breach the computer security of a password-protected machine or server. A dictionary attack attempts to defeat an authentication mechanism by systematically entering each word in a dictionary as a password or trying to determine the decryption key of an encrypted message or document.  \\
+
+Dictionary attacks are often successful because many users and businesses use ordinary words as passwords. These ordinary words are easily found in a dictionary, such as an English dictionary. \\
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{dictionary.png} \label{Password Cracking}
+        \caption{Password Cracking}
+        \end{minipage}
+\end{figure}
+\section{My Implementaton}
+ I have tried to show case 3 examples of dictionary attack. One of them is online based in seed ubuntu xsslabelgg site. The second one is a offline based where the attacker will have the hashed password file of victim.The other online based is where I build my own server and have a defence mechanism.\\
+\section{Seed Apache Server Attack Implementation}
+By observing the http packets through wireshark and http header, I saw the seed elgg site provides a cookie when a get request to their site is sent. The returned page also contains elgg token and elgg timestamp which then can be used to invoke the login post method.If the credentials are correct, it will reply with a new cookie. Using that cookie, one can get the desired log in page.\\
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{charlie.png} \label{dic_file}
+        \caption{Dictionary File}
+        \end{minipage}
+\end{figure}
+In \ref{dic_file} the desired password is in 2nd position,so login is no problem and we get \ref{result_site} page.\\
+\newpage
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{input_line.png} \label{seed_dashboard}
+        \caption{Input Line}
+        \end{minipage}
+\end{figure}
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{result_site.png} \label{result_site}
+        \caption{Result site}
+        \end{minipage}
+\end{figure}
+But seed elgg site has security mechanism which locks the account after some failure attempts.So if the password is in far position the attack will fail like in \ref{fail}.\\
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{dictionary_file.png} \label{fail}
+        \caption{Failure condition}
+        \end{minipage}
+\end{figure}
+\section{Offline File Password Cracking}
+In this case, I deal with a password file containing usernames,hashed passwords and sometimes their salts.
+Hash is done in two ways, SHA-1 hash and reverse string sha hashing.\\
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{password_file.png} \label{file}
+        \caption{Password File}
+        \end{minipage}
+\end{figure}
+Firstly all the usernames and hashed passwords are put in a hashmap. Again, from the dictionary all the hashes are precomputed although in cases of salt it does not serve any purpose.\\
+\newpage
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{non_salted_offline.png} 
+        \label{non_salted_login}
+        \caption{nonsalted password login}
+        \end{minipage}
+\end{figure}
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{salted_offline.png} \label{salted login}
+        \caption{salted password login}
+        \end{minipage}
+\end{figure}
+\subsection{Defence Mechanism}
+If the salts are not in the password file or saved elsewhere there is no way the attacker can crack the correct password.\\
+\section{My Victim Server}
+I implemented a server which responds to get and post requests made on localhost port no 6780.Responding to get requests it responds with html page.\\
+\newpage
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{register_online.png} \label{register login}
+        \caption{Register html page}
+        \end{minipage}
+\end{figure}
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{login.png} \label{login}
+        \caption{Login html page}
+        \end{minipage}
+\end{figure}
+When a post request is received along with username and password field, it computes the hash of received password and compares it with the stored hashed password of that user. If it matches then it replies with \ref{fig:success login} page.\\
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{login_success.png} 
+        \label{fig:success login}
+        \caption{Success login page}
+        \end{minipage}
+\end{figure}
+If credentials dont match or the username doesnot exist,then it replies with \ref{invalid login} page.\\
+\newpage
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{invalid.png} \label{invalid login}
+        \caption{Invalid login}
+        \end{minipage}
+\end{figure}
+So the attacker tool sends post request containing username and predicted password from dictionary file and retrieves the response page. If response page contains login successful that means the password was correct and our job is done.Otherwise it will continue sending dictionary words.
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=9cm]{login_app.png} \label{login app}
+        \caption{Login from Attack tool}
+        \end{minipage}
+\end{figure}
+\subsection{Defence Mechanism}
+My server has a defence mechanism flag which when activated keeps track of consecutive unsuccesful logins. If it exceeds the limit number then the account will be locked and will repond with account locked page.\\
+\newpage
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{defense_code.png} \label{Defence Flag}
+        \caption{Code Portion Defence flag}
+        \end{minipage}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{lock_online.png} \label{Locked page}
+        \caption{Locked Account}
+        \end{minipage}
+\end{figure}
+\begin{figure}[h!]
+        \begin{minipage}[b]{1\linewidth}
+        \centering
+        \includegraphics[width=10cm]{locked_online.png} \label{locked account}
+        \caption{Locked Account}
+        \end{minipage}
+\end{figure}
+\section{Conclusion}
+So in my three attacks, one I used seed ubuntu elgg site,other with offline password and last one with my own made server with protection mechanism.Due to hardware limitations I stick to reading from one dictionary file because opening large dictionary files at once not much feasible and time efficient in my machine.In powerful computers the process can be speeed up multiple threads or even using multiple computers at a time. 
+
+%uoooooooooooooooo tumadreuooooooooooooooooooo UOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+%AL FIN SE TERMINA ESTA PUTA MIERDA!!!!
+%USEGREAS OSTOJEOGIRN ojeogiek
+
+
+\end{document}
