@@ -1,15 +1,20 @@
 ```
 Software Development - CSE 408
 ```
+
+<p align="center">
+  <img src="latex/logo.png" width="100" title="BUET LOGO">
+</p>
+
 ### Department: Computer Science and Engineering
 
-### ParkIn:A Smart Parking App
+### ParkIn: A Smart Parking App
 
 ### Made by:
 ---
-### Md.Rajibul Islam | Student ID: 1505001
-### Ahnaf Faisal | Student ID: 1505005
-### Raihanul Alam Hridoy | Student ID: 1505010
+#### Md.Rajibul Islam | Student ID: 1505001
+#### Ahnaf Faisal | Student ID: 1505005
+#### Raihanul Alam Hridoy | Student ID: 1505010
 ---
 ## 1 Abstract
 
@@ -21,12 +26,12 @@ vehicle safely, also to ensure the user does not end up parking on non-parking a
 discomfort to pedestrian.Due to this there is a need to provide sufficient parking places coupled
 with plenty of slots to help the user park his vehicle safely, also to ensure the user does not
 end up parking on non-parking area and cause discomfort to pedestrian. The idea behind our
-Android Application-“’ParkIn” is to help the user analyse area’s where parking is available and
+Android Application- “**ParkIn**” is to help the user analyse area’s where parking is available and
 number of slots free in that area.Additionally, the user can pre-book a slot in the area he desires
 for some consecutive days (along with the daily service) if it is available. This will help reduce
 the load on the administrator as his physical work reduces drastically and user can search the
 parking slot through Android Application.User can pay after completion of parking service he
-received. “ParkIn” Application relieves the user from the hassle of manually searching and
+received. “**ParkIn**” Application relieves the user from the hassle of manually searching and
 waiting for empty slots to park the vehicle.
 
 ## 2 Introduction
@@ -43,7 +48,7 @@ Parking System based on android technology for avoiding the parking problems whi
 process of pre-booking the slots through the use of a simple and interactive Android application.
 This application is expected to provide an efficient and cost-effective solution to the effluent
 vehicle parking problems.The user needs to have an Android enabled device to reap the benefits
-of this application. After installing the “ParkIn” app, user needs to mandatorily register with
+of this application. After installing the “**ParkIn**” app, user needs to mandatorily register with
 the application. Booking of the slot at user’s desired location should be done prior to the arrival.
 Penalty will be levied on late arrival as well as on over use of the slot after user specified entry
 and exit time. The places where security surveillance (CCTVs) is made available will be used
@@ -61,10 +66,13 @@ renting his garage as a renter. The server side processing will be enabled using
 MySQL. The client requests the server for locations where parking is available and the server
 responds with slots availability.Also,server offers the renter to rent his garage and make a way
 to earn money.
+<p align="center">
+  <img src="latex/architecture.PNG" width="500" title="architecture">
+  <br>
+  <br>
+  Figure 1: Client Server Architecture of ParkIn App
+</p>
 
-```
-Figure 1: Client Server Architecture of ParkIn App
-```
 ### 3.1 Class Diagram
 
 This section contains 2 MVC pattern class diagrams for our design
@@ -72,11 +80,13 @@ Figure 2 shows a boundary classGarageUI, a control classGarage Additionand three
 entity classes:Owner,Garage,Rajuk
 Figure 3 shows a boundary classSpaceInqUI, a control classSpaceInq Controllerand
 two entity classes: Customer,Vehicle
+<p align="center">
+  <img src="latex/class_ag.png" width="500" title="class diagram">
+  <br>
+  <br>
+  Figure 2: Class Diagram for Add Garage
+</p>
 
-
-```
-Figure 2: Class Diagram for Add Garage
-```
 ### 3.2 Sequence Diagram
 
 Figure 4 shows the sequence diagram for Add garage usecase.Initially a user interface is loaded
@@ -89,16 +99,27 @@ method shows the details about the space.Now, customer choose the space to rent 
 available.He/She also adds vehicle via selecting from the vehicle list and confirms the space to
 rent.
 
+<p align="center">
+  <img src="latex/class_inq.png" width="500" title="class diagram: inquire space">
+  <br>
+  <br>
+  Figure 3: Class Diagram for Inquire Space
+</p>
 
-```
-Figure 3: Class Diagram for Inquire Space
-```
-Figure 4: Sequence Diagram for Add Garage
+<p align="center">
+  <img src="latex/seq1.png" title="Sequence Diagram for Add Garage">
+  <br>
+  <br>
+  Figure 4: Sequence Diagram for Add Garage
+</p>
 
+<p align="center">
+  <img src="latex/seq2.png" title="Sequence Diagram for Inquire Space">
+  <br>
+  <br>
+  Figure 5: Sequence Diagram for Inquire Space
+</p>
 
-```
-Figure 5: Sequence Diagram for Inquire Space
-```
 ## 4 User Guide/Implementation
 
 ### 4.1 Client Side
@@ -113,31 +134,67 @@ screen will be flashed to the user on opening the application.
 
 Initially, the user has to register his details with the application for the first time. This is
 a one-time registration. The user has to enter details like mobile no. as username,name,
-email-id,address,birthdate etc.All this data will be stored on server and confidentiality will be
+email-id,address,birthdate etc.
+
+<p align="center">
+  <img src="latex/Account_Creation/CreateAccountActivity.jpg" width="300" title="Create Account Activity">
+  
+  <img src="latex/Account_Creation/CreateAccountActivity_when_details_given.jpg" width="300" title="Create Account Activity with Details">
+  <br>
+  Figure 6: (a) Create Account (b) Create Account Activity with Details
+  <br>
+</p>
+
+All this data will be stored on server and confidentiality will be
 ensured. User can then book slot and also rent garage slot using same registered account.We
 use Google’s firebase authentatication system to send verification emails and verify.
+
+<p align="center">
+  <img src="latex/Account_Creation/Verificationemailsenttoemailaddress.jpg" width="300" title="Verification Email Sent">
+  
+  <img src="latex/Account_Creation/email_verified_window.jpg" width="300" title="Email Verified">
+  <br>
+  Figure 7: (a) Verification Email (b) Email Verified
+  <br>
+</p>
+
 
 #### 4.1.3 LogIn
 
 Once the user registers, he can use his mobile number to login in future. This authenticates
-the user.After login he can see his profile,history,available garages,vehicles information etc.
+the user. After login he can see his profile,history,available garages,vehicles information etc.
 
+<p align="center">
+  <img src="latex/LogIn/LoginActivity.jpg" width="300" title="Login Activity">
+  <br>
+  Figure 8: Login Activity
+  <br>
+</p>
 
-```
-(a) Account Creation Window (b) Account Creation Window with details
-```
 ### 4.2 Home
 
 From this window user can go to add garage,vehicle or search for parking location,see ongoing
 status,notifications and logout.
 
+<p align="center">
+  <img src="latex/HomeActivity.jpg" width="300" title="Home Activity">
+  <br>
+  Figure 9: Home Activity
+  <br>
+</p>
 
-```
-(a) Verification Email Sent (b) Email Verified
-```
 #### 4.2.1 Vehicle Details
 
 A user can enter vehicles he wishes to park in vehicle window.
+
+<p align="center">
+  <img src="latex/Vehicle/VehicleEditActivity_used_for_adding_vehicle.jpg" width="300" title="Vehicle Add Window">
+  
+  <img src="latex/Vehicle/Vehicle_List_after_adding_all_types_of_vehicles.jpg" width="300" title="Vehicle List Window">
+  <br>
+  Figure 10: (a) Vehicle Add Window (b) Vehicle List Window
+  <br>
+</p>
 
 #### 4.2.2 Adding Garage as Renter
 
@@ -145,18 +202,26 @@ User’s single registered account provides him services of both as the customer
 can add garage and provide garage spaces for rent in a specified time-interval.To rent spaces,
 detials of spaces have to be inserted and all records will be stored in the server side database.User
 can also deactivate the availabilty of his rented space for a certain period and activate then
-with new initialized date.While adding garage, a record for the user is created as renter and
+with new initialized date.While adding garage, a record for the user is created as renter and this record will be stored in the database.
+<p align="center">
+  <img src="latex/GarageAdd/AddressFragment1.jpg" width="300" title="Garage Add Search">
+  <img src="latex/GarageAdd/AddressFragment2.jpg" width="300" title="Garage Add Search Suggestion">
+  <br>
+  <br>
+  Figure 11: (a) Garage Add Search (b) Garage Add Search Suggestion
+  <br>
+  <br>
+</p>
 
+<p align="center">
+  <img src="latex/GarageAdd/Location.jpg" width="300" title="Garage Add Location Map">
+  <img src="latex/GarageAdd/DetailsFragment1.jpg" width="300" title="Garage Add Details Size Selection">
+  <br>
+  <br>
+  Figure 12: (a) Garage Add Location Map (b) Garage Add Details Size Selection
+  <br>
+</p>
 
-```
-(a) Login Window (b) Home window
-```
-this record will be stored in the database.
-
-
-```
-Figure 9: Vehicle Add Window
-```
 #### 4.2.3 Location Selection for Parking
 
 The user selectsParking Location Iconfor getting available garages.By selecting desired
@@ -164,10 +229,6 @@ garage with Arrival and Departure time along with the vehicle type, user can see
 spaces available for him. User has to select one of the spaces provided where he desires to park
 the vehicle.
 
-
-```
-Figure 10: Vehicle List Window
-```
 #### 4.2.4 Notification Details
 
 The server sends notification to renter and client side when renting time has started and when
@@ -179,10 +240,6 @@ When user selects slot for rent, a request is sent to the server and server resp
 confirmation status on user window.Also,Server sends notification to the user with details in-
 formation about the pre-booking of slot.When user
 
-
-```
-Figure 11: Garage Add Search
-```
 ### 4.3 Confirmation and Payment
 
 User will have to confirm his payment. Thus our payment window has payment methods. Then
