@@ -60,12 +60,13 @@ entry and exit time.
 
 ## 3 Architectural Design
 
-“ParkIn” application is based on the client-server architecture. The client is provided with
+“**ParkIn**” application is based on the client-server architecture. The client is provided with
 an interactive Android based user interface for the process of pre-booking of parking slot and
 renting his garage as a renter. The server side processing will be enabled using PHP and
 MySQL. The client requests the server for locations where parking is available and the server
 responds with slots availability.Also,server offers the renter to rent his garage and make a way
 to earn money.
+
 <p align="center">
   <img src="latex/architecture.PNG" width="500" title="architecture">
   <br>
@@ -78,6 +79,7 @@ to earn money.
 This section contains 2 MVC pattern class diagrams for our design Figure 2 shows a boundary classGarageUI, a control classGarage Additionand three entity classes:Owner,Garage,Rajuk
 Figure 3 shows a boundary classSpaceInqUI, a control classSpaceInq Controllerand
 two entity classes: Customer,Vehicle
+
 <p align="center">
   <img src="latex/class_ag.png" width="500" title="class diagram">
   <br>
@@ -257,7 +259,6 @@ The server side processing will be enabled using PHP and MySQL. The administrato
   <br>
 </p>
 
-
 ## 5 Future Scope
 
 There are some future scope for this project.At this moment,the software does not allow cus-
@@ -266,7 +267,6 @@ but not during same time.The payment method can be implemented using paid apis l
 or rocket which is absent from the app at the moment.There is in app communication sys-
 tem between users at the moment which can be added.Also the app doesnot allow extra time
 allocation at the moment which can be added fairly easily.
-
 
 ## 6 Conclusion
 
