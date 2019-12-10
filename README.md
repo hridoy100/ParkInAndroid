@@ -75,9 +75,7 @@ to earn money.
 
 ### 3.1 Class Diagram
 
-This section contains 2 MVC pattern class diagrams for our design
-Figure 2 shows a boundary classGarageUI, a control classGarage Additionand three
-entity classes:Owner,Garage,Rajuk
+This section contains 2 MVC pattern class diagrams for our design Figure 2 shows a boundary classGarageUI, a control classGarage Additionand three entity classes:Owner,Garage,Rajuk
 Figure 3 shows a boundary classSpaceInqUI, a control classSpaceInq Controllerand
 two entity classes: Customer,Vehicle
 <p align="center">
@@ -89,15 +87,7 @@ two entity classes: Customer,Vehicle
 
 ### 3.2 Sequence Diagram
 
-Figure 4 shows the sequence diagram for Add garage usecase.Initially a user interface is loaded
-and renter actor selects garage from the garage list.After selecting the garage,renter gets the
-details about the garage.Then, renter adds garage via an instance of Add Garage class and
-Garage constructor creates new instance for the newly added garage.
-Figure 5 shows the sequence diagram for Inquire Space Subsystem.At first, customer shows
-a map with nearest locations with available spaces and choose this space while getSpace
-method shows the details about the space.Now, customer choose the space to rent if it is
-available.He/She also adds vehicle via selecting from the vehicle list and confirms the space to
-rent.
+Figure 4 shows the sequence diagram for Add garage usecase. Initially a user interface is loaded and renter actor selects garage from the garage list. After selecting the garage,renter gets the details about the garage. Then, renter adds garage via an instance of Add Garage class and Garage constructor creates new instance for the newly added garage. Figure 5 shows the sequence diagram for Inquire Space Subsystem. At first, customer shows a map with nearest locations with available spaces and choose this space while getSpace method shows the details about the space.Now, customer choose the space to rent if it is available. He/She also adds vehicle via selecting from the vehicle list and confirms the space to rent.
 
 <p align="center">
   <img src="latex/class_inq.png" width="500" title="class diagram: inquire space">
@@ -126,15 +116,11 @@ rent.
 
 #### 4.1.1 Starting the Application
 
-The user needs to install the “ParkIn” application on his Android based device. After installa-
-tion, the icon of the app will feature on the Home Screen of the user’s device. “ParkIn” Home
-screen will be flashed to the user on opening the application.
+The user needs to install the “ParkIn” application on his Android based device. After installation, the icon of the app will feature on the Home Screen of the user’s device. “ParkIn” Home Screen will be flashed to the user on opening the application.
 
 #### 4.1.2 Registration
 
-Initially, the user has to register his details with the application for the first time. This is
-a one-time registration. The user has to enter details like mobile no. as username,name,
-email-id,address,birthdate etc.
+Initially, the user has to register his details with the application for the first time. This is a one-time registration. The user has to enter details like mobile no. as username,name, email-id,address,birthdate etc.
 
 <p align="center">
   <img src="latex/Account_Creation/CreateAccountActivity.jpg" width="300" title="Create Account Activity">
@@ -145,9 +131,7 @@ email-id,address,birthdate etc.
   <br>
 </p>
 
-All this data will be stored on server and confidentiality will be
-ensured. User can then book slot and also rent garage slot using same registered account.We
-use Google’s firebase authentatication system to send verification emails and verify.
+All this data will be stored on server and confidentiality will be ensured. User can then book slot and also rent garage slot using same registered account. We use Google’s firebase authentatication system to send verification emails and verify.
 
 <p align="center">
   <img src="latex/Account_Creation/Verificationemailsenttoemailaddress.jpg" width="300" title="Verification Email Sent">
@@ -161,8 +145,7 @@ use Google’s firebase authentatication system to send verification emails and 
 
 #### 4.1.3 LogIn
 
-Once the user registers, he can use his mobile number to login in future. This authenticates
-the user. After login he can see his profile,history,available garages,vehicles information etc.
+Once the user registers, he can use his mobile number to login in future. This authenticates the user. After login he can see his profile,history,available garages,vehicles information etc.
 
 <p align="center">
   <img src="latex/LogIn/LoginActivity.jpg" width="300" title="Login Activity">
@@ -173,8 +156,7 @@ the user. After login he can see his profile,history,available garages,vehicles 
 
 ### 4.2 Home
 
-From this window user can go to add garage,vehicle or search for parking location,see ongoing
-status,notifications and logout.
+From this window user can go to add garage,vehicle or search for parking location,see ongoing status,notifications and logout.
 
 <p align="center">
   <img src="latex/HomeActivity.jpg" width="300" title="Home Activity">
@@ -198,11 +180,8 @@ A user can enter vehicles he wishes to park in vehicle window.
 
 #### 4.2.2 Adding Garage as Renter
 
-User’s single registered account provides him services of both as the customer and the renter.He
-can add garage and provide garage spaces for rent in a specified time-interval.To rent spaces,
-detials of spaces have to be inserted and all records will be stored in the server side database.User
-can also deactivate the availabilty of his rented space for a certain period and activate then
-with new initialized date.While adding garage, a record for the user is created as renter and this record will be stored in the database.
+User’s single registered account provides him services of both as the customer and the renter. He can add garage and provide garage spaces for rent in a specified time-interval.To rent spaces, detials of spaces have to be inserted and all records will be stored in the server side database. User can also deactivate the availabilty of his rented space for a certain period and activate then with new initialized date.While adding garage, a record for the user is created as renter and this record will be stored in the database.
+
 <p align="center">
   <img src="latex/GarageAdd/AddressFragment1.jpg" width="300" title="Garage Add Search">
   <img src="latex/GarageAdd/AddressFragment2.jpg" width="300" title="Garage Add Search Suggestion">
@@ -224,42 +203,60 @@ with new initialized date.While adding garage, a record for the user is created 
 
 #### 4.2.3 Location Selection for Parking
 
-The user selectsParking Location Iconfor getting available garages.By selecting desired
-garage with Arrival and Departure time along with the vehicle type, user can see multiple
-spaces available for him. User has to select one of the spaces provided where he desires to park
+The user selectsParking Location Iconfor getting available garages. By selecting desired garage with Arrival and Departure time along with the vehicle type, user can see multiple spaces available for him. User has to select one of the spaces provided where he desires to park
 the vehicle.
+
+<p align="center">
+  <img src="latex/Location_Selection/search_for_parkinglocations.jpg" width="250" title="Search Location Window">
+  <img src="latex/Location_Selection/showing_space_list_for_adding_vehicles.jpg" width="250" title="Available Space List">
+  <img src="latex/Location_Selection/select_vehicle_for_allocation.jpg" width="250" title="Vehicle Selection">
+  <br>
+  <br>
+  Figure 13: (a) Search Location Window (b) Available Space List (c) Vehicle Selection
+  <br>
+</p>
 
 #### 4.2.4 Notification Details
 
-The server sends notification to renter and client side when renting time has started and when
-is is over.
+The server sends notification to renter and client side when renting time has started and when it is over.
 
-#### 4.2.5 Confirmation and Payment
+<p align="center">
+  <img src="latex/Notification/notification_showing.jpg" width="300" title="List of Notifications">
+  <img src="latex/Notification/notification.jpg" width="300" title="Single Notification">
+  <br>
+  <br>
+  Figure 14: (a) List of Notifications (b) Single Notification
+  <br>
+</p>
 
-When user selects slot for rent, a request is sent to the server and server responses with the
-confirmation status on user window.Also,Server sends notification to the user with details in-
-formation about the pre-booking of slot.When user
 
 ### 4.3 Confirmation and Payment
 
-User will have to confirm his payment. Thus our payment window has payment methods. Then
-the service will be completed.
+When user selects slot for rent, a request is sent to the server and server responses with the confirmation status on user window. Also,Server sends notification to the user with details information about the pre-booking of slot.
+
+<p align="center">
+  <img src="latex/Payment/payment_notification.jpg" width="300" title="Payment Notifications">
+  <img src="latex/Payment/payment_window.jpg" width="300" title="Payment Window">
+  <br>
+  <br>
+  Figure 15: (a) Payment Notifications (b) Payment Window
+  <br>
+</p>
+
+User will have to confirm his payment. Our payment window has payment methods. After confirmation, the service will be completed. We haven't implemented the API for the methods as it is paid API.
 
 ### 4.4 Server Side
 
-The server side processing will be enabled using PHP and MySQL. The administrator has to
-control the server side. Whenever a new user registers with the app, the record will be stored
-in the server side database. When the registered user selects the location and vehicle type,
-immediately server receives the client’s request. After receiving the request for the desired
-location, server processes the related information and responds accordingly. Furthermore, the
-administrator has direct option to view user details and slot details stored on the server direct
-via the application.There will also be a ongoing server written in java which will run threads
+The server side processing will be enabled using PHP and MySQL. The administrator has to control the server side. Whenever a new user registers with the app, the record will be stored in the server side database. When the registered user selects the location and vehicle type, immediately server receives the client’s request. After receiving the request for the desired location, server processes the related information and responds accordingly. Furthermore, the administrator has direct option to view user details and slot details stored on the server direct via the application. There will also be a ongoing server written in java which will run threads to see if rent time is starting for a customer or ending and thus sending proper notifications.
 
+<p align="center">
+  <img src="latex/parkin_server.png" title="Server Running">
+  <br>
+  <br>
+  Figure 16: Server Running
+  <br>
+</p>
 
-```
-Figure 12: Garage Add Search Suggestions
-```
-to see if rent time is starting for a customer or ending and thus sending proper notifications.
 
 ## 5 Future Scope
 
@@ -271,32 +268,9 @@ tem between users at the moment which can be added.Also the app doesnot allow ex
 allocation at the moment which can be added fairly easily.
 
 
-```
-Figure 13: Garage Add Location Map
-```
 ## 6 Conclusion
 
 All in all, we think parkin app brings the features which are necessary for a country like us
 where there is a significant shortage of parking space.Also it allows some users to earn some
 money through renting their space.We hope that we can continue to make improvement to this
 project.
-
-
-Figure 14: Garage Add details Start time End time
-
-
-Figure 15: Garage Add details Size selection
-
-
-(a) Search Location window (b) Available space list (c) Vehicle Selection
-
-
-(a) List of Notifications (b) Single Notification Shown
-
-
-(a) Payment Notifications (b) Payment Window
-
-```
-Figure 19: Server Running
-```
-
