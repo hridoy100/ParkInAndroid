@@ -79,7 +79,7 @@
                         android:drawableLeft="@drawable/ic_person"
                         android:drawablePadding="30dp"
                         android:hint="Mobile Number"
-                        android:inputType="phone"
+                        android:inputType="numberDecimal"
                         android:padding="10dp" />
 
                     <View
@@ -119,20 +119,20 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/btn_ui_blue_rectangle"
-            android:elevation="3dp"
-            android:onClick="onLoginButton"
-            android:textAllCaps="false"
-            android:text="Forgot Password"
-            android:textSize="17sp"
-            android:textColor="@android:color/background_light"
+        <!--<Button-->
+            <!--android:layout_width="230dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="50dp"-->
+            <!--android:background="@drawable/btn_ui_blue_rectangle"-->
+            <!--android:elevation="3dp"-->
+            <!--android:onClick="onLoginButton"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:text="Forgot Password"-->
+            <!--android:textSize="17sp"-->
+            <!--android:textColor="@android:color/background_light"-->
 
-             />
+             <!--/>-->
 
         <Button
             android:layout_width="230dp"

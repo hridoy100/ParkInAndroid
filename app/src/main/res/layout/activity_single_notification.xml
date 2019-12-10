@@ -4,311 +4,353 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SingleNotificationActivity">
+    tools:context=".SingleNotificationActivity"
+    >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="vertical"
         >
+
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/backImage"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center|left"
-                android:background="@color/white"
-                android:paddingLeft="10dp"
-                android:src="@drawable/ic_arrow_back_black_24dp"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:onClick="onBackClicked"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="center"
-                android:background="@color/white"
-                android:gravity="center"
-                android:paddingRight="40dp"
-                android:text="Notifications"
-                android:textColor="@color/darkgray"
-                android:textStyle="bold"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:orientation="vertical"
+            >
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:background="@drawable/curve">
+
+                <ImageView
+                    android:id="@+id/backImage"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top|left"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:onClick="onBackClicked"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingRight="40dp"
+                    android:text="RENT SCRIPT"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    >
 
-            <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Rent No: "
+                            android:padding="10dp"
+                            android:layout_weight="1.5"
+                            />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#71d2d2d2"
+                            android:layout_marginRight="10dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rentNo"
+                            android:text="#"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#71d2d2d2"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/quantum_grey300">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Renter Mobile: "
+                            android:padding="10dp"
+                            android:layout_weight="1.5"
+                            />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#71d2d2d2"
+                            android:layout_marginRight="10dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/renterMobNo"
+                            android:text="#"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#71d2d2d2"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Customer Mobile: "
+                            android:padding="10dp"
+                            android:layout_weight="1.5"
+                            />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#71d2d2d2"
+                            android:layout_marginRight="10dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/customerMobNo"
+                            android:text="#"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#71d2d2d2"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/quantum_grey300">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start Time: "
+                            android:padding="10dp"
+                            android:layout_weight="1.5"
+                            />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#71d2d2d2"
+                            android:layout_marginRight="10dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/startTime"
+                            android:text="#"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#71d2d2d2"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="End Time: "
+                            android:padding="10dp"
+                            android:layout_weight="1.5"
+                            />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#71d2d2d2"
+                            android:layout_marginRight="10dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/endTime"
+                            android:text="#"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#71d2d2d2"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/quantum_grey300">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cost"
+                            android:padding="10dp"
+                            android:layout_weight="1.5"
+                            />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#71d2d2d2"
+                            android:layout_marginRight="10dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/cost"
+                            android:text="#"
+                            android:padding="10dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#71d2d2d2"
+                        />
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_rounded_edit_text"
+                        android:minHeight="40dp"
+                        android:gravity="center"
+                        >
+                        <!--<TextView-->
+                            <!--android:layout_width="70dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="Status:"-->
+                            <!--android:gravity="center"-->
+                            <!--android:textSize="16sp"-->
+                            <!--android:layout_marginRight="1dp"-->
+                            <!--android:textColor="@color/ms_black"-->
+                            <!--android:fontFamily="@font/montserrat_bold"-->
+                            <!--android:minHeight="40dp"-->
+                            <!--/>-->
+
+                        <TextView
+                            android:id="@+id/currentStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat"
+                            android:gravity="center"
+                            android:text="current status"
+                            android:textColor="#3e9c64"
+                            android:textSize="14sp"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#71d2d2d2"
+                        />
+                    <ImageView
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:maxHeight="200dp"
+                        android:layout_gravity="center"
+                        android:id="@+id/statusImage"
+                        />
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Rent No: "
-                    android:padding="10dp"
-                    android:layout_weight="1.5"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#71d2d2d2"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rentNo"
-                    android:text="#"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    />
-
-            </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#71d2d2d2"
-                    />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/quantum_grey300">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Renter Mobile: "
-                    android:padding="10dp"
-                    android:layout_weight="1.5"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#71d2d2d2"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/renterMobNo"
-                    android:text="#"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    />
-
-            </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#71d2d2d2"
-                    />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Customer Mobile: "
-                    android:padding="10dp"
-                    android:layout_weight="1.5"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#71d2d2d2"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/customerMobNo"
-                    android:text="#"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    />
-
-            </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#71d2d2d2"
-                    />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/quantum_grey300">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Start Time: "
-                    android:padding="10dp"
-                    android:layout_weight="1.5"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#71d2d2d2"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/startTime"
-                    android:text="#"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    />
-
-            </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#71d2d2d2"
-                    />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="End Time: "
-                    android:padding="10dp"
-                    android:layout_weight="1.5"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#71d2d2d2"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/endTime"
-                    android:text="#"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    />
-
-            </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#71d2d2d2"
-                    />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/quantum_grey300">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Cost"
-                    android:padding="10dp"
-                    android:layout_weight="1.5"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#71d2d2d2"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/cost"
-                    android:text="#"
-                    android:padding="10dp"
-                    android:layout_weight="1"
-                    />
-
-            </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#71d2d2d2"
-                    />
-
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:text="Status"
-                android:gravity="center"
+                android:text="Open CCTV Camera"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_ui_blue_rectangle"
+                android:paddingTop="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textSize="16sp"
-                android:layout_marginRight="1dp"
-                android:textColor="@color/ms_black"
-                android:background="@color/quantum_yellow700"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:fontFamily="@font/montserrat_bold"/>
+                android:onClick="onCCTVClicked"
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/white"
+                />
 
-                <TextView
-                    android:id="@+id/currentStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:gravity="center"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="current status"
-                    android:textColor="#3e9c64"
-                    android:textSize="15sp" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#71d2d2d2"
-                    />
-                <ImageView
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:id="@+id/statusImage"
-                    />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Open CCTV Camera"
-                    android:layout_gravity="center"
-                    android:background="@drawable/btn_ui_blue_rectangle"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:textSize="12sp"
-                    android:onClick="onCCTVClicked"
-                    />
-            </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Arrived"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_ui_green_rectangle"
+                android:paddingTop="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/white"
+                android:id="@+id/arrivedConfirmationBtn"
+                android:onClick="onConfirmationButtonClicked"
+                android:visibility="invisible"
+                />
+        </LinearLayout>
 
 
-        </android.support.v7.widget.CardView>
+    </ScrollView>
 
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

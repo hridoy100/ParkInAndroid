@@ -2,7 +2,9 @@ package com.example.parkin.Add;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +27,7 @@ import com.example.parkin.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.BreakIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +56,7 @@ public class AddVehicle extends AppCompatActivity {
     EditText tax;
 
     private ProgressDialog progressDialog;
+    private TextView topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class AddVehicle extends AppCompatActivity {
         manufacturer = (Spinner) findViewById(R.id.manufacturer);
         localCode = (Spinner) findViewById(R.id.areaCode);
         vehicleType = (Spinner) findViewById(R.id.type);
+        topBar = (TextView) findViewById(R.id.topbar);
 
         license = (EditText) findViewById(R.id.vehicleLicenseNo);
 
@@ -69,6 +75,8 @@ public class AddVehicle extends AppCompatActivity {
         vehicleCode3 = (EditText) findViewById(R.id.vehicleCode3);
         vehicleCode4 = (EditText) findViewById(R.id.vehicleCode4);
         vehicleCode5 = (EditText) findViewById(R.id.vehicleCode5);
+
+        topBar.setText("VEHICLE ADD");
 
 
         vehicleCode1.addTextChangedListener(new TextWatcher() {
@@ -178,6 +186,9 @@ public class AddVehicle extends AppCompatActivity {
         final String fitnessStr = fitness.getText().toString();
         final String taxStr = tax.getText().toString();
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+
         final String type = vehicleType.getSelectedItem().toString();
 
         final String registrationNo = vehicleCode1Str+vehicleCode2Str+vehicleCode3Str+vehicleCode4Str+vehicleCode5Str;
@@ -196,6 +207,7 @@ public class AddVehicle extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             if(response.contains("success")){
                                 Toast.makeText(getApplicationContext(),"Success" , Toast.LENGTH_SHORT).show();
+                                finish();
 
                             }else {
                                 Toast.makeText(getApplicationContext(),"Failed" , Toast.LENGTH_SHORT).show();
@@ -224,6 +236,7 @@ public class AddVehicle extends AppCompatActivity {
                 params.put("fitnessCertificate", fitnessStr);
                 params.put("taxToken", taxStr);
                 params.put("type", type);
+                params.put("customerMobNo", mobNo);
                 return params;
             }
         };

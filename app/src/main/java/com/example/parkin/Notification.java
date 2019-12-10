@@ -8,8 +8,29 @@ public class Notification {
     String time;
     String date;
     String mobileNo;
+    String renterMobileNo;
+    String customerMobileNo;
+    String customerNo;
+    String renterNo;
+  
+    public String getCustomerNo() {
+        return customerNo;
+    }
 
-    public Notification(String id, String status, String notificationMessage, String rentno, String time, String date, String mobileNo) {
+    public void setCustomerNo(String customerNo) {
+        this.customerNo = customerNo;
+    }
+
+    public String getRenterNo() {
+        return renterNo;
+    }
+
+    public void setRenterNo(String renterNo) {
+        this.renterNo = renterNo;
+    }
+
+    public Notification(String id, String status, String notificationMessage, String rentno, String time, String date, String mobileNo, String renterMobileNo, String customerMobileNo) {
+
         this.id = id;
         this.status = status;
         this.notificationMessage = notificationMessage;
@@ -17,6 +38,8 @@ public class Notification {
         this.time = time;
         this.date = date;
         this.mobileNo = mobileNo;
+        this.renterMobileNo = renterMobileNo;
+        this.customerMobileNo = customerMobileNo;
     }
 
     public Notification() {
@@ -77,5 +100,21 @@ public class Notification {
 
     public void setMobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
+    }
+
+    public String getCustomerMobileNo() {
+        return customerMobileNo;
+    }
+
+    public void setCustomerMobileNo(String customerMobileNo) {
+        this.customerMobileNo = customerMobileNo;
+    }
+
+    public String getRenterMobileNo() {
+        return renterMobileNo;
+    }
+
+    public void setRenterMobileNo(String renterMobileNo) {
+        this.renterMobileNo = renterMobileNo;
     }
 }

@@ -70,7 +70,7 @@ public class PopGarageDetails extends Activity implements RecyclerViewAdapterPop
 
             SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
             String start=DateFormat.format(spaceDetailsArrayList.get(i).getStarttime1().getTime());
-            String end=DateFormat.format(spaceDetailsArrayList.get(i).getGetStarttime2().getTime());
+            String end=DateFormat.format(spaceDetailsArrayList.get(i).getStarttime2().getTime());
             start_time.add(start);
             end_time.add(end);
             availability.add(spaceDetailsArrayList.get(i).getAvailability());

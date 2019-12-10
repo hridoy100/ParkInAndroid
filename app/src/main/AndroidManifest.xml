@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -26,7 +27,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SingleNotificationActivity"></activity>
+        <activity android:name=".ReviewActivity"></activity>
+        <activity android:name=".PaymentActivity" />
+        <activity android:name=".OnGoingParkingActivity" />
+        <activity android:name=".AddNewSpaceActivity" />
+        <activity android:name=".SingleSpaceActivity" />
+        <activity android:name=".SingleGarageActivity" />
+        <activity android:name=".PhoneLoginActivity" />
+        <activity android:name=".SingleNotificationActivity" />
         <activity android:name=".NotificationActivity" />
         <activity
             android:name=".Stepper.MyStepperTest"
@@ -48,17 +56,26 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <activity android:name=".MainActivity">
+            android:value="@string/google_maps_key" /> <!-- <activity android:name=".MainActivity"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <activity android:name=".CreateAccountActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/AppTheme2" />
         <activity android:name=".Garage" />
         <activity android:name=".Vehicle" />
         <activity android:name=".Add.AddVehicle" />
@@ -69,6 +86,7 @@
         <activity android:name=".Camera" />
         <activity android:name=".MapActivity" />
         <activity android:name=".SpaceDetailsView" />
+        <activity android:name=".AccountSettingsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

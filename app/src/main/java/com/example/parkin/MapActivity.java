@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -11,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -33,6 +35,7 @@ import android.widget.Toast;
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.GarageDetails;
 import com.example.parkin.DB.SpaceDetails;
+import com.example.parkin.Stepper.MyStepperTest;
 import com.example.parkin.util.MyClusterManagerRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +46,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -57,6 +61,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+
+import barikoi.barikoilocation.BarikoiAPI;
+import barikoi.barikoilocation.PlaceModels.GeoCodePlace;
+import barikoi.barikoilocation.SearchAutoComplete.SearchAutocompleteFragment;
+
+import static com.example.parkin.DB.Constants.Large_Car;
+import static com.example.parkin.DB.Constants.Large_Van;
+import static com.example.parkin.DB.Constants.Mini_Van;
+import static com.example.parkin.DB.Constants.Motor_Bike;
+import static com.example.parkin.DB.Constants.Small_Car;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "MapActivity";
@@ -83,6 +97,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     Calendar arrivaltime;
     Calendar departuretime;
     View mapView;
+
+    Double latitude,longitude;
+    String addressTitle;
+    String postalCode;
+    GeoCodePlace selectedPlace;
+
     private SwitchDateTimeDialogFragment dateTimeFragment;
     private SwitchDateTimeDialogFragment dateTimeFragment2;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -115,11 +135,48 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         vehicle_spinner=(Spinner)findViewById(R.id.vehicle_spinner);
         List<String>spinneritem=new ArrayList<String>();
         spinneritem.add("Any Vehicle");
-        spinneritem.add("Car");
+        spinneritem.add("Medium Car");
         spinneritem.add("Motor Bike");
-        spinneritem.add("Auto Rickshaw");
-        spinneritem.add("Bus");
-        spinneritem.add("Truck");
+        spinneritem.add("Small Car");
+        spinneritem.add("Large Car");
+        spinneritem.add("Mini Van");
+        spinneritem.add("Large Van");
+
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyAK9AJgEjjqpjbQ-dd5NjNT9Q9CTKrkvbQ");
+        }
+
+        //barikoi..
+
+        BarikoiAPI.getINSTANCE(getApplicationContext(), "MTQ0NjpWUTg2SldKWTRL");
+
+
+        SearchAutocompleteFragment searchAutocompleteFragment;
+        searchAutocompleteFragment=(SearchAutocompleteFragment)getSupportFragmentManager().findFragmentById(R.id.barikoiSearchAutocompleteFragment);
+        searchAutocompleteFragment.setPlaceSelectionListener(new SearchAutocompleteFragment.PlaceSelectionListener() {
+
+            @Override
+            public void onPlaceSelected(GeoCodePlace place) {
+                Toast.makeText(getApplicationContext(), "Place Selected: "+place.getAddress(), Toast.LENGTH_SHORT).show();
+                latitude=Double.parseDouble(place.getLatitude());
+                longitude=Double.parseDouble(place.getLongitude());
+                addressTitle = place.getAddress();
+                postalCode = place.getPostalcode();
+                selectedPlace = place;
+//                Log.d("place",place.getCity());
+
+//                Toast.makeText(getApplicationContext(), "city: "+place.getCity(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(getApplicationContext(), "Error Message"+error, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+
         vehicle_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -130,23 +187,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         break;
                     case 1:
                         vehicle_size=25;
-                        vehicle_type="Car";
+                        vehicle_type="Medium Car";
                         break;
                     case 2:
-                        vehicle_size=10;
-                        vehicle_type="Motor Bike";
+                        vehicle_size=Motor_Bike;
+                        vehicle_type="Motor_Bike";
                         break;
                     case 3:
-                        vehicle_size=15;
-                        vehicle_type="Auto Rickshaw";
+                        vehicle_size=Small_Car;
+                        vehicle_type="Small Car";
                         break;
                     case 4:
-                        vehicle_size=45;
-                        vehicle_type="Bus";
+                        vehicle_size=Large_Car;
+                        vehicle_type="Large Car";
                         break;
                     case 5:
-                        vehicle_size=50;
-                        vehicle_type="Truck";
+                        vehicle_size=Mini_Van;
+                        vehicle_type="Mini Van";
+                        break;
+                    case 6:
+                        vehicle_size=Large_Van;
+                        vehicle_type="Large Van";
                         break;
                 }
             }
@@ -164,6 +225,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         init = 0;
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
         for (int i=0; i<garageDetailsArrayList.size(); i++){
+            System.out.println("From up:"+garageDetailsArrayList.get(i).getGarageId());
             garages.add(new GarageObject(i+1, new LatLng(Double.parseDouble(garageDetailsArrayList.get(i).getLatitude()),
                     Double.parseDouble(garageDetailsArrayList.get(i).getLongitude())),garageDetailsArrayList.get(i)));
         }
@@ -243,8 +305,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void onMapSearch(View view) {
-        EditText locationSearch = (EditText) findViewById(R.id.editText);
-        String location = locationSearch.getText().toString();
+//        EditText locationSearch = (EditText) findViewById(R.id.editText);
+//        String location = locationSearch.getText().toString();
+        String location = addressTitle;
         List<Address> addressList = null;
         if (search_loc != null)
             search_loc.remove();
@@ -256,11 +319,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            search_loc = mMap.addMarker(new MarkerOptions().position(latLng).title("location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            //Address address = addressList.get(0);
+            LatLng latLng = new LatLng(latitude, longitude);
+            search_loc = mMap.addMarker(new MarkerOptions().position(latLng).title(addressTitle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(address.getLatitude(), address.getLongitude()))      // Sets the center of the map to Mountain View
+                    .target(new LatLng(latitude, longitude))      // Sets the center of the map to Mountain View
                     .zoom(17)                   // Sets the zoom
                     .bearing(90)                // Sets the orientation of the camera to east
                     .tilt(30)                   // Sets the tilt of the camera to 30 degrees
@@ -395,7 +458,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
                 spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getAddressName());
                 spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarageId());
+                System.out.println("From MapActivity Garage Id:"+ClusterItem.getGarage().getGarageId());
                 spaceintent.putExtra("vehicleType",send_vehicle_type);
+                String facility=new CommunicateWithPhp().getFacility(ClusterItem.getGarage().getGarageId());
+                System.out.println(facility);
+                spaceintent.putExtra("facility",facility);
                 startActivity(spaceintent);
                 return true;
             }
@@ -419,6 +486,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
     public void customiseMarkers(View view)
     {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
         show_button_flag=1;
         CommunicateWithPhp com=new CommunicateWithPhp();
         for(int i=0;i<garages.size();i++)
@@ -429,7 +498,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             System.out.println("Iterating garagaes: "+garages.get(i).getGarage_id());
             boolean flag=is_eligible(spaceDetails);
             System.out.println(flag);
-            if(flag==true)
+            String renter_mob=new CommunicateWithPhp().getRenterMobNo(garages.get(i).getGarage().getGarageId());
+            if(flag==true && !renter_mob.equals(mobNo))
             {
                 if(marker_flag.get(i)==0)
                 {
@@ -452,10 +522,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         for(int i=0;i<spaceDetails.size();i++)
         {
             System.out.println(spaceDetails.get(i).getAvailability());
-            if(spaceDetails.get(i).getSpacesize()>=vehicle_size && spaceDetails.get(i).getAvailability().equals("yes"))
+            if(spaceDetails.get(i).getSpacesize()>=vehicle_size)
                 return true;
         }
         return false;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 //    public void setDepatureTime(View view){
 //        Calendar mcurrentTime = Calendar.getInstance();
@@ -497,7 +572,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 //        mTimePicker.show();
 //    }
     private void addMapMarkers(){
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+        System.out.println("mobNos:"+mobNo);
         if(mMap != null){
 
             if(mClusterManager == null){
@@ -515,7 +592,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
             for(GarageObject garage: garages){
                 try{
-
+                    String renter_mob=new CommunicateWithPhp().getRenterMobNo(garage.getGarage().getGarageId());
+                    System.out.println(renter_mob);
+                    System.out.println("equality:"+renter_mob.equals(mobNo));
                     String snippet = "This is garage no : " + garage.getGarage().getGarageId();
 
 
@@ -527,10 +606,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             avatar,
                             garage.getGarage()
                     );
-                    mClusterManager.addItem(newClusterMarker);
+                    System.out.println("Garage id:"+garage.getGarage().getGarageId());
+                    ArrayList<SpaceDetails>spaceDetails=new CommunicateWithPhp().getAvailableSpaces(Integer.parseInt(garage.getGarage().
+                                    getGarageId()),
+                            arrivaltime,departuretime);
+                    System.out.println("Arraylist size:"+spaceDetails.size());
+
+                    if(spaceDetails!=null) {
+                        if (is_eligible(spaceDetails) && !(renter_mob.equals(mobNo))) {
+                            mClusterManager.addItem(newClusterMarker);
+                            marker_flag.add(1);
+                            System.out.println("Dhuke");
+                        }
+                        else
+                            marker_flag.add(0);
+                    }
+                    else
+                        marker_flag.add(0);
+                    //mClusterManager.addItem(newClusterMarker);
+                    //marker_flag.add(1);
                     //mClusterManager.removeItem(newClusterMarker);
                     mClusterMarkers.add(newClusterMarker);
-                    marker_flag.add(1);
+
 
                 }catch (NullPointerException e){
                     Log.e(TAG, "addMapMarkers: NullPointerException: " + e.getMessage() );

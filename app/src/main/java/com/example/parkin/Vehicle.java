@@ -1,14 +1,17 @@
 package com.example.parkin;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parkin.Add.AddVehicle;
@@ -18,21 +21,28 @@ import com.example.parkin.RecyclerViewAdapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
+public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, RecyclerViewAdapter.OnItemLongClickListener {
     ListView vehicleList;
     ProgressDialog progressDialog;
 
-    ArrayList<String> license = new ArrayList<>();
-    ArrayList<String> company = new ArrayList<>();
-    ArrayList<String> reg = new ArrayList<>();
-    ArrayList<String> mImageUrls = new ArrayList<>();
+    ArrayList<String> license ;
+    ArrayList<String> company ;
+    ArrayList<String> reg ;
+    ArrayList<String> mImageUrls ;
+    TextView topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vehicle_list_layout);
+        license = new ArrayList<>();
+        company = new ArrayList<>();
+        reg = new ArrayList<>();
+        mImageUrls = new ArrayList<>();
+        topBar = (TextView) findViewById(R.id.topbar);
 
         progressDialog = new ProgressDialog(this);
+
 
         //vehicleList = findViewById(R.id.vehicleList);
         progressDialog.setMessage("Loading Vehicle Details");
@@ -61,50 +71,16 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
         editIntent.putExtra("licenseNo",licenseNo);
         startActivity(editIntent);
     }
-
-    /*class MyAdapter extends ArrayAdapter<String> {
-        Context context;
-        ArrayList<VehicleDetails> vehicleDetailsArrayList;
-
-        public MyAdapter(Context context, ArrayList<VehicleDetails> vehicleDetails, String title[]) {
-            super(context, R.layout.garage_list_row, title);
-            this.context = context;
-            this.vehicleDetailsArrayList = vehicleDetails;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.vehicle_list_row, parent, false);
-            TextView licenseNo = row.findViewById(R.id.licenseNo);
-            TextView company = row.findViewById(R.id.company);
-            TextView registration = row.findViewById(R.id.regCode);
-            CircleImageView imageView = row.findViewById(R.id.vehicleImage);
-
-            licenseNo.setText("License: "+ vehicleDetailsArrayList.get(position).getLicenseNo());
-            company.setText("Company: "+vehicleDetailsArrayList.get(position).getCompany());
-            registration.setText("Reg No: "+vehicleDetailsArrayList.get(position).getAreaCode()+" " +vehicleDetailsArrayList.get(position).getVehicleCode()+" " +vehicleDetailsArrayList.get(position).getRegistrationNo());
-            if(vehicleDetailsArrayList.get(position).getType().equals("Car")){
-                imageView.setImageResource(R.drawable.ic_directions_car_blue);
-            }
-            else if(vehicleDetailsArrayList.get(position).getType().equals("Bike")){
-                imageView.setImageResource(R.drawable.ic_motorcycle_blue);
-            }else if(vehicleDetailsArrayList.get(position).getType().equals("Cycle")){
-                imageView.setImageResource(R.drawable.ic_bike_blue);
-            }
-            else if(vehicleDetailsArrayList.get(position).getType().equals("Bus")){
-                imageView.setImageResource(R.drawable.ic_directions_bus_black_24dp);
-            }
-            return row;
-        }
-    }*/
     public void addVehicleActivity(View view){
         Intent addVehicleIntent = new Intent(getApplicationContext(), AddVehicle.class);
         startActivity(addVehicleIntent);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
     void initImageBitmaps() {
         //mImageUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLCINLcwcG0xWtc73CfeEjnOM0oi_yRG9BTmMjQf60DljywHYD");
         /*mImageUrls.add("https://img7.androidappsapk.co/300/4/6/4/namaa.com.jobsbank.png");
@@ -119,19 +95,38 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
              license.add("License No: "+vehicleDetailsArrayList.get(i).getLicenseNo());
              company.add("Company: "+vehicleDetailsArrayList.get(i).getCompany());
              reg.add("Registration No: "+vehicleDetailsArrayList.get(i).getRegistrationNo());
-             if(vehicleDetailsArrayList.get(i).getType().equals("Car")){
-                 mImageUrls.add("https://banner2.kisspng.com/20180211/kgq/kisspng-car-icon-driving-car-5a804313d86b14.6905057915183552198865.jpg");
+             if(vehicleDetailsArrayList.get(i).getType().equals("Small Car")){
+//                 mImageUrls.add(String.valueOf(getResources().getIdentifier("small.jpg","drawable",this.getPackageName())));
+                 //mImageUrls.add("https://banner2.kisspng.com/20180211/kgq/kisspng-car-icon-driving-car-5a804313d86b14.6905057915183552198865.jpg");
+                 mImageUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7pl5qcWceXBTYFU4n3_xVyMfSedhWHTDP4eSE3hZyzzLynK5K");
              }
-             if(vehicleDetailsArrayList.get(i).getType().equals("Bike")){
+             else if(vehicleDetailsArrayList.get(i).getType().equals("Medium Car")){
+                 //mImageUrls.add(String.valueOf(getResources().getIdentifier("medium_1", "drawable",this.getPackageName())));
+                 mImageUrls.add("https://banner2.kisspng.com/20180418/edq/kisspng-car-opel-insignia-b-opel-cascada-common-rail-view-clipart-5ad7d5a282f9f6.6507513715240943705365.jpg");
+                 //mImageUrls.add("https://banner2.kisspng.com/20180211/kgq/kisspng-car-icon-driving-car-5a804313d86b14.6905057915183552198865.jpg");
+             }
+             else if(vehicleDetailsArrayList.get(i).getType().equals("Motor Bike")){
 //                 mImageUrls.add("https://blackswanmoto.com/wp-content/uploads/2018/06/MotoCross-512.png");
-                 mImageUrls.add("https://images.vexels.com/media/users/3/152654/isolated/preview/e5694fb12916c00661195c0a833d1ba9-sports-bike-icon-by-vexels.png");
+                 //mImageUrls.add(String.valueOf(getResources().getIdentifier("bike_small_32.png", "drawable",this.getPackageName())));
+                 mImageUrls.add("https://ic.maxabout.us//bikes/hyosung/gt250r//New-Hyosung-GT250R-Red-Titanium.jpg");
+                 //mImageUrls.add("https://images.vexels.com/media/users/3/152654/isolated/preview/e5694fb12916c00661195c0a833d1ba9-sports-bike-icon-by-vexels.png");
              }
-             if(vehicleDetailsArrayList.get(i).getType().equals("Cycle")){
-//                 mImageUrls.add("https://apprecs.org/gp/images/app-icons/300/3c/com.littlefluffytoys.cyclehire.jpg");
-                 mImageUrls.add("https://cdn4.iconfinder.com/data/icons/cycling/100/cycling-mountain-bike-color-2-512.png");
-             }
-            if(vehicleDetailsArrayList.get(i).getType().equals("Bus")){
-                mImageUrls.add("http://aux4.iconspalace.com/uploads/8012276391018748620.png");
+//             if(vehicleDetailsArrayList.get(i).getType().contains("Cycle")){
+////                 mImageUrls.add("https://apprecs.org/gp/images/app-icons/300/3c/com.littlefluffytoys.cyclehire.jpg");
+//                 mImageUrls.add("https://cdn4.iconfinder.com/data/icons/cycling/100/cycling-mountain-bike-color-2-512.png");
+//             }
+            else if(vehicleDetailsArrayList.get(i).getType().equals("4x4 or Large Car")){
+//                mImageUrls.add(String.valueOf(getResources().getIdentifier("pajero.jpg", "drawable",this.getPackageName())));
+//                mImageUrls.add("http://aux4.iconspalace.com/uploads/8012276391018748620.png");
+                mImageUrls.add("https://giatotmitsu.com/wp-content/uploads/2019/04/Xam-U17.png");
+            }
+            else if(vehicleDetailsArrayList.get(i).getType().equals("Mini Van")){
+//                mImageUrls.add(String.valueOf(getResources().getIdentifier("minivan_32.jpg", "drawable",this.getPackageName())));
+                mImageUrls.add("https://5.imimg.com/data5/QB/KJ/LI/SELLER-7746960/intra-v20-250x250.jpg");
+            }
+            else  if(vehicleDetailsArrayList.get(i).getType().equals("Large Van or Minibus")){
+//                mImageUrls.add(String.valueOf(getResources().getIdentifier("mini_bus.jpg", "drawable",this.getPackageName())));
+                mImageUrls.add("https://i.ytimg.com/vi/z-lQPPoOzYM/maxresdefault.jpg");
             }
             else {
                 mImageUrls.add("https://cdn3.iconfinder.com/data/icons/transport-03-set-of-trucks-tractors-concrete-mixer/110/Freight_transport_24-512.png");
@@ -145,10 +140,55 @@ public class Vehicle extends AppCompatActivity implements RecyclerViewAdapter.On
 
     void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycleView_vehicle);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,license,company, reg, mImageUrls, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,license,company, reg, mImageUrls, this,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
+    @Override
+    public void onItemLongClick(int i) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Vehicle Deletion");
+        builder.setMessage("Are you sure you want to delete vehicle with license number "+license.get(i)+" ?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String licenseNo = license.get(i);
+                licenseNo = licenseNo.substring(licenseNo.lastIndexOf(" ")+1);
+                Toast.makeText(getApplicationContext(), licenseNo, Toast.LENGTH_SHORT).show();
+                Log.d("onItemClick", licenseNo);
+                CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
+                communicateWithPhp.deleteVehicle(licenseNo);
+                Toast.makeText(getApplicationContext(),licenseNo+"del", Toast.LENGTH_SHORT).show();
+
+                license = new ArrayList<>();
+                company = new ArrayList<>();
+                reg = new ArrayList<>();
+                mImageUrls = new ArrayList<>();
+                initImageBitmaps();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing..
+            }
+        });
+        builder.show();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        license = new ArrayList<>();
+        company = new ArrayList<>();
+        reg = new ArrayList<>();
+        mImageUrls = new ArrayList<>();
+        initImageBitmaps();
+    }
 }

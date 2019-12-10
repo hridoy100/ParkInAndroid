@@ -23,14 +23,14 @@
             >
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="My Garage List"
+                android:layout_height="70dp"
+                android:text="MY GARAGE LIST"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:padding="10dp"
-                android:layout_marginTop="10dp"/>
+                android:background="@drawable/curve"
+                android:textColor="@color/white"/>
 
             <!--<ListView-->
                 <!--android:id="@+id/garageList"-->

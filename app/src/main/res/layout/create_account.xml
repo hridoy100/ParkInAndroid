@@ -31,7 +31,7 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:paddingTop="20dp"
-            android:paddingBottom="60dp">
+            android:paddingBottom="30dp">
 
             <ImageView
                 android:layout_width="60dp"
@@ -234,17 +234,47 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="right|center"
-            android:layout_marginLeft="-35dp"
-            android:layout_marginRight="40dp"
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+
             android:layout_marginTop="20dp"
-            android:background="@drawable/btn_ui_blue_oval"
-            android:elevation="3dp"
-            android:onClick="onSubmitButton"
-            android:src="@drawable/ic_arrow" />
+            android:layout_gravity="center|center_vertical"
+            android:padding="10dp"
+
+            >
+
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/btn_ui_red_oval"
+                android:elevation="3dp"
+                android:onClick="sendUserToLoginActivity"
+                android:src="@drawable/ic_arrow_back"
+                />
+
+            <ImageButton
+                android:id="@+id/create"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="210dp"
+                android:background="@drawable/btn_ui_blue_oval"
+                android:elevation="3dp"
+                android:onClick="onSubmitButton"
+                android:src="@drawable/ic_arrow" />
+        </RelativeLayout>
+
+
 
     </LinearLayout>
 

@@ -1,7 +1,9 @@
 package com.example.parkin.RecyclerViewAdapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +11,10 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.parkin.DB.Rent;
 import com.example.parkin.Notification;
@@ -20,7 +25,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<RecyclerViewAdapterSimpleCardView.ViewHolder> {
-    static final String TAG = "RecycleViewAdapterHistory";
+    static final String TAG = "RecyclerViewAdapterSimpleCardView";
     ArrayList<Notification> notificationArrayList = new ArrayList<>();
     Context context;
     RecyclerViewAdapterSimpleCardView.OnItemClickListener onItemClickListener;
@@ -45,8 +50,23 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
         viewHolder.date.setText(notificationArrayList.get(i).getDate());
         viewHolder.time.setText(notificationArrayList.get(i).getTime());
         viewHolder.mobileNo.setText(Html.fromHtml(notificationArrayList.get(i).getMobileNo()));
-        if(notificationArrayList.get(i).getStatus().equals("no"))
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String myMobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
+
+        String oldStatus = notificationArrayList.get(i).getStatus();
+        String renterStatus = oldStatus.substring(0,oldStatus.indexOf(","));
+        String customerStatus = oldStatus.substring(oldStatus.indexOf(",")+1);
+
+
+        if(myMobNo.equals(notificationArrayList.get(i).getCustomerMobileNo()) && customerStatus.equals("no")) {
+            // ami jodi customer hoi and customer er notification seen jodi 'no' thake
             viewHolder.simpleCardView.setCardBackgroundColor(Color.parseColor("#69ffcd"));
+        }
+        else if(myMobNo.equals(notificationArrayList.get(i).getRenterMobileNo()) && renterStatus.equals("no")){
+            // ami jodi renter hoi and customer er notification seen jodi 'no' thake
+            viewHolder.simpleCardView.setCardBackgroundColor(Color.parseColor("#69ffcd"));
+        }
         else viewHolder.simpleCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
@@ -69,9 +89,11 @@ public class RecyclerViewAdapterSimpleCardView extends RecyclerView.Adapter<Recy
             date = (TextView) itemView.findViewById(R.id.date);
             time = (TextView) itemView.findViewById(R.id.time);
             mobileNo = (TextView) itemView.findViewById(R.id.mobileNo);
+
             simpleCardView = (CardView) itemView.findViewById(R.id.simpleCardView);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
+
         }
 
         @Override

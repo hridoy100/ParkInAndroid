@@ -15,16 +15,23 @@
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vehicle Details"
-            android:textSize="24sp"
+            android:layout_height="70dp"
+            android:text="VEHICLE EDITING"
+
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="20sp"
             android:gravity="center"
-            android:layout_marginTop="20sp"/>
+            android:textColor="@color/white"
+            android:background="@drawable/curve"
+            android:textStyle="bold"
+            android:id="@+id/topbar"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="10dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -53,24 +60,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            <EditText
-                android:id="@+id/vehicleLicenseNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/vehicleLicenseNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                android:hint="Driving License"
-                android:inputType="text"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                    android:hint="Driving License"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="50dp"
             android:paddingTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,19 +95,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Spinner
                     android:id="@+id/areaCode"
-                    android:layout_width="75dp"
+                    android:layout_width="84dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
+                    android:layout_gravity="center_vertical"
                     android:dropDownWidth="300dp"
+                    android:paddingLeft="16dp"
                     android:paddingTop="16dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="16dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:paddingBottom="16dp" />
                 <EditText
                     android:id="@+id/vehicleCode"
-                    android:layout_width="65dp"
+                    android:layout_width="62dp"
                     android:layout_height="wrap_content"
 
                     android:hint="e.g.GA"
@@ -138,7 +146,7 @@
                     android:layout_marginLeft="5dp"
                     />
                 <View
-                    android:layout_width="10dp"
+                    android:layout_width="5dp"
                     android:layout_height="50dp" />
                 <EditText
                     android:id="@+id/vehicleCode3"
@@ -155,67 +163,69 @@
                     android:layout_marginLeft="5dp"
                     />
                 <EditText
-                android:id="@+id/vehicleCode4"
-                android:layout_width="45dp"
-                android:layout_height="50dp"
-                android:digits="123456789"
-                android:inputType="number"
-                android:maxLength="1"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:background="@drawable/custom_edit_text"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginLeft="5dp"
-                />
+                    android:id="@+id/vehicleCode4"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:digits="123456789"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="5dp"
+                    />
                 <EditText
-                android:id="@+id/vehicleCode5"
-                android:layout_width="45dp"
-                android:layout_height="50dp"
-                android:digits="123456789"
-                android:inputType="number"
-                android:maxLength="1"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:background="@drawable/custom_edit_text"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginLeft="5dp"
-                />
+                    android:id="@+id/vehicleCode5"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:digits="123456789"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="5dp"
+                    />
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/fitness"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/fitness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                android:hint="Fitness Cirtificate"
-                android:inputType="text"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"/>
+                    android:hint="Fitness Cirtificate"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/tax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/tax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                android:hint="Tax Token"
-                android:inputType="text"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                    android:hint="Tax Token"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    />
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>

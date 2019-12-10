@@ -38,6 +38,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.parkin.DB.CommunicateWithPhp;
 import com.example.parkin.DB.Constants;
 import com.example.parkin.DB.RequestHandler;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,11 +63,18 @@ public class MainActivity extends AppCompatActivity {
 
     public ProgressDialog progressDialog;
 
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_window);
         mainContext = this;
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         myEditor = mySharedPreferences.edit();
@@ -76,13 +85,19 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         checkSharedPreferences();
-        tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
+        /*tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
                 mySharedPreferences.getString(getString(R.string.password), ""));
+                */
 
 
 //        username.setText("123");
 //        password.setText("admin");
 
+    }
+
+    private void sendUserToLoginActivity() {
+        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(loginIntent);
     }
 
 
@@ -177,4 +192,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        sendUserToLoginActivity();
+
+        /*if(currentUser==null){
+            sendUserToLoginActivity();
+        }
+        else {
+            sendUserToHomeActivity();
+        }*/
+    }
+
+    private void sendUserToHomeActivity() {
+        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(homeIntent);
+    }
 }
