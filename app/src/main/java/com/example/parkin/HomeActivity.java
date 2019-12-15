@@ -346,8 +346,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Intent logOutIntent = new Intent(getApplicationContext(),LoginActivity.class);
                 logOutIntent.putExtra("from","home");
-                startActivity(logOutIntent);
                 FirebaseAuth.getInstance().signOut();
+                startActivity(logOutIntent);
                 finish();
             }
         });

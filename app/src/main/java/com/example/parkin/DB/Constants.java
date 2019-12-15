@@ -67,5 +67,7 @@ public class Constants {
 
     public static String taka="\u09F3";
 
+    public static boolean DEBUG = false;
+
 
 }

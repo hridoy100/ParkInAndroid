@@ -102,9 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onLoginButton(View view){
-
-        System.out.println(username.getText());
-        System.out.println(password.getText());
+        if(Constants.DEBUG) {
+            System.out.println(username.getText());
+            System.out.println(password.getText());
+        }
 //        CommunicateWithPhp communicateWithPhp = new CommunicateWithPhp();
 //        communicateWithPhp.setMain(this);
 //        communicateWithPhp.setContext(this);
@@ -139,9 +140,10 @@ public class MainActivity extends AppCompatActivity {
         if(mobileNo.startsWith("0"))
             mobileNo = mobileNo.substring(mobileNo.indexOf("0")+1);
 
-        System.out.println("mobileNo: "+mobileNo);
-        System.out.println("password: "+password);
-
+        if(Constants.DEBUG) {
+            System.out.println("mobileNo: " + mobileNo);
+            System.out.println("password: " + password);
+        }
         if(mobileNo.length()>0 && password.length()>0) {
             //Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
             //startActivity(mapIntent);

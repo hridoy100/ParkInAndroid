@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.parkin.DB.Constants.DEBUG;
 import static com.example.parkin.DB.Constants.cctv_cost;
 import static com.example.parkin.DB.Constants.cctv_index;
 import static com.example.parkin.DB.Constants.covered_parking_cost;
@@ -93,10 +94,12 @@ public class PaymentActivity extends AppCompatActivity {
         StringTokenizer tokenizer2=new StringTokenizer(endDate);
         String e_date=tokenizer2.nextToken(" ");
         String e_time=tokenizer2.nextToken(" ");
-        System.out.println("s_date:"+s_date);
-        System.out.println("e_date:"+e_date);
-        System.out.println("s_time:"+s_time);
-        System.out.println("e_time:"+e_time);
+        if(Constants.DEBUG) {
+            System.out.println("s_date:" + s_date);
+            System.out.println("e_date:" + e_date);
+            System.out.println("s_time:" + s_time);
+            System.out.println("e_time:" + e_time);
+        }
         SpaceDetails spaceDetails = communicateWithPhp.getSingleSpace(rentArrayList.get(0).getSpaceId());
         facility=communicateWithPhp.getFacility(String.valueOf(spaceDetails.getGarageid()));
         CalculateInitCost(s_date,e_date,s_time,e_time);
@@ -124,20 +127,32 @@ public class PaymentActivity extends AppCompatActivity {
             Date edate=sdf.parse(e_date);
             long diff = edate.getTime() - sdate.getTime();
             long diff_day= TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            System.out.println("diff day:"+diff_day);
+
+            if(Constants.DEBUG)
+                System.out.println("diff day:"+diff_day);
+
             days=diff_day+1;
             sdf=new SimpleDateFormat("HH:mm:ss");
             Date stime=sdf.parse(s_time);
             Date etime=sdf.parse(e_time);
             diff=etime.getTime()-stime.getTime();
             long diff_time=TimeUnit.MINUTES.convert(diff,TimeUnit.MILLISECONDS);
-            System.out.println("diff time:"+diff_time);
+
+            if(Constants.DEBUG)
+                System.out.println("diff time:"+diff_time);
+
             minutes=diff_time*days;
             long tmp=60;
             long diff_hour=diff_time/tmp;
-            System.out.println("diff hour:"+diff_hour);
+
+            if(Constants.DEBUG)
+                System.out.println("diff hour:"+diff_hour);
+
             cost=(diff_day+1)*(diff_hour+1)*per_hour_cost;
-            System.out.println("init cost:"+cost);
+
+            if(DEBUG)
+                System.out.println("init cost:"+cost);
+
             //facility cost adding
             if(facility.length()>=7) {
                 if (facility.charAt(covered_parking_index) == '1')

@@ -66,6 +66,7 @@ import barikoi.barikoilocation.BarikoiAPI;
 import barikoi.barikoilocation.PlaceModels.GeoCodePlace;
 import barikoi.barikoilocation.SearchAutoComplete.SearchAutocompleteFragment;
 
+import static com.example.parkin.DB.Constants.DEBUG;
 import static com.example.parkin.DB.Constants.Large_Car;
 import static com.example.parkin.DB.Constants.Large_Van;
 import static com.example.parkin.DB.Constants.Mini_Van;
@@ -113,7 +114,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
                 }
             }
         }
@@ -225,7 +226,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         init = 0;
         ArrayList<GarageDetails> garageDetailsArrayList = communicateWithPhp.getAllGarageDetailsDB();
         for (int i=0; i<garageDetailsArrayList.size(); i++){
-            System.out.println("From up:"+garageDetailsArrayList.get(i).getGarageId());
+            if(DEBUG)
+                System.out.println("From up:"+garageDetailsArrayList.get(i).getGarageId());
             garages.add(new GarageObject(i+1, new LatLng(Double.parseDouble(garageDetailsArrayList.get(i).getLatitude()),
                     Double.parseDouble(garageDetailsArrayList.get(i).getLongitude())),garageDetailsArrayList.get(i)));
         }
@@ -432,7 +434,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( 23.777176, 90.399452), 15));
         addMapMarkers();
@@ -453,15 +455,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 {
                     send_vehicle_type=vehicle_type;
                 }
-                System.out.println("Onclick garageid: "+ClusterItem.getGarage().getGarageId());
+
+                if(DEBUG)
+                    System.out.println("Onclick garageid: "+ClusterItem.getGarage().getGarageId());
+
                 spaceintent.putExtra("arrivaltime",arrivaltime.getTimeInMillis());
                 spaceintent.putExtra("departuretime",departuretime.getTimeInMillis());
                 spaceintent.putExtra("garagelocation",ClusterItem.getGarage().getAddressName());
                 spaceintent.putExtra("garageid",ClusterItem.getGarage().getGarageId());
-                System.out.println("From MapActivity Garage Id:"+ClusterItem.getGarage().getGarageId());
+
+                if(DEBUG)
+                    System.out.println("From MapActivity Garage Id:"+ClusterItem.getGarage().getGarageId());
+
                 spaceintent.putExtra("vehicleType",send_vehicle_type);
                 String facility=new CommunicateWithPhp().getFacility(ClusterItem.getGarage().getGarageId());
-                System.out.println(facility);
+
+                if(DEBUG)
+                    System.out.println(facility);
+
                 spaceintent.putExtra("facility",facility);
                 startActivity(spaceintent);
                 return true;
@@ -495,9 +506,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             ArrayList<SpaceDetails>spaceDetails=com.getAvailableSpaces(Integer.parseInt(garages.get(i).getGarage().
                             getGarageId()),
                     arrivaltime,departuretime);
-            System.out.println("Iterating garagaes: "+garages.get(i).getGarage_id());
+
+            if(DEBUG)
+                System.out.println("Iterating garages: "+garages.get(i).getGarage_id());
+
             boolean flag=is_eligible(spaceDetails);
-            System.out.println(flag);
+
+            if(DEBUG)
+                System.out.println(flag);
+
             String renter_mob=new CommunicateWithPhp().getRenterMobNo(garages.get(i).getGarage().getGarageId());
             if(flag==true && !renter_mob.equals(mobNo))
             {
@@ -521,7 +538,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     {
         for(int i=0;i<spaceDetails.size();i++)
         {
-            System.out.println(spaceDetails.get(i).getAvailability());
+            if(DEBUG)
+                System.out.println(spaceDetails.get(i).getAvailability());
             if(spaceDetails.get(i).getSpacesize()>=vehicle_size)
                 return true;
         }
@@ -574,7 +592,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private void addMapMarkers(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String mobNo = sharedPreferences.getString("com.example.parkin.mobileNo", "");
-        System.out.println("mobNos:"+mobNo);
+
+        if(DEBUG)
+            System.out.println("mobNos:"+mobNo);
+
         if(mMap != null){
 
             if(mClusterManager == null){
@@ -593,8 +614,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             for(GarageObject garage: garages){
                 try{
                     String renter_mob=new CommunicateWithPhp().getRenterMobNo(garage.getGarage().getGarageId());
-                    System.out.println(renter_mob);
-                    System.out.println("equality:"+renter_mob.equals(mobNo));
+                    if(DEBUG) {
+                        System.out.println(renter_mob);
+                        System.out.println("equality:" + renter_mob.equals(mobNo));
+                    }
                     String snippet = "This is garage no : " + garage.getGarage().getGarageId();
 
 
@@ -606,17 +629,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             avatar,
                             garage.getGarage()
                     );
-                    System.out.println("Garage id:"+garage.getGarage().getGarageId());
+
+                    if(DEBUG)
+                        System.out.println("Garage id:"+garage.getGarage().getGarageId());
+
                     ArrayList<SpaceDetails>spaceDetails=new CommunicateWithPhp().getAvailableSpaces(Integer.parseInt(garage.getGarage().
                                     getGarageId()),
                             arrivaltime,departuretime);
-                    System.out.println("Arraylist size:"+spaceDetails.size());
+
+                    if(DEBUG)
+                        System.out.println("Arraylist size:"+spaceDetails.size());
 
                     if(spaceDetails!=null) {
                         if (is_eligible(spaceDetails) && !(renter_mob.equals(mobNo))) {
                             mClusterManager.addItem(newClusterMarker);
                             marker_flag.add(1);
-                            System.out.println("Dhuke");
+
+                            if(DEBUG)
+                                System.out.println("Dhuke");
+
                         }
                         else
                             marker_flag.add(0);
