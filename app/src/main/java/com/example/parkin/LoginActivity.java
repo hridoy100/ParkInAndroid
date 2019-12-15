@@ -18,11 +18,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.parkin.DB.CommunicateWithPhp;
+import com.example.parkin.DB.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.googlecode.javacpp.annotation.Const;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -82,8 +84,9 @@ public class LoginActivity extends AppCompatActivity {
 //                password.setText("");
             }
             else{
-                Toast.makeText(getApplicationContext(),"Login Successful\n"+username.getText().toString()+
-                        "\n"+password.getText().toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Login Successful", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Login Successful\n"+username.getText().toString()+
+//                        "\n"+password.getText().toString(), Toast.LENGTH_LONG).show();
                 sendUserToHomeActivity();
             }
 
@@ -119,8 +122,11 @@ public class LoginActivity extends AppCompatActivity {
 //        if(mobileNo.startsWith("0"))
 //            mobileNo = mobileNo.substring(mobileNo.indexOf("0")+1);
 
-        System.out.println("mobileNo: "+mobileNo);
-        System.out.println("password: "+password);
+        if(Constants.DEBUG) {
+            System.out.println("mobileNo: " + mobileNo);
+            System.out.println("password: " + password);
+        }
+
         if(mobileNo.length()<11 && mobileNo.length()>0){
             progressDialog.hide();
             Toast.makeText(getApplicationContext(),"Incorrect Mobile Number..", Toast.LENGTH_SHORT).show();
