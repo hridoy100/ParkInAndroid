@@ -246,6 +246,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     public void sendUserToLoginActivity(View view){
         Intent loginIntent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+        loginIntent.putExtra("from", "create account");
         startActivity(loginIntent);
     }
 

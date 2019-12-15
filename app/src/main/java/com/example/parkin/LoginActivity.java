@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             {
                 Toast.makeText(getApplicationContext(), "Successfully logged out from home", Toast.LENGTH_SHORT).show();
             }
-            else {
+            else if(whereFrom==null) {
                 Toast.makeText(getApplicationContext(), "Error logging in", Toast.LENGTH_SHORT).show();
             }
         }
