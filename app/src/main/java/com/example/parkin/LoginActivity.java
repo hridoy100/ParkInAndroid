@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+    String whereFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         checkSharedPreferences();
 
-        String whereFrom = getIntent().getStringExtra("from");
+        whereFrom = getIntent().getStringExtra("from");
         //Toast.makeText(getApplicationContext(), "Where From: "+whereFrom,Toast.LENGTH_SHORT).show();
 
         if(currentUser != null && tryToLogin(username.getText().toString(),password.getText().toString())){ //tryToLogin checks corner case..
@@ -98,7 +99,13 @@ public class LoginActivity extends AppCompatActivity {
         else {
             progressDialog.hide();
 
-            Toast.makeText(getApplicationContext(), "Error logging in", Toast.LENGTH_SHORT).show();
+            if(whereFrom!=null && whereFrom.equals("home"))
+            {
+                Toast.makeText(getApplicationContext(), "Successfully logged out from home", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "Error logging in", Toast.LENGTH_SHORT).show();
+            }
         }
         /*tryToLogin(mySharedPreferences.getString(getString(R.string.mobileNo),""),
                 mySharedPreferences.getString(getString(R.string.password), ""));
