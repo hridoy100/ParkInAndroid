@@ -276,4 +276,4 @@ project.
 
 ## 7 Walkthrough
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/E3jy7NEbZ3A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![WALKTHROUGH VIDEO](https://img.youtube.com/vi/E3jy7NEbZ3A/0.jpg)](https://www.youtube.com/watch?v=E3jy7NEbZ3A)
