@@ -57,7 +57,6 @@ the administrator at the slot site will be required. During reservation process 
 to provide with details that includes booking person’s mobile no., vehicle number, expected
 entry and exit time.
 
-
 ## 3 Architectural Design
 
 “**ParkIn**” application is based on the client-server architecture. The client is provided with
@@ -274,3 +273,7 @@ All in all, we think parkin app brings the features which are necessary for a co
 where there is a significant shortage of parking space.Also it allows some users to earn some
 money through renting their space.We hope that we can continue to make improvement to this
 project.
+
+## 7 Walkthrough
+
+https://youtu.be/E3jy7NEbZ3A
