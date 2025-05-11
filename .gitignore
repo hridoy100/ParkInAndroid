@@ -11,3 +11,7 @@
 /build
 /captures
 .externalNativeBuild
+# Firebase config files
+google-services.json
+GoogleService-Info.plist
+firebase-config.json
